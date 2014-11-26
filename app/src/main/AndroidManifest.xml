@@ -6,10 +6,12 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:name=".App"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.nethergrim.bashorg.MainActivity"
-            android:label="@string/app_name" >
+            android:name="com.nethergrim.bashorg.activity.MainActivity"
+            android:label="@string/title_activity_main" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,5 +19,8 @@
             </intent-filter>
         </activity>
     </application>
+
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
