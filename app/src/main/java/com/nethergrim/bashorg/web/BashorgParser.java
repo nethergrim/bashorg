@@ -20,7 +20,7 @@ import io.realm.Realm;
  */
 public class BashorgParser {
 
-    public static void getAndParse(int pageNumber, final EmptyCallback emptyCallback, final Context context) {
+    public static void getParseAndWriteToDb(int pageNumber, final EmptyCallback emptyCallback, final Context context) {
         Client.getPage(pageNumber, new WebStringCallback() {
             @Override
             public void callback(final String result, boolean ok) {
@@ -37,25 +37,33 @@ public class BashorgParser {
     }
 
     public static int parsePage(final String page, final Context context) {
-        final long start = System.currentTimeMillis();
-        Document document = Jsoup.parse(page);
-        final List<Long> numbers = getIds(document);
-        final List<String> texts = getTexts(document);
-        final List<String> dates = getDates(document);
-        int pageNumber = getPageNumber(document);
-
-        Realm realm = Realm.getInstance(context);
-        realm.beginTransaction();
-        for (int i = 0; i < texts.size(); i++) {
-            if (realm.where(Quote.class).equalTo("id", numbers.get(i)).findAll().size() > 0)
-                break;
-            Quote quote = realm.createObject(Quote.class);
-            quote.setDate(dates.get(i));
-            quote.setId(numbers.get(i));
-            quote.setText(texts.get(i));
+        int pageNumber = 0;
+        try {
+            Document document = Jsoup.parse(page);
+            List<Long> numbers = getIds(document);
+            List<String> texts = getTexts(document);
+            List<String> dates = getDates(document);
+            pageNumber = getPageNumber(document);
+            Realm realm = Realm.getInstance(context);
+            realm.setAutoRefresh(false);
+            realm.beginTransaction();
+            for (int i = 0; i < texts.size(); i++) {
+                if (realm.where(Quote.class).equalTo("id", numbers.get(i)).findAll().size() > 0)
+                    break;
+                Quote quote = realm.createObject(Quote.class);
+                quote.setDate(dates.get(i));
+                quote.setId(numbers.get(i));
+                quote.setText(texts.get(i));
+            }
+            realm.commitTransaction();
+            document = null;
+            numbers = null;
+            texts = null;
+            dates = null;
+            System.gc();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        realm.commitTransaction();
-        Log.e("tag", "parsed and cached a page size: " + texts.size() + " in: " + String.valueOf(System.currentTimeMillis() - start));
         return pageNumber;
     }
 
