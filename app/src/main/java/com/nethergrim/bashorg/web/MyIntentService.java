@@ -3,8 +3,7 @@ package com.nethergrim.bashorg.web;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
-
-import com.nethergrim.bashorg.Constants;
+import android.util.Log;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -33,23 +32,19 @@ public class MyIntentService extends IntentService {
             final String action = intent.getAction();
             if (ACTION_FETCH_PAGE.equals(action)) {
                 final int param1 = intent.getIntExtra(EXTRA_PAGE_NUMBER, 10000000);
-                handleActionFoo(param1);
+                handleActionFetchPage(param1);
             }
         }
     }
 
 
-    private void handleActionFoo(int pageNumber) {
-        BashorgParser.getParseAndWriteToDb(pageNumber, new EmptyCallback() {
-            @Override
-            public void onCall(boolean ok, int pageNumber) {
-                if (ok) {
-                    Intent intent = new Intent(ACTION_FETCH_PAGE);
-                    intent.putExtra(Constants.PAGE_NUMBER, pageNumber);
-                    sendBroadcast(intent);
-                }
-            }
-        }, getApplicationContext());
+    private void handleActionFetchPage(int pageNumber) {
+        int result = BashorgParser.parsePage(String.valueOf(pageNumber), getApplicationContext());
+        if (result > 0) {
+            Log.e("log", "parsed page: " + result);
+        } else {
+            Log.e("log", "error on parsing " + pageNumber);
+        }
     }
 
 }

@@ -3,6 +3,7 @@ package com.nethergrim.bashorg.web;
 import android.content.Context;
 import android.util.Log;
 
+import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.model.Quote;
 
 import org.jsoup.Jsoup;
@@ -20,30 +21,14 @@ import io.realm.Realm;
  */
 public class BashorgParser {
 
-    public static void getParseAndWriteToDb(int pageNumber, final EmptyCallback emptyCallback, final Context context) {
-        Client.getPage(pageNumber, new WebStringCallback() {
-            @Override
-            public void callback(final String result, boolean ok) {
-                if (ok) {
-                    int number = BashorgParser.parsePage(result, context);
-                    if (emptyCallback != null)
-                        emptyCallback.onCall(true, number);
-                } else {
-                    if (emptyCallback != null)
-                        emptyCallback.onCall(false, -1);
-                }
-            }
-        });
-    }
-
-    public static int parsePage(final String page, final Context context) {
-        int pageNumber = 0;
+    public static int parsePage(final String pageNumber, final Context context) {
+        int pn = -1;
         try {
-            Document document = Jsoup.parse(page);
+            Document document = Jsoup.connect(Constants.BASE_URL + pageNumber).get();
             List<Long> numbers = getIds(document);
             List<String> texts = getTexts(document);
             List<String> dates = getDates(document);
-            pageNumber = getPageNumber(document);
+            pn = getPageNumber(document);
             Realm realm = Realm.getInstance(context);
             realm.setAutoRefresh(false);
             realm.beginTransaction();
@@ -60,11 +45,10 @@ public class BashorgParser {
             numbers = null;
             texts = null;
             dates = null;
-            System.gc();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return pageNumber;
+        return pn;
     }
 
     public static int getPageNumber(Document document) {

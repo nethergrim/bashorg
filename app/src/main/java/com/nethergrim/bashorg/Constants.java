@@ -7,4 +7,5 @@ public class Constants {
 
     public static final String PAGE_NUMBER = "com.nethergrim.bashorg.web.extra.PAGE_NUMBER";
     public static final String ACTION_FETCH_PAGE = "com.nethergrim.bashorg.web.action.FETCH_PAGE";
+    public static final String BASE_URL = "http://bash.im/index/";
 }
