@@ -41,5 +41,6 @@ public class MainActivity extends Activity {
         for (int i = start; i < to; i++) {
             MyIntentService.getPageAndSaveQuotes(this, i);
         }
+        fetchData();
     }
 }

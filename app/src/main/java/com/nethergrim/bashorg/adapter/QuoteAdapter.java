@@ -21,6 +21,14 @@ public class QuoteAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
         this.quotes = results;
     }
 
+    public RealmResults<Quote> getQuotes() {
+        return quotes;
+    }
+
+    public void setQuotes(RealmResults<Quote> quotes) {
+        this.quotes = quotes;
+    }
+
     @Override
     public QuoteViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
