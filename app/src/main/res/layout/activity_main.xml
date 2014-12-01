@@ -1,14 +1,18 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
+    android:orientation="vertical"
     tools:context="com.nethergrim.bashorg.activity.MainActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list"
+    <com.astuetz.PagerSlidingTabStrip
+        android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical" />
+        android:layout_height="48dip" />
 
-</RelativeLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

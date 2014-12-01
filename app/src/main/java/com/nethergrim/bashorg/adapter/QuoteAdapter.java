@@ -31,8 +31,7 @@ public class QuoteAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
 
     @Override
     public QuoteViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.row_quote, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_quote, viewGroup, false);
         // set the view's size, margins, paddings and layout parameters
         QuoteViewHolder vh = new QuoteViewHolder(v);
         return vh;

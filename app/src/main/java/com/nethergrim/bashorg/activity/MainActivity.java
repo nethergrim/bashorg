@@ -1,46 +1,49 @@
 package com.nethergrim.bashorg.activity;
 
-import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.nethergrim.bashorg.R;
-import com.nethergrim.bashorg.adapter.QuoteAdapter;
-import com.nethergrim.bashorg.model.Quote;
-import com.nethergrim.bashorg.web.MyIntentService;
+import com.nethergrim.bashorg.adapter.FragmentAdapter;
+import com.nethergrim.bashorg.fragment.LastQuotesFragment;
 
-import io.realm.Realm;
-import io.realm.RealmResults;
+public class MainActivity extends FragmentActivity {
 
-public class MainActivity extends Activity {
-
-    private Realm realm;
-    private RecyclerView recyclerView;
-    private QuoteAdapter adapter;
+    private ViewPager pager;
+    private FragmentAdapter adapter;
+    private PagerSlidingTabStrip tabs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        realm = Realm.getInstance(this);
-        recyclerView = (RecyclerView) findViewById(R.id.list);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        downloadData(1, 3);
-        fetchData();
+        pager = (ViewPager) findViewById(R.id.pager);
+        adapter = new FragmentAdapter(getSupportFragmentManager());
+        pager.setAdapter(adapter);
+        tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        loadFragments();
+        initTabs();
     }
 
-    private void fetchData() {
-        RealmResults<Quote> results = realm.where(Quote.class).findAll().sort("id", false);
-        adapter = new QuoteAdapter(results);
-        recyclerView.setAdapter(adapter);
+    private void initTabs() {
+        tabs.setIndicatorHeight(12);
+        tabs.setIndicatorColor(getResources().getColor(R.color.pink_a400));
+        tabs.setBackgroundColor(getResources().getColor(R.color.dark_purple_a400));
+        tabs.setTextColor(Color.WHITE);
+        tabs.setDividerColor(Color.TRANSPARENT);
+        tabs.setUnderlineColor(Color.TRANSPARENT);
     }
 
-    private void downloadData(int start, int to) {
-        for (int i = start; i < to; i++) {
-            MyIntentService.getPageAndSaveQuotes(this, i);
-        }
-        fetchData();
+    private void loadFragments() {
+        adapter.addFragment(new LastQuotesFragment(), getString(R.string.last));
+        adapter.addFragment(new LastQuotesFragment(), getString(R.string.random));
+        adapter.addFragment(new LastQuotesFragment(), getString(R.string.best));
+        tabs.setViewPager(pager);
+
     }
+
+
 }
