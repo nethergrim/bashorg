@@ -9,6 +9,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.FragmentAdapter;
 import com.nethergrim.bashorg.fragment.LastQuotesFragment;
+import com.nethergrim.bashorg.web.MyIntentService;
 
 public class MainActivity extends FragmentActivity {
 
@@ -42,7 +43,7 @@ public class MainActivity extends FragmentActivity {
         adapter.addFragment(new LastQuotesFragment(), getString(R.string.random));
         adapter.addFragment(new LastQuotesFragment(), getString(R.string.best));
         tabs.setViewPager(pager);
-
+        MyIntentService.getPageAndSaveQuotes(this, 100000);
     }
 
 

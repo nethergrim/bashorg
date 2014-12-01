@@ -6,6 +6,7 @@ import android.util.Log;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.model.Quote;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -83,7 +84,7 @@ public class BashorgParser {
         for (Element element : divs) {
             if (element.attr("class").equals("text")) {
                 String text = element.html();
-                texts.add(text);
+                texts.add(StringEscapeUtils.unescapeHtml4(text));
             }
         }
         return texts;
