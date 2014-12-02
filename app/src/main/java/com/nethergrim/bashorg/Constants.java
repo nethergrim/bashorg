@@ -8,4 +8,8 @@ public class Constants {
     public static final String PAGE_NUMBER = "com.nethergrim.bashorg.web.extra.PAGE_NUMBER";
     public static final String ACTION_FETCH_PAGE = "com.nethergrim.bashorg.web.action.FETCH_PAGE";
     public static final String BASE_URL = "http://bash.im/index/";
+    public static final String ROBOTO_LIGHT = "Roboto-Light.ttf";
+    public static final String ROBOTO_THIN = "Roboto-Thin.ttf";
+    public static final String ROBOTO_REGULAR = "Roboto-Regular.ttf";
+    public static float density;
 }

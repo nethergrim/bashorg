@@ -1,52 +1,44 @@
 package com.nethergrim.bashorg.adapter;
 
+
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
-import com.nethergrim.bashorg.R;
-import com.nethergrim.bashorg.model.Quote;
+import com.nethergrim.bashorg.row.Row;
 
-import io.realm.RealmResults;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by nethergrim on 30.11.2014.
  */
 public class QuoteAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
 
-    private RealmResults<Quote> quotes;
+    private List<Row<QuoteViewHolder>> rows;
 
-    public QuoteAdapter(RealmResults<Quote> results) {
-        this.quotes = results;
+    public void addRow(Row<QuoteViewHolder> row){
+        getRows().add(row);
     }
 
-    public RealmResults<Quote> getQuotes() {
-        return quotes;
-    }
-
-    public void setQuotes(RealmResults<Quote> quotes) {
-        this.quotes = quotes;
+    public List<Row<QuoteViewHolder>> getRows() {
+        if (rows == null){
+            rows = new ArrayList<Row<QuoteViewHolder>>();
+        }
+        return rows;
     }
 
     @Override
     public QuoteViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_quote, viewGroup, false);
-        // set the view's size, margins, paddings and layout parameters
-        QuoteViewHolder vh = new QuoteViewHolder(v);
-        return vh;
+        return getRows().get(i).onCreateViewHolder(viewGroup);
     }
 
     @Override
     public void onBindViewHolder(QuoteViewHolder holder, int i) {
-        Quote quote = quotes.get(i);
-        holder.textDate.setText(quote.getDate());
-        holder.textBody.setText(quote.getText());
-        holder.textId.setText("#" + String.valueOf(quote.getId()));
+        getRows().get(i).onBindViewHolder(holder);
     }
 
     @Override
     public int getItemCount() {
-        return quotes.size();
+        return getRows().size();
     }
 }

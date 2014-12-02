@@ -7,7 +7,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
-import com.nethergrim.bashorg.web.BashorgParser;
 import com.nethergrim.bashorg.web.LruBitmapCache;
 
 /**
@@ -27,6 +26,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
+        Constants.density = getResources().getDisplayMetrics().density;
     }
 
     public static synchronized App getInstance() {

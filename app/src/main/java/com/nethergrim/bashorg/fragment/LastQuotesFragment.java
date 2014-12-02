@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.QuoteAdapter;
 import com.nethergrim.bashorg.model.Quote;
+import com.nethergrim.bashorg.row.QuoteRow;
+
+import io.realm.RealmResults;
 
 /**
  * Created by nethergrim on 01.12.2014.
@@ -32,7 +35,12 @@ public class LastQuotesFragment extends AbstractFragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        adapter = new QuoteAdapter(realm.where(Quote.class).findAll().sort("id", false));
+        adapter = new QuoteAdapter();
+        RealmResults<Quote> results = realm.where(Quote.class).findAll().sort("id", false);
+        for (Quote result : results) {
+            adapter.addRow(new QuoteRow(result));
+        }
+        adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
     }
 }
