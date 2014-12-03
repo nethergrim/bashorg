@@ -54,6 +54,7 @@ public class QuoteRow implements Row<QuoteViewHolder>, View.OnClickListener {
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) quoteViewHolder.btnShare.getLayoutParams();
         params.height = (int) (value * Constants.density * 48);
         quoteViewHolder.btnShare.setLayoutParams(params);
+        quoteViewHolder.btnShare.setAlpha(value);
     }
 
     @Override
