@@ -2,52 +2,31 @@ package com.nethergrim.bashorg.row;
 
 import android.animation.ValueAnimator;
 import android.os.Build;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
-import com.nethergrim.bashorg.adapter.QuoteViewHolder;
 import com.nethergrim.bashorg.model.Quote;
 
 /**
  * Created by andrey_drobyazko on 02.12.14 20:01.
  */
-public class QuoteRow implements Row<QuoteViewHolder>, View.OnClickListener {
+public class QuoteRow implements Row, View.OnClickListener {
 
     private Quote quote;
     private boolean checked = false;
     private QuoteViewHolder quoteViewHolder;
+    private View.OnClickListener shareButtonClickListener;
 
-    public QuoteRow(Quote quote) {
+    public QuoteRow(Quote quote, View.OnClickListener clickListener) {
         this.quote = quote;
-    }
-
-    @Override
-    public QuoteViewHolder onCreateViewHolder(ViewGroup viewGroup) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_quote, viewGroup, false);
-        QuoteViewHolder vh = new QuoteViewHolder(v);
-        if (Build.VERSION.SDK_INT >= 21){
-            vh.cardView.setCardElevation(8);
-        }
-        return vh;
-    }
-
-    @Override
-    public void onBindViewHolder(QuoteViewHolder viewHolder) {
-        this.quoteViewHolder = viewHolder;
-        viewHolder.textDate.setText(quote.getDate());
-        viewHolder.textBody.setText(quote.getText());
-        viewHolder.textId.setText("#" + String.valueOf(quote.getId()));
-        viewHolder.textBody.setOnClickListener(this);
-        if (checked){
-            setBtnHeight(1f);
-        } else {
-            setBtnHeight(0f);
-        }
+        this.shareButtonClickListener = clickListener;
     }
 
     public void setBtnHeight(float value){
@@ -78,5 +57,57 @@ public class QuoteRow implements Row<QuoteViewHolder>, View.OnClickListener {
         });
         valueAnimator.start();
 
+    }
+
+    @Override
+    public View getView(View view, LayoutInflater inflater) {
+        View v = view;
+        if (v == null){
+            v = inflater.inflate(R.layout.row_quote, null);
+            quoteViewHolder = new QuoteViewHolder(v);
+            if (Build.VERSION.SDK_INT >= 21){
+                quoteViewHolder.cardView.setCardElevation(8);
+            }
+            v.setTag(quoteViewHolder);
+        }
+        quoteViewHolder = (QuoteViewHolder) v.getTag();
+        quoteViewHolder.textDate.setText(quote.getDate());
+        quoteViewHolder.textBody.setText(quote.getText());
+        quoteViewHolder.textId.setText("#" + String.valueOf(quote.getId()));
+        quoteViewHolder.textBody.setOnClickListener(this);
+        quoteViewHolder.btnShare.setOnClickListener(shareButtonClickListener);
+        if (checked){
+            setBtnHeight(1f);
+        } else {
+            setBtnHeight(0f);
+        }
+        return v;
+    }
+
+    @Override
+    public RowType getRowType() {
+        return RowType.QUOTE;
+    }
+
+    @Override
+    public long getId() {
+        return quote.getId();
+    }
+
+    public static class QuoteViewHolder{
+
+        public TextView textId;
+        public TextView textDate;
+        public TextView textBody;
+        public CardView cardView;
+        public ImageButton btnShare;
+
+        public QuoteViewHolder(View v) {
+            textId = (TextView) v.findViewById(R.id.text_id);
+            textBody = (TextView) v.findViewById(R.id.text_body);
+            textDate = (TextView) v.findViewById(R.id.text_date);
+            cardView = (CardView) v.findViewById(R.id.card);
+            btnShare = (ImageButton) v.findViewById(R.id.btn_share);
+        }
     }
 }

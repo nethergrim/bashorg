@@ -3,10 +3,13 @@
 
 
     <color name="dark_purple_a400">#651FFF</color>
+    <color name="dark_purple_a200">#7C4DFF</color>
     <color name="purple_a700">#AA00FF</color>
+    <color name="blue_a400">#2979FF</color>
     <color name="blue_a700">#304FFE</color>
     <color name="pink_a700">#C51162</color>
     <color name="pink_a400">#F50057</color>
+    <color name="pink_a200">#FF4081</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="black_54">#8a000000</color>
     <color name="black_87">#de000000</color>
