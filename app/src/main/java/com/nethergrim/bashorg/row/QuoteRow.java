@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
+import com.nethergrim.bashorg.callback.OnQuoteSharePressed;
 import com.nethergrim.bashorg.model.Quote;
 
 /**
@@ -22,11 +23,12 @@ public class QuoteRow implements Row, View.OnClickListener {
     private Quote quote;
     private boolean checked = false;
     private QuoteViewHolder quoteViewHolder;
-    private View.OnClickListener shareButtonClickListener;
+    private OnQuoteSharePressed callback;
 
-    public QuoteRow(Quote quote, View.OnClickListener clickListener) {
+
+    public QuoteRow(Quote quote, OnQuoteSharePressed callback) {
         this.quote = quote;
-        this.shareButtonClickListener = clickListener;
+        this.callback = callback;
     }
 
     public void setBtnHeight(float value){
@@ -38,25 +40,31 @@ public class QuoteRow implements Row, View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        checked = !checked;
-        ValueAnimator valueAnimator;
-        if (checked){
-            valueAnimator = ValueAnimator.ofFloat(0f, 1f);
-        } else {
-            valueAnimator = ValueAnimator.ofFloat(1f, 0f);
+        switch (v.getId()){
+            case R.id.text_body:
+                checked = !checked;
+                ValueAnimator valueAnimator;
+                if (checked){
+                    valueAnimator = ValueAnimator.ofFloat(0f, 1f);
+                } else {
+                    valueAnimator = ValueAnimator.ofFloat(1f, 0f);
+                }
+
+                valueAnimator.setDuration(400);
+                valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+                valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        Float value = (Float) animation.getAnimatedValue();
+                        setBtnHeight(value);
+                    }
+                });
+                valueAnimator.start();
+                break;
+            case R.id.btn_share:
+                callback.onQuoteSharePressed(quote);
+                break;
         }
-
-        valueAnimator.setDuration(400);
-        valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                Float value = (Float) animation.getAnimatedValue();
-                setBtnHeight(value);
-            }
-        });
-        valueAnimator.start();
-
     }
 
     @Override
@@ -75,7 +83,7 @@ public class QuoteRow implements Row, View.OnClickListener {
         quoteViewHolder.textBody.setText(quote.getText());
         quoteViewHolder.textId.setText("#" + String.valueOf(quote.getId()));
         quoteViewHolder.textBody.setOnClickListener(this);
-        quoteViewHolder.btnShare.setOnClickListener(shareButtonClickListener);
+        quoteViewHolder.btnShare.setOnClickListener(this);
         if (checked){
             setBtnHeight(1f);
         } else {

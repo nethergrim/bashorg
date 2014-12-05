@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.FragmentAdapter;
 import com.nethergrim.bashorg.fragment.LastQuotesFragment;
@@ -31,7 +32,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void initTabs() {
-        tabs.setIndicatorHeight(12);
+        tabs.setIndicatorHeight((int) (2 * Constants.density));
         tabs.setIndicatorColor(getResources().getColor(R.color.pink_a200));
         tabs.setBackgroundColor(getResources().getColor(R.color.dark_purple_a200));
         tabs.setTextColor(Color.WHITE);

@@ -84,6 +84,7 @@ public class BashorgParser {
         for (Element element : divs) {
             if (element.attr("class").equals("text")) {
                 String text = element.html();
+                text = text.replace("<br>", "");
                 texts.add(StringEscapeUtils.unescapeHtml4(text));
             }
         }

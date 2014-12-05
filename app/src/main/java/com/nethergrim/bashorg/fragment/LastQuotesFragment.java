@@ -1,10 +1,9 @@
 package com.nethergrim.bashorg.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import android.widget.ListView;
 
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.ListViewAdapter;
+import com.nethergrim.bashorg.callback.OnQuoteSharePressed;
 import com.nethergrim.bashorg.model.Quote;
 import com.nethergrim.bashorg.row.QuoteRow;
 
@@ -20,7 +20,7 @@ import io.realm.RealmResults;
 /**
  * Created by nethergrim on 01.12.2014.
  */
-public class LastQuotesFragment extends AbstractFragment implements View.OnClickListener {
+public class LastQuotesFragment extends AbstractFragment implements OnQuoteSharePressed {
 
     private ListViewAdapter<QuoteRow> adapter;
 
@@ -43,8 +43,14 @@ public class LastQuotesFragment extends AbstractFragment implements View.OnClick
         adapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onClick(View v) {
 
+
+    @Override
+    public void onQuoteSharePressed(Quote quote) {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, quote.getText());
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
     }
 }
