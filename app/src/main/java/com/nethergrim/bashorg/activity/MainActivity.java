@@ -24,6 +24,7 @@ public class MainActivity extends FragmentActivity {
         pager = (ViewPager) findViewById(R.id.pager);
         adapter = new FragmentAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
+        pager.setOffscreenPageLimit(10);
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         loadFragments();
         initTabs();
@@ -31,8 +32,8 @@ public class MainActivity extends FragmentActivity {
 
     private void initTabs() {
         tabs.setIndicatorHeight(12);
-        tabs.setIndicatorColor(getResources().getColor(R.color.pink_a400));
-        tabs.setBackgroundColor(getResources().getColor(R.color.dark_purple_a400));
+        tabs.setIndicatorColor(getResources().getColor(R.color.pink_a200));
+        tabs.setBackgroundColor(getResources().getColor(R.color.dark_purple_a200));
         tabs.setTextColor(Color.WHITE);
         tabs.setDividerColor(Color.TRANSPARENT);
         tabs.setUnderlineColor(Color.TRANSPARENT);
@@ -42,6 +43,7 @@ public class MainActivity extends FragmentActivity {
         adapter.addFragment(new LastQuotesFragment(), getString(R.string.last));
         adapter.addFragment(new LastQuotesFragment(), getString(R.string.random));
         adapter.addFragment(new LastQuotesFragment(), getString(R.string.best));
+
         tabs.setViewPager(pager);
         MyIntentService.getPageAndSaveQuotes(this, 100000);
     }
