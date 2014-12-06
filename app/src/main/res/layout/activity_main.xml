@@ -12,8 +12,23 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <View
+            android:id="@+id/shadow"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:background="@drawable/shadow_gradient"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+
 </LinearLayout>

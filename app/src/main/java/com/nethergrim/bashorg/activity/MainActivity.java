@@ -1,9 +1,11 @@
 package com.nethergrim.bashorg.activity;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.nethergrim.bashorg.Constants;
@@ -38,6 +40,11 @@ public class MainActivity extends FragmentActivity {
         tabs.setTextColor(Color.WHITE);
         tabs.setDividerColor(Color.TRANSPARENT);
         tabs.setUnderlineColor(Color.TRANSPARENT);
+        if (Build.VERSION.SDK_INT >= 21) {
+            tabs.setTranslationZ(8 * Constants.density);
+        } else {
+            findViewById(R.id.shadow).setVisibility(View.VISIBLE);
+        }
     }
 
     private void loadFragments() {
