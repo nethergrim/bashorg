@@ -37,17 +37,22 @@ public class ListViewAdapter<T extends Row> extends BaseAdapter {
     }
 
     public void addRow(T row) {
+        for (T t : rows) {
+            if (t.getId() == row.getId()) {
+                return;
+            }
+        }
         rows.add(row);
     }
 
-    public void addRow(int position, T row){
-        rows.add(position, row);
-    }
+//    public void addRow(int position, T row){
+//        rows.add(position, row);
+//    }
 
-    public void addRows(List<T> rows) {
-        this.rows.addAll(rows);
-        notifyDataSetChanged();
-    }
+//    public void addRows(List<T> rows) {
+//        this.rows.addAll(rows);
+//        notifyDataSetChanged();
+//    }
 
     public List<T> getRows() {
         return rows;

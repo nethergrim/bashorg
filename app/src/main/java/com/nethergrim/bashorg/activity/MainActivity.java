@@ -49,9 +49,7 @@ public class MainActivity extends FragmentActivity {
 
     private void loadFragments() {
         adapter.addFragment(new LastQuotesFragment(), getString(R.string.last));
-        adapter.addFragment(new LastQuotesFragment(), getString(R.string.random));
-        adapter.addFragment(new LastQuotesFragment(), getString(R.string.best));
-
+        // TODO here add another pages
         tabs.setViewPager(pager);
         MyIntentService.getPageAndSaveQuotes(this, 100000);
     }

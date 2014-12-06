@@ -22,10 +22,12 @@ import io.realm.Realm;
  */
 public class BashorgParser {
 
+    private static int lastPage = -1;
+
     public static int parsePage(final String pageNumber, final Context context) {
         int pn = -1;
         try {
-            Document document = Jsoup.connect(Constants.BASE_URL + pageNumber).get();
+            Document document = Jsoup.connect(Constants.URL_BASHORG_PAGE + pageNumber).get();
             List<Long> numbers = getIds(document);
             List<String> texts = getTexts(document);
             List<String> dates = getDates(document);
@@ -33,6 +35,7 @@ public class BashorgParser {
             Realm realm = Realm.getInstance(context);
             realm.setAutoRefresh(false);
             realm.beginTransaction();
+            int size = texts.size();
             for (int i = 0; i < texts.size(); i++) {
                 if (realm.where(Quote.class).equalTo("id", numbers.get(i)).findAll().size() > 0)
                     break;
@@ -40,12 +43,18 @@ public class BashorgParser {
                 quote.setDate(dates.get(i));
                 quote.setId(numbers.get(i));
                 quote.setText(texts.get(i));
+                quote.setPage(pn);
+                if (lastPage != pn) {
+                    size--;
+                    quote.setIndexOnPage(size);
+                }
             }
             realm.commitTransaction();
             document = null;
             numbers = null;
             texts = null;
             dates = null;
+            realm = null;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -59,6 +68,7 @@ public class BashorgParser {
                 String currentPage = element.attr("value");
                 String maxPage = element.attr("max"); // TODO write max page in preference
                 Log.e("log", "current page: " + currentPage + " max page: " + maxPage);
+                lastPage = Integer.parseInt(maxPage);
                 return Integer.parseInt(currentPage);
             }
         }

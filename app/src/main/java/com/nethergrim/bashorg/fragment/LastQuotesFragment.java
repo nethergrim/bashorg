@@ -1,19 +1,25 @@
 package com.nethergrim.bashorg.fragment;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.ListViewAdapter;
 import com.nethergrim.bashorg.callback.OnQuoteSharePressed;
 import com.nethergrim.bashorg.model.Quote;
 import com.nethergrim.bashorg.row.QuoteRow;
+import com.nethergrim.bashorg.web.MyIntentService;
 
 import io.realm.RealmResults;
 
@@ -23,6 +29,8 @@ import io.realm.RealmResults;
 public class LastQuotesFragment extends AbstractFragment implements OnQuoteSharePressed {
 
     private ListViewAdapter<QuoteRow> adapter;
+    private IntentFilter filter = new IntentFilter(Constants.ACTION_FETCH_PAGE);
+    private BroadcastReceiver receiver;
 
     @Nullable
     @Override
@@ -37,13 +45,38 @@ public class LastQuotesFragment extends AbstractFragment implements OnQuoteShare
         adapter = new ListViewAdapter<QuoteRow>(getActivity());
         listView.setAdapter(adapter);
         RealmResults<Quote> results = realm.where(Quote.class).findAll().sort("id", false);
+        addRowsToAdapter(results);
+    }
+
+    private void addRowsToAdapter(RealmResults<Quote> results) {
         for (Quote result : results) {
             adapter.addRow(new QuoteRow(result, this));
         }
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                int loadedPage = intent.getIntExtra(Constants.EXTRA_PAGE_NUMBER, 0);
+                Log.e("LOG", "received broadcast - loaded page # " + loadedPage);
+                MyIntentService.getPageAndSaveQuotes(getActivity(), loadedPage - 1);
 
+                RealmResults<Quote> loadedResults = realm.where(Quote.class).equalTo("page", (long) loadedPage).findAll().sort("id", false);
+                addRowsToAdapter(loadedResults);
+            }
+        };
+        getActivity().registerReceiver(receiver, filter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().unregisterReceiver(receiver);
+    }
 
     @Override
     public void onQuoteSharePressed(Quote quote) {
