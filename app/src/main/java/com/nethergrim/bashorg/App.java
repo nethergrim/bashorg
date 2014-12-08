@@ -26,6 +26,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
+        Prefs.init(this);
         Constants.density = getResources().getDisplayMetrics().density;
     }
 

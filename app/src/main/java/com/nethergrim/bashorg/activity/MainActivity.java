@@ -27,7 +27,7 @@ public class MainActivity extends FragmentActivity {
         pager = (ViewPager) findViewById(R.id.pager);
         adapter = new FragmentAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
-        pager.setOffscreenPageLimit(10);
+        pager.setOffscreenPageLimit(6);
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         loadFragments();
         initTabs();

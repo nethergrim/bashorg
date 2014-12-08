@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.nethergrim.bashorg.Constants;
+import com.nethergrim.bashorg.Prefs;
+
+import java.util.List;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -38,15 +41,26 @@ public class MyIntentService extends IntentService {
 
 
     private void handleActionFetchPage(int pageNumber) {
-        int result = BashorgParser.parsePage(String.valueOf(pageNumber), getApplicationContext());
-        if (result > 0) {
-            Intent intent = new Intent(Constants.ACTION_FETCH_PAGE);
-            intent.putExtra(Constants.EXTRA_PAGE_NUMBER, result);
-            sendBroadcast(intent);
-            Log.e("log", "parsed page: " + result);
+        if (!Prefs.isPageLoaded(pageNumber)){
+            int result = BashorgParser.parsePage(String.valueOf(pageNumber), getApplicationContext());
+            if (result > 0) {
+                List<String> pages = Prefs.getPageIds();
+                pages.add(String.valueOf(result));
+                Prefs.setSavedPages(pages);
+                Intent intent = new Intent(Constants.ACTION_FETCH_PAGE);
+                intent.putExtra(Constants.EXTRA_PAGE_NUMBER, result);
+                sendBroadcast(intent);
+                Log.e("log", "loaded and parsed page: " + result);
+            } else {
+                Log.e("log", "error on parsing " + pageNumber);
+            }
         } else {
-            Log.e("log", "error on parsing " + pageNumber);
+            Log.e("TAG",":::" + "page is loaded already: " + pageNumber);
+            Intent intent = new Intent(Constants.ACTION_FETCH_PAGE);
+            intent.putExtra(Constants.EXTRA_PAGE_NUMBER, pageNumber);
+            sendBroadcast(intent);
         }
+
     }
 
 }
