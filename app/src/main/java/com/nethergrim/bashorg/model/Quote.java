@@ -1,18 +1,18 @@
 package com.nethergrim.bashorg.model;
 
-import io.realm.RealmObject;
 
 /**
  * Created by nethergrim on 26.11.2014.
  */
-public class Quote extends RealmObject {
+public class Quote  {
 
     private String text;
+    private String date;
+    private int indexOnPage;
     private long id;
     private long page;
     private long rating;
-    private String date;
-    private int indexOnPage;
+
 
     public String getText() {
         return text;
@@ -60,5 +60,16 @@ public class Quote extends RealmObject {
 
     public void setIndexOnPage(int indexOnPage) {
         this.indexOnPage = indexOnPage;
+    }
+
+    public interface Columns{
+        public static final String TABLE = "quote_table";
+
+        public static final String FIELD_ID = "_id";
+        public static final String FIELD_BODY = "body";
+        public static final String FIELD_PAGE = "page";
+        public static final String FIELD_RATING = "rating";
+        public static final String FIELD_DATE = "date";
+        public static final String FIELD_INDEX_ON_PAGE = "index_on_page";
     }
 }
