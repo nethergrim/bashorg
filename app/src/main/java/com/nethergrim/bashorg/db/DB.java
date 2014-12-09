@@ -79,19 +79,26 @@ public class DB {
     }
 
     public void persist(List<Quote> quotes){
+        long start = System.currentTimeMillis();
         mDB.beginTransaction();
         try{
             for (Quote quote : quotes) {
                 persist(quote);
             }
             mDB.setTransactionSuccessful();
+            Log.e("TAG",":::" + "persisted " + quotes.size() + " quotes in " + String.valueOf(System.currentTimeMillis() - start));
         } finally {
             mDB.endTransaction();
         }
     }
 
-    public Cursor getQuotesFromEnd(int limit)
+    public Cursor getQuotesFromEnd(int limit){
+        return mDB.query(Quote.Columns.TABLE, null,null,null,null,null, Quote.Columns.FIELD_ID + " DESC" , String.valueOf(limit));
+    }
 
+    public Cursor getQuotesFrom(int limit, long idToQueryFrom){
+        return mDB.query(Quote.Columns.TABLE, null,Quote.Columns.FIELD_ID + "< ?", new String[]{String.valueOf(idToQueryFrom)},null,null, Quote.Columns.FIELD_ID + " DESC" , String.valueOf(limit));
+    }
 
     private class DBHelper extends SQLiteOpenHelper {
 

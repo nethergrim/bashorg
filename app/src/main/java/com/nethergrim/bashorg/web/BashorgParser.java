@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.nethergrim.bashorg.Constants;
+import com.nethergrim.bashorg.db.DB;
 import com.nethergrim.bashorg.model.Quote;
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -15,8 +16,6 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.realm.Realm;
-
 /**
  * Created by nethergrim on 26.11.2014.
  */
@@ -25,6 +24,7 @@ public class BashorgParser {
     private static int lastPage = -1;
 
     public static int parsePage(final String pageNumber, final Context context) {
+        DB db = DB.getInstance();
         int pn = -1;
         try {
             Document document = Jsoup.connect(Constants.URL_BASHORG_PAGE + pageNumber).get();
@@ -32,14 +32,10 @@ public class BashorgParser {
             List<String> texts = getTexts(document);
             List<String> dates = getDates(document);
             pn = getPageNumber(document);
-            Realm realm = Realm.getInstance(context);
-            realm.setAutoRefresh(false);
-            realm.beginTransaction();
             int size = texts.size();
+            List<Quote> quotes = new ArrayList<>(texts.size() + 1);
             for (int i = 0; i < texts.size(); i++) {
-                if (realm.where(Quote.class).equalTo("id", numbers.get(i)).findAll().size() > 0)
-                    break;
-                Quote quote = realm.createObject(Quote.class);
+                Quote quote = new Quote();
                 quote.setDate(dates.get(i));
                 quote.setId(numbers.get(i));
                 quote.setText(texts.get(i));
@@ -48,13 +44,13 @@ public class BashorgParser {
                     size--;
                     quote.setIndexOnPage(size);
                 }
+                quotes.add(quote);
             }
-            realm.commitTransaction();
+            db.persist(quotes);
             document = null;
             numbers = null;
             texts = null;
             dates = null;
-            realm = null;
         } catch (Exception e) {
             e.printStackTrace();
         }

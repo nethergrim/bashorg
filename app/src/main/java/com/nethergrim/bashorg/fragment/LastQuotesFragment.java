@@ -21,10 +21,7 @@ import com.nethergrim.bashorg.model.Quote;
 import com.nethergrim.bashorg.row.QuoteRow;
 import com.nethergrim.bashorg.web.MyIntentService;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import io.realm.RealmResults;
+;
 
 /**
  * Created by nethergrim on 01.12.2014.
@@ -45,18 +42,11 @@ public class LastQuotesFragment extends AbstractFragment implements OnQuoteShare
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ListView listView = (ListView) view.findViewById(R.id.recycler_view);
-        adapter = new ListViewAdapter<QuoteRow>(getActivity());
-        listView.setAdapter(adapter);
-        RealmResults<Quote> results = realm.where(Quote.class).findAll().sort("id", false);
-        addRowsToAdapter(results);
+
+
+
     }
 
-    private void addRowsToAdapter(RealmResults<Quote> results) {
-        for (Quote result : results) {
-            adapter.addRow(new QuoteRow(result, this));
-        }
-        adapter.notifyDataSetChanged();
-    }
 
     @Override
     public void onResume() {
@@ -67,19 +57,6 @@ public class LastQuotesFragment extends AbstractFragment implements OnQuoteShare
                 int loadedPage = intent.getIntExtra(Constants.EXTRA_PAGE_NUMBER, 0);
                 Log.e("LOG", "received broadcast - loaded page # " + loadedPage);
                 MyIntentService.getPageAndSaveQuotes(getActivity(), loadedPage - 1);
-                RealmResults<Quote> results = realm.where(Quote.class).findAll().sort("id", false);
-                if (results.size()  > 50){
-                    List<Quote> quoteList = new ArrayList<Quote>();
-                    for (int i = 0; i < 50; i++) {
-                        quoteList.add(results.get(i));
-                    }
-                    for (Quote quote : quoteList) {
-                        adapter.addRow(new QuoteRow(quote, LastQuotesFragment.this));
-                        adapter.notifyDataSetChanged();
-                    }
-                }
-
-
 
             }
         };
