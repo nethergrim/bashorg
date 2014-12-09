@@ -1,7 +1,7 @@
 package com.nethergrim.bashorg.row;
 
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
+import android.content.Context;
+import android.database.Cursor;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -9,7 +9,6 @@ import android.view.ViewGroup;
  * Created by andrey_drobyazko on 02.12.14 19:59.
  */
 public interface Row {
-    public View getView(View view, LayoutInflater inflater);
-    public RowType getRowType();
-    public long getId();
+    public View newView(Context context, Cursor cursor, ViewGroup parent);
+    public void bindView(View view, Context context, Cursor cursor);
 }
