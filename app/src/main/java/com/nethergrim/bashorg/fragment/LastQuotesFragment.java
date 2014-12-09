@@ -15,10 +15,8 @@ import android.widget.ListView;
 
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
-import com.nethergrim.bashorg.adapter.ListViewAdapter;
 import com.nethergrim.bashorg.callback.OnQuoteSharePressed;
 import com.nethergrim.bashorg.model.Quote;
-import com.nethergrim.bashorg.row.QuoteRow;
 import com.nethergrim.bashorg.web.MyIntentService;
 
 ;
@@ -28,7 +26,6 @@ import com.nethergrim.bashorg.web.MyIntentService;
  */
 public class LastQuotesFragment extends AbstractFragment implements OnQuoteSharePressed {
 
-    private ListViewAdapter<QuoteRow> adapter;
     private IntentFilter filter = new IntentFilter(Constants.ACTION_FETCH_PAGE);
     private BroadcastReceiver receiver;
 
@@ -42,8 +39,6 @@ public class LastQuotesFragment extends AbstractFragment implements OnQuoteShare
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ListView listView = (ListView) view.findViewById(R.id.recycler_view);
-
-
 
     }
 
