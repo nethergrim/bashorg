@@ -1,10 +1,13 @@
 package com.nethergrim.bashorg.row;
 
 import android.animation.ValueAnimator;
+import android.content.Context;
+import android.database.Cursor;
 import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -19,14 +22,6 @@ import com.nethergrim.bashorg.model.Quote;
 * Created by andrey_drobyazko on 02.12.14 20:01.
 */
 public class QuoteRow implements Row, View.OnClickListener {
-
-    private Quote quote;
-    private boolean checked = false;
-    private QuoteViewHolder quoteViewHolder;
-    private OnQuoteSharePressed callback;// TODO SEND BROADCAST
-
-
-
 
     public void setBtnHeight(float value){
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) quoteViewHolder.btnShare.getLayoutParams();
@@ -89,21 +84,16 @@ public class QuoteRow implements Row, View.OnClickListener {
         return v;
     }
 
-
-    public static class QuoteViewHolder{
-
-        public TextView textId;
-        public TextView textDate;
-        public TextView textBody;
-        public CardView cardView;
-        public ImageButton btnShare;
-
-        public QuoteViewHolder(View v) {
-            textId = (TextView) v.findViewById(R.id.text_id);
-            textBody = (TextView) v.findViewById(R.id.text_body);
-            textDate = (TextView) v.findViewById(R.id.text_date);
-            cardView = (CardView) v.findViewById(R.id.card);
-            btnShare = (ImageButton) v.findViewById(R.id.btn_share);
-        }
+    @Override
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        return null;
     }
+
+    @Override
+    public void bindView(View view, Context context, Cursor cursor) {
+
+    }
+
+
+
 }
