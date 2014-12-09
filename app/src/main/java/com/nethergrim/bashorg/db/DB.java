@@ -25,14 +25,14 @@ public class DB {
 
 
     private static final String CREATE_TABLE_QUOTES = "create table "
-            + Quote.Columns.TABLE + "("
+            + Quote.Columns.TABLE + "( "
             + Quote.Columns.FIELD_ID + " integer primary key , "
             + Quote.Columns.FIELD_BODY + " text, "
             + Quote.Columns.FIELD_PAGE + " integer, "
             + Quote.Columns.FIELD_RATING + " integer, "
             + Quote.Columns.FIELD_DATE + " text, "
-            + Quote.Columns.FIELD_INDEX_ON_PAGE + " integer " +
-            "UNIQUE(" + Quote.Columns.FIELD_ID + ") ON CONFLICT REPLACE" + ");";
+            + Quote.Columns.FIELD_INDEX_ON_PAGE + " integer, " +
+            "UNIQUE (" + Quote.Columns.FIELD_ID + ") ON CONFLICT REPLACE" + " );";
 
 
     public static void init(Context context){
@@ -79,14 +79,12 @@ public class DB {
     }
 
     public void persist(List<Quote> quotes){
-        long start = System.currentTimeMillis();
         mDB.beginTransaction();
         try{
             for (Quote quote : quotes) {
                 persist(quote);
             }
             mDB.setTransactionSuccessful();
-            Log.e("TAG",":::" + "persisted " + quotes.size() + " quotes in " + String.valueOf(System.currentTimeMillis() - start));
         } finally {
             mDB.endTransaction();
         }
