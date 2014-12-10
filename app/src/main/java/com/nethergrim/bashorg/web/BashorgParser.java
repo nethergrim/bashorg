@@ -29,6 +29,7 @@ public class BashorgParser {
         try {
             Document document = Jsoup.connect(Constants.URL_BASHORG_PAGE + pageNumber).get();
             List<Long> numbers = getIds(document);
+            List<Long> ratings = getRatings(document);
             List<String> texts = getTexts(document);
             List<String> dates = getDates(document);
             pn = getPageNumber(document);
@@ -39,6 +40,7 @@ public class BashorgParser {
                 quote.setDate(dates.get(i));
                 quote.setId(numbers.get(i));
                 quote.setText(texts.get(i));
+                quote.setRating(ratings.get(i));
                 quote.setPage(pn);
                 if (lastPage != pn) {
                     size--;
@@ -51,6 +53,7 @@ public class BashorgParser {
             numbers = null;
             texts = null;
             dates = null;
+            ratings = null;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -108,5 +111,17 @@ public class BashorgParser {
             }
         }
         return texts;
+    }
+
+    public static List<Long> getRatings(Document document){
+        List<Long> ratings = new ArrayList<>();
+        Elements spans = document.select("span");
+        for (Element span : spans) {
+            if (span.attr("class").equals("rating")){
+                String rating = span.html();
+                ratings.add(Long.parseLong(rating));
+            }
+        }
+        return ratings;
     }
 }

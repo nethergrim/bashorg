@@ -60,9 +60,10 @@ public class QuoteCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         QuoteViewHolder quoteViewHolder = (QuoteViewHolder) view.getTag();
         Quote quote = new QuoteInflater().inflateEntityAtCurrentPosition(cursor);
-        quoteViewHolder.textId.setText(String.valueOf(quote.getId()));
+        quoteViewHolder.textId.setText("#" + String.valueOf(quote.getId()));
         quoteViewHolder.textBody.setText(quote.getText());
         quoteViewHolder.textDate.setText(quote.getDate());
+        quoteViewHolder.textRating.setText(String.valueOf(quote.getRating()));
         if (Build.VERSION.SDK_INT >= 21){
             quoteViewHolder.cardView.setCardElevation(8);
         }
@@ -87,11 +88,13 @@ public class QuoteCursorAdapter extends CursorAdapter {
         public TextView textBody;
         public CardView cardView;
         public ImageButton btnShare;
+        public TextView textRating;
 
         public QuoteViewHolder(View v) {
             textId = (TextView) v.findViewById(R.id.text_id);
             textBody = (TextView) v.findViewById(R.id.text_body);
             textDate = (TextView) v.findViewById(R.id.text_date);
+            textRating = (TextView) v.findViewById(R.id.text_rating);
             cardView = (CardView) v.findViewById(R.id.card);
             btnShare = (ImageButton) v.findViewById(R.id.btn_share);
         }
