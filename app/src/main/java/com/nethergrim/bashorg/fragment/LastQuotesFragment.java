@@ -22,8 +22,6 @@ import com.nethergrim.bashorg.adapter.QuoteCursorAdapter;
 import com.nethergrim.bashorg.loaders.LastQuotesCursorLoader;
 import com.nethergrim.bashorg.web.MyIntentService;
 
-;
-
 /**
  * Created by nethergrim on 01.12.2014.
  */
@@ -64,6 +62,7 @@ public class LastQuotesFragment extends AbstractFragment implements LoaderManage
             public void onReceive(Context context, Intent intent) {
                 int loadedPage = intent.getIntExtra(Constants.EXTRA_PAGE_NUMBER, 0);
                 Log.e("LOG", "received broadcast - loaded page # " + loadedPage);
+                if (loadedPage > 0)
                 MyIntentService.getPageAndSaveQuotes(getActivity(), loadedPage - 1);
                 loadData();
             }

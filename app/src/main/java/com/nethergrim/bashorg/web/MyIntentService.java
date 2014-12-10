@@ -6,9 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.nethergrim.bashorg.Constants;
-import com.nethergrim.bashorg.Prefs;
-
-import java.util.List;
+import com.nethergrim.bashorg.db.DB;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -17,6 +15,7 @@ import java.util.List;
  * helper methods.
  */
 public class MyIntentService extends IntentService {
+
     public MyIntentService() {
         super("MyIntentService");
     }
@@ -39,14 +38,12 @@ public class MyIntentService extends IntentService {
         }
     }
 
-
     private void handleActionFetchPage(int pageNumber) {
-        if (!Prefs.isPageLoaded(pageNumber)){
+        DB db = DB.getInstance();
+        if (pageNumber == 0) return;
+        if (!db.isPageSaved(String.valueOf(pageNumber))){
             int result = BashorgParser.parsePage(String.valueOf(pageNumber));
             if (result > 0) {
-                List<String> pages = Prefs.getPageIds();
-                pages.add(String.valueOf(result));
-                Prefs.setSavedPages(pages);
                 Intent intent = new Intent(Constants.ACTION_FETCH_PAGE);
                 intent.putExtra(Constants.EXTRA_PAGE_NUMBER, result);
                 sendBroadcast(intent);
@@ -55,10 +52,8 @@ public class MyIntentService extends IntentService {
                 Log.e("log", "error on parsing " + pageNumber);
             }
         } else {
-            Log.e("TAG",":::" + "page is loaded already: " + pageNumber);
-            Intent intent = new Intent(Constants.ACTION_FETCH_PAGE);
-            intent.putExtra(Constants.EXTRA_PAGE_NUMBER, pageNumber);
-            sendBroadcast(intent);
+            Log.e("TAG",":::" + "page is saved already: " + pageNumber);
+            handleActionFetchPage(--pageNumber);
         }
 
     }

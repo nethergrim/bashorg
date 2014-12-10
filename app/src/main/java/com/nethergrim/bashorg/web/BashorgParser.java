@@ -3,6 +3,7 @@ package com.nethergrim.bashorg.web;
 import android.util.Log;
 
 import com.nethergrim.bashorg.Constants;
+import com.nethergrim.bashorg.Prefs;
 import com.nethergrim.bashorg.db.DB;
 import com.nethergrim.bashorg.model.Quote;
 
@@ -26,10 +27,6 @@ public class BashorgParser {
         DB db = DB.getInstance();
         int pn = -1;
         try {
-            if (db.isPageSaved(pageNumber)){
-                Log.e("TAG",":::" + "page " + pageNumber + " already saved");
-                return Integer.parseInt(pageNumber);
-            }
             Document document = Jsoup.connect(Constants.URL_BASHORG_PAGE + pageNumber).get();
             List<Long> numbers = getIds(document);
             List<String> texts = getTexts(document);
@@ -66,6 +63,7 @@ public class BashorgParser {
             if (element.attr("class").equals("page")) {
                 String currentPage = element.attr("value");
                 String maxPage = element.attr("max"); // TODO write max page in preference
+                Prefs.setLastPageNumber(Long.parseLong(maxPage));
                 Log.e("log", "current page: " + currentPage + " max page: " + maxPage);
                 lastPage = Integer.parseInt(maxPage);
                 return Integer.parseInt(currentPage);

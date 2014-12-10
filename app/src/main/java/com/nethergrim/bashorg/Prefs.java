@@ -16,26 +16,17 @@ import java.util.List;
 public class Prefs {
 
     private static SharedPreferences prefs;
-    private static final String KEY_SAVED_PAGES = "saved_pages";
 
     public static void init(Context context){
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    public static void setSavedPages(List<String> pageIds){
-        prefs.edit().putString(KEY_SAVED_PAGES, convertListOfStringsToString(pageIds)).apply();
+    public static void setLastPageNumber(long lastPageNumber){
+        prefs.edit().putLong(Constants.EXTRA_PAGE_NUMBER, lastPageNumber).apply();
     }
 
-    public static List<String> getPageIds(){
-        return convertStringToListOfStrings(prefs.getString(KEY_SAVED_PAGES, ""));
-    }
-
-    public static boolean isPageLoaded(int pageNumber){
-        List<String> pages = getPageIds();
-        for (String page : pages) {
-            if (Integer.parseInt(page) == pageNumber) return true;
-        }
-        return false;
+    public static long getLastPageNumber(){
+        return prefs.getLong(Constants.EXTRA_PAGE_NUMBER, 0l);
     }
 
     private static String convertListOfStringsToString(List<String> stringes){
