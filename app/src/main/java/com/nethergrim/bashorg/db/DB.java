@@ -76,7 +76,7 @@ public class DB {
         cv.put(Quote.Columns.FIELD_INDEX_ON_PAGE, quote.getIndexOnPage());
         cv.put(Quote.Columns.FIELD_PAGE, quote.getPage());
         cv.put(Quote.Columns.FIELD_RATING, quote.getRating());
-        mDB.insert(Quote.Columns.TABLE, null, cv);
+        mDB.insertWithOnConflict(Quote.Columns.TABLE, null, cv, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     public boolean isQuoteSaved(Quote quote){
@@ -99,6 +99,10 @@ public class DB {
         } finally {
             mDB.endTransaction();
         }
+    }
+
+    public Cursor getQuotesFromEnd(){
+        return mDB.query(Quote.Columns.TABLE, null,null,null,null,null, Quote.Columns.FIELD_ID + " DESC");
     }
 
     public Cursor getQuotesFromEnd(int limit){
