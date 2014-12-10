@@ -1,6 +1,5 @@
 package com.nethergrim.bashorg.web;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.nethergrim.bashorg.Constants;
@@ -23,10 +22,14 @@ public class BashorgParser {
 
     private static int lastPage = -1;
 
-    public static int parsePage(final String pageNumber, final Context context) {
+    public static int parsePage(final String pageNumber) {
         DB db = DB.getInstance();
         int pn = -1;
         try {
+            if (db.isPageSaved(pageNumber)){
+                Log.e("TAG",":::" + "page " + pageNumber + " already saved");
+                return Integer.parseInt(pageNumber);
+            }
             Document document = Jsoup.connect(Constants.URL_BASHORG_PAGE + pageNumber).get();
             List<Long> numbers = getIds(document);
             List<String> texts = getTexts(document);

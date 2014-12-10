@@ -2,7 +2,9 @@ package com.nethergrim.bashorg.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Build;
 import android.support.v7.widget.CardView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
@@ -12,12 +14,18 @@ import android.widget.TextView;
 
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
+import com.nethergrim.bashorg.db.QuoteInflater;
+import com.nethergrim.bashorg.model.Quote;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by andrey_drobyazko on 09.12.14 20:21.
  */
 public class QuoteCursorAdapter extends CursorAdapter {
 
+    public List<Long> selectedRows = new ArrayList<>();
 
     public QuoteCursorAdapter(Context context, Cursor c) {
         super(context, c);
@@ -31,14 +39,45 @@ public class QuoteCursorAdapter extends CursorAdapter {
         super(context, c, flags);
     }
 
+    private void toggle(View view, long id){
+
+    }
+
+    private boolean isChecked(long id){
+        return false;
+    }
+
+
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return null;
+        View v = LayoutInflater.from(context).inflate(R.layout.row_quote, parent);
+        QuoteViewHolder quoteViewHolder = new QuoteViewHolder(v);
+        v.setTag(quoteViewHolder);
+        return v;
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
+        QuoteViewHolder quoteViewHolder = (QuoteViewHolder) view.getTag();
+        Quote quote = new QuoteInflater().inflateEntityAtCurrentPosition(cursor);
+        quoteViewHolder.textId.setText(String.valueOf(quote.getId()));
+        quoteViewHolder.textBody.setText(quote.getText());
+        quoteViewHolder.textDate.setText(quote.getDate());
+        if (Build.VERSION.SDK_INT >= 21){
+            quoteViewHolder.cardView.setCardElevation(8);
+        }
+        quoteViewHolder.textBody.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
+        quoteViewHolder.btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     public static class QuoteViewHolder{

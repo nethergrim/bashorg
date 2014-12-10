@@ -3,6 +3,7 @@ package com.nethergrim.bashorg.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -76,6 +77,16 @@ public class DB {
         cv.put(Quote.Columns.FIELD_PAGE, quote.getPage());
         cv.put(Quote.Columns.FIELD_RATING, quote.getRating());
         mDB.insert(Quote.Columns.TABLE, null, cv);
+    }
+
+    public boolean isQuoteSaved(Quote quote){
+        long size = DatabaseUtils.queryNumEntries(mDB, Quote.Columns.TABLE, Quote.Columns.FIELD_ID + "=?", new String[]{String.valueOf(quote.getId())});
+        return size > 0;
+    }
+
+    public boolean isPageSaved(String pageNumber){
+        long size = DatabaseUtils.queryNumEntries(mDB, Quote.Columns.TABLE, Quote.Columns.FIELD_PAGE + "=?", new String[]{pageNumber});
+        return size > 49;
     }
 
     public void persist(List<Quote> quotes){

@@ -42,7 +42,7 @@ public class MyIntentService extends IntentService {
 
     private void handleActionFetchPage(int pageNumber) {
         if (!Prefs.isPageLoaded(pageNumber)){
-            int result = BashorgParser.parsePage(String.valueOf(pageNumber), getApplicationContext());
+            int result = BashorgParser.parsePage(String.valueOf(pageNumber));
             if (result > 0) {
                 List<String> pages = Prefs.getPageIds();
                 pages.add(String.valueOf(result));

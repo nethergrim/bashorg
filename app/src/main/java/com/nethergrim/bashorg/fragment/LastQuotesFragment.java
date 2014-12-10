@@ -42,7 +42,6 @@ public class LastQuotesFragment extends AbstractFragment implements OnQuoteShare
 
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
