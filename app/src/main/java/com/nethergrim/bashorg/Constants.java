@@ -12,6 +12,6 @@ public class Constants {
     public static final String ROBOTO_LIGHT = "Roboto-Light.ttf";
     public static final String ROBOTO_THIN = "Roboto-Thin.ttf";
     public static final String ROBOTO_REGULAR = "Roboto-Regular.ttf";
-    public static final int ALARM_REPEATING_TIMER = 1000 * 60 * 60 * 3;
+    public static final int ALARM_REPEATING_TIMER = 1000 * 60 * 60 * 4;
     public static float density;
 }

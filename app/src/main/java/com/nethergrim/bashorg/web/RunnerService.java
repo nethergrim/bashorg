@@ -34,17 +34,24 @@ public class RunnerService extends Service {
         if (isConnected){
             boolean isWiFi = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
             if (isWiFi){
-                loadLastQuotes();
+                loadAllQuotes();
+                Prefs.setConnectionCouner(0);
             } else {
-                Prefs.setCounnectionCouner(Prefs.getConnectionCounter() + 1);
-                MyIntentService.getPageAndSaveQuotes(this, 100000);
+                Prefs.setConnectionCouner(Prefs.getConnectionCounter() + 1);
+                if (Prefs.getConnectionCounter() >= 3){
+                    MyIntentService.getPageAndSaveQuotes(this, 100000);
+                    MyIntentService.getPageAndSaveQuotes(this, (int) (Prefs.getLastPageNumber() - 1));
+                    MyIntentService.getPageAndSaveQuotes(this, (int) (Prefs.getLastPageNumber() - 2));
+                    MyIntentService.getPageAndSaveQuotes(this, (int) (Prefs.getLastPageNumber() - 3));
+                    Prefs.setConnectionCouner(0);
+                }
             }
         }
         return START_STICKY;
     }
 
 
-    private void loadLastQuotes(){
+    private void loadAllQuotes(){
         MyIntentService.getPageAndSaveQuotes(this, 100000);
         receiver = new BroadcastReceiver() {
             @Override

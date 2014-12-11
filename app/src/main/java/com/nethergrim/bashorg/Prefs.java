@@ -53,7 +53,7 @@ public class Prefs {
         return result;
     }
 
-    public static void setCounnectionCouner(int counter){
+    public static void setConnectionCouner(int counter){
         prefs.edit().putInt(CONNECTION_FAILURE_COUNER, counter).apply();
     }
 

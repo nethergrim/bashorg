@@ -25,9 +25,9 @@ public class App extends Application {
         Constants.density = getResources().getDisplayMetrics().density;
 
         Intent intent = new Intent(this, RunnerService.class);
-        PendingIntent pintent = PendingIntent.getService(this, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
         AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        alarm.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), 30*1000, pintent);
+        alarm.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), Constants.ALARM_REPEATING_TIMER, pendingIntent);
     }
 
     public static synchronized App getInstance() {
