@@ -16,6 +16,7 @@ import java.util.List;
 public class Prefs {
 
     private static SharedPreferences prefs;
+    private static final String CONNECTION_FAILURE_COUNER = "connection_couner";
 
     public static void init(Context context){
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -50,6 +51,14 @@ public class Prefs {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public static void setCounnectionCouner(int counter){
+        prefs.edit().putInt(CONNECTION_FAILURE_COUNER, counter).apply();
+    }
+
+    public static int getConnectionCounter(){
+        return prefs.getInt(CONNECTION_FAILURE_COUNER, 0);
     }
 
 

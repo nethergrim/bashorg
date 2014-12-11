@@ -49,11 +49,6 @@ public class BashorgParser {
                 quotes.add(quote);
             }
             db.persist(quotes);
-            document = null;
-            numbers = null;
-            texts = null;
-            dates = null;
-            ratings = null;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -65,7 +60,7 @@ public class BashorgParser {
         for (Element element : elements) {
             if (element.attr("class").equals("page")) {
                 String currentPage = element.attr("value");
-                String maxPage = element.attr("max"); // TODO write max page in preference
+                String maxPage = element.attr("max");
                 Prefs.setLastPageNumber(Long.parseLong(maxPage));
                 Log.e("log", "current page: " + currentPage + " max page: " + maxPage);
                 lastPage = Integer.parseInt(maxPage);
@@ -118,8 +113,17 @@ public class BashorgParser {
         Elements spans = document.select("span");
         for (Element span : spans) {
             if (span.attr("class").equals("rating")){
-                String rating = span.html();
-                ratings.add(Long.parseLong(rating));
+                if (span.html().equals("...")) {
+                    ratings.add(0l);
+                    continue;
+                }
+                try {
+                    String rating = span.html();
+                    ratings.add(Long.parseLong(rating));
+                } catch (NumberFormatException e) {
+                    ratings.add(0l);
+                    e.printStackTrace();
+                }
             }
         }
         return ratings;
