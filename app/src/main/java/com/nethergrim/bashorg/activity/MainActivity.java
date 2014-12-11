@@ -12,6 +12,7 @@ import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.FragmentAdapter;
 import com.nethergrim.bashorg.fragment.LastQuotesFragment;
+import com.nethergrim.bashorg.fragment.RandomQuotesFragment;
 import com.nethergrim.bashorg.web.MyIntentService;
 
 public class MainActivity extends FragmentActivity {
@@ -49,6 +50,7 @@ public class MainActivity extends FragmentActivity {
 
     private void loadFragments() {
         adapter.addFragment(new LastQuotesFragment(), getString(R.string.last));
+        adapter.addFragment(new RandomQuotesFragment(), getString(R.string.random));
         // TODO here add another pages
         tabs.setViewPager(pager);
         MyIntentService.getPageAndSaveQuotes(this, 100000);
