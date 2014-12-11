@@ -11,6 +11,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.FragmentAdapter;
+import com.nethergrim.bashorg.fragment.BestQuotesFragment;
 import com.nethergrim.bashorg.fragment.LastQuotesFragment;
 import com.nethergrim.bashorg.fragment.RandomQuotesFragment;
 import com.nethergrim.bashorg.web.MyIntentService;
@@ -51,6 +52,7 @@ public class MainActivity extends FragmentActivity {
     private void loadFragments() {
         adapter.addFragment(new LastQuotesFragment(), getString(R.string.last));
         adapter.addFragment(new RandomQuotesFragment(), getString(R.string.random));
+        adapter.addFragment(new BestQuotesFragment(), getString(R.string.best));
         // TODO here add another pages
         tabs.setViewPager(pager);
         MyIntentService.getPageAndSaveQuotes(this, 100000);

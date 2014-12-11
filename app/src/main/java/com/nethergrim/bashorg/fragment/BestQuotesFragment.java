@@ -18,17 +18,17 @@ import android.widget.ListView;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.QuoteCursorAdapter;
-import com.nethergrim.bashorg.loaders.RandomQuotesCursorLoader;
+import com.nethergrim.bashorg.loaders.BestQuotesCursorLoader;
 
 /**
- * Created by andrey_drobyazko on 11.12.14 19:29.
+ * Created by andrey_drobyazko on 11.12.14 19:42.
  */
-public class RandomQuotesFragment extends AbstractFragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class BestQuotesFragment extends AbstractFragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private IntentFilter filter = new IntentFilter(Constants.ACTION_FETCH_PAGE);
     private BroadcastReceiver receiver;
     private QuoteCursorAdapter adapter;
-    private static final int LOADER_CODE = 118;
+    private static final int LOADER_CODE = 119;
     private int loadedPageCounter = 0;
 
     @Nullable
@@ -79,7 +79,7 @@ public class RandomQuotesFragment extends AbstractFragment implements LoaderMana
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new RandomQuotesCursorLoader(getActivity());
+        return new BestQuotesCursorLoader(getActivity());
     }
 
     @Override
