@@ -1,7 +1,5 @@
 package com.nethergrim.bashorg.fragment;
 
-import android.content.BroadcastReceiver;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.QuoteCursorAdapter;
 import com.nethergrim.bashorg.loaders.RandomQuotesCursorLoader;
@@ -22,11 +19,8 @@ import com.nethergrim.bashorg.loaders.RandomQuotesCursorLoader;
  */
 public class RandomQuotesFragment extends AbstractFragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    private IntentFilter filter = new IntentFilter(Constants.ACTION_FETCH_PAGE);
-    private BroadcastReceiver receiver;
     private QuoteCursorAdapter adapter;
     private static final int LOADER_CODE = 118;
-    private int loadedPageCounter = 0;
 
     @Nullable
     @Override
@@ -38,7 +32,7 @@ public class RandomQuotesFragment extends AbstractFragment implements LoaderMana
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ListView listView = (ListView) view.findViewById(R.id.recycler_view);
-        adapter = new QuoteCursorAdapter(getActivity(), null, true);
+        adapter = new QuoteCursorAdapter(getActivity(), null);
         listView.setAdapter(adapter);
         loadData();
     }
@@ -50,29 +44,6 @@ public class RandomQuotesFragment extends AbstractFragment implements LoaderMana
         getLoaderManager().getLoader(LOADER_CODE).forceLoad();
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        receiver = new BroadcastReceiver() {
-//            @Override
-//            public void onReceive(Context context, Intent intent) {
-//                int loadedPage = intent.getIntExtra(Constants.EXTRA_PAGE_NUMBER, 0);
-//                Log.e("LOG", "received broadcast - loaded page # " + loadedPage);
-//                loadedPageCounter++;
-//                if (loadedPageCounter == 50){
-//                    loadData();
-//                    loadedPageCounter = 0;
-//                }
-//            }
-//        };
-//        getActivity().registerReceiver(receiver, filter);
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        getActivity().unregisterReceiver(receiver);
-//    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {

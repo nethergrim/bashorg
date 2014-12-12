@@ -2,6 +2,7 @@ package com.nethergrim.bashorg.adapter;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.support.v7.widget.CardView;
@@ -29,19 +30,7 @@ public class QuoteCursorAdapter extends CursorAdapter {
     public List<Long> selectedRows = new ArrayList<>();
 
     public QuoteCursorAdapter(Context context, Cursor c) {
-        super(context, c);
-    }
-
-    public QuoteCursorAdapter(Context context, Cursor c, boolean autoRequery) {
-        super(context, c, autoRequery);
-    }
-
-    public QuoteCursorAdapter(Context context, Cursor c, int flags) {
-        super(context, c, flags);
-    }
-
-    private void toggle(View view, long id){
-
+        super(context, c, 0);
     }
 
     private boolean isChecked(long id){
@@ -76,7 +65,7 @@ public class QuoteCursorAdapter extends CursorAdapter {
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View view, final Context context, Cursor cursor) {
         final QuoteViewHolder quoteViewHolder = (QuoteViewHolder) view.getTag();
         final Quote quote = new QuoteInflater().inflateEntityAtCurrentPosition(cursor);
         quoteViewHolder.textId.setText("#" + String.valueOf(quote.getId()));
@@ -118,7 +107,9 @@ public class QuoteCursorAdapter extends CursorAdapter {
         quoteViewHolder.btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(Constants.ACTION_SHARE_QUOTE);
+                intent.putExtra(Constants.EXTRA_QUOTE_ID, quote.getId());
+                context.sendBroadcast(intent);
             }
         });
     }
