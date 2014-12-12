@@ -1,6 +1,6 @@
 package com.nethergrim.bashorg;
 
-import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
 /**
@@ -19,6 +19,6 @@ public class Constants {
     public static final String ROBOTO_REGULAR = "Roboto-Regular.ttf";
     public static final int ALARM_REPEATING_TIMER = 1000 * 60 * 60 * 4;
     public static final int ANIMATION_DURATION = 400;
-    public static final Interpolator INTERPOLATOR = new AccelerateDecelerateInterpolator();
+    public static final Interpolator INTERPOLATOR = new DecelerateInterpolator();
     public static float density;
 }

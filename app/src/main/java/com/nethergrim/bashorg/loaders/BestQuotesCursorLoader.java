@@ -20,4 +20,6 @@ public class BestQuotesCursorLoader extends CursorLoader {
         DB db = DB.getInstance();
         return db.getQuotesByRating();
     }
+
+
 }
