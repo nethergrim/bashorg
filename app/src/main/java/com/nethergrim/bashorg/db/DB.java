@@ -6,8 +6,10 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 import android.util.Log;
 
+import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.model.Quote;
 
 import java.util.List;
@@ -99,6 +101,7 @@ public class DB {
         } finally {
             mDB.endTransaction();
         }
+       mCtx.getContentResolver().notifyChange(Uri.parse(Constants.URI_QUOTE), null);
     }
 
     public Cursor getQuotesFromEnd(){

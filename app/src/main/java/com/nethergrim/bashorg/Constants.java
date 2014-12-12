@@ -12,7 +12,8 @@ public class Constants {
     public static final String EXTRA_PAGE_IS_ALREADY_LOADED = "com.nethergrim.bashorg.web.extra.PAGE_ALREADY_LOADED";
     public static final String ACTION_FETCH_PAGE = "com.nethergrim.bashorg.web.action.FETCH_PAGE";
     public static final String ACTION_SHARE_QUOTE = "com.nethergrim.bashorg.web.action.SHARE_QUOTE";
-    public static final String EXTRA_QUOTE = "com.nethergrim.bashorg.web.action.QUOTE_ID";
+    public static final String EXTRA_QUOTE = "com.nethergrim.bashorg.web.extra.QUOTE_ID";
+    public static final String URI_QUOTE = "content://com.nethergrim.bashorg.web.uri.QUOTE";
     public static final String URL_BASHORG_PAGE = "http://bash.im/index/";
     public static final String ROBOTO_LIGHT = "Roboto-Light.ttf";
     public static final String ROBOTO_THIN = "Roboto-Thin.ttf";

@@ -2,8 +2,10 @@ package com.nethergrim.bashorg.loaders;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.v4.content.CursorLoader;
 
+import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.db.DB;
 
 /**
@@ -24,6 +26,7 @@ public class BestQuotesCursorLoader extends CursorLoader {
         if (c != null) {
             c.getCount();
             c.registerContentObserver(mObserver);
+            c.setNotificationUri(getContext().getContentResolver(), Uri.parse(Constants.URI_QUOTE));
         }
         return c;
     }
