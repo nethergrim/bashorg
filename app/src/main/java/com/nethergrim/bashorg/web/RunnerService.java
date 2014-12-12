@@ -37,20 +37,20 @@ public class RunnerService extends Service {
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         if (isConnected){
             boolean isWiFi = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
-            if (isWiFi){
+//            if (isWiFi){
                 if (Prefs.isDatabaseFilled()){
                     loadLastQuotes();
                 } else {
                     loadAllQuotes();
                 }
-                Prefs.setConnectionCouner(0);
-            } else {
-                Prefs.setConnectionCouner(Prefs.getConnectionCounter() + 1);
-                if (Prefs.getConnectionCounter() >= 3){
-                    loadLastQuotes();
-                    Prefs.setConnectionCouner(0);
-                }
-            }
+//                Prefs.setConnectionCouner(0);
+//            } else {
+//                Prefs.setConnectionCouner(Prefs.getConnectionCounter() + 1);
+//                if (Prefs.getConnectionCounter() >= 3){
+//                    loadLastQuotes();
+//                    Prefs.setConnectionCouner(0);
+//                }
+//            }
         }
         return START_STICKY;
     }
