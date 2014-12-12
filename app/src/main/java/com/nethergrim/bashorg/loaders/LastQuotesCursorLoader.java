@@ -10,6 +10,9 @@ import com.nethergrim.bashorg.db.DB;
  * Created by andrey_drobyazko on 10.12.14 18:55.
  */
 public class LastQuotesCursorLoader extends CursorLoader {
+
+    final ForceLoadContentObserver mObserver = new ForceLoadContentObserver();
+
     public LastQuotesCursorLoader(Context context) {
         super(context);
     }
@@ -17,6 +20,11 @@ public class LastQuotesCursorLoader extends CursorLoader {
     @Override
     public Cursor loadInBackground() {
         DB db = DB.getInstance();
-        return db.getQuotesFromEnd();
+        Cursor c =  db.getQuotesFromEnd();
+        if (c != null) {
+            c.getCount();
+            c.registerContentObserver(mObserver);
+        }
+        return c;
     }
 }

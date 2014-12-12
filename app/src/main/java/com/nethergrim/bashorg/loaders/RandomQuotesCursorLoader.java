@@ -10,6 +10,9 @@ import com.nethergrim.bashorg.db.DB;
  * Created by andrey_drobyazko on 11.12.14 19:30.
  */
 public class RandomQuotesCursorLoader  extends CursorLoader{
+
+    final ForceLoadContentObserver mObserver = new ForceLoadContentObserver();
+
     public RandomQuotesCursorLoader(Context context) {
         super(context);
     }
@@ -17,6 +20,11 @@ public class RandomQuotesCursorLoader  extends CursorLoader{
     @Override
     public Cursor loadInBackground() {
         DB db = DB.getInstance();
-        return db.getQuotesRandomly();
+        Cursor c = db.getQuotesRandomly();
+        if (c != null) {
+            c.getCount();
+            c.registerContentObserver(mObserver);
+        }
+        return c;
     }
 }

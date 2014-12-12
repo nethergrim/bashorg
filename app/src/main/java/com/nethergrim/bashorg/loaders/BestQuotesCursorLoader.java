@@ -11,6 +11,8 @@ import com.nethergrim.bashorg.db.DB;
  */
 public class BestQuotesCursorLoader extends CursorLoader {
 
+    final ForceLoadContentObserver mObserver = new ForceLoadContentObserver();
+
     public BestQuotesCursorLoader(Context context) {
         super(context);
     }
@@ -18,7 +20,12 @@ public class BestQuotesCursorLoader extends CursorLoader {
     @Override
     public Cursor loadInBackground() {
         DB db = DB.getInstance();
-        return db.getQuotesByRating();
+        Cursor c =  db.getQuotesByRating();
+        if (c != null) {
+            c.getCount();
+            c.registerContentObserver(mObserver);
+        }
+        return c;
     }
 
 
