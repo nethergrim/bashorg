@@ -108,7 +108,7 @@ public class QuoteCursorAdapter extends CursorAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Constants.ACTION_SHARE_QUOTE);
-                intent.putExtra(Constants.EXTRA_QUOTE_ID, quote.getId());
+                intent.putExtra(Constants.EXTRA_QUOTE, quote);
                 context.sendBroadcast(intent);
             }
         });

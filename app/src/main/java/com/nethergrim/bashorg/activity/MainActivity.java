@@ -1,5 +1,9 @@
 package com.nethergrim.bashorg.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,12 +18,15 @@ import com.nethergrim.bashorg.adapter.FragmentAdapter;
 import com.nethergrim.bashorg.fragment.BestQuotesFragment;
 import com.nethergrim.bashorg.fragment.LastQuotesFragment;
 import com.nethergrim.bashorg.fragment.RandomQuotesFragment;
+import com.nethergrim.bashorg.model.Quote;
 
 public class MainActivity extends FragmentActivity {
 
     private ViewPager pager;
     private FragmentAdapter adapter;
     private PagerSlidingTabStrip tabs;
+    private IntentFilter filter = new IntentFilter(Constants.ACTION_SHARE_QUOTE);
+    private BroadcastReceiver receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,5 +63,27 @@ public class MainActivity extends FragmentActivity {
         tabs.setViewPager(pager);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Quote quote = (Quote) intent.getSerializableExtra(Constants.EXTRA_QUOTE);
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, quote.getText());
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
 
+            }
+        };
+        registerReceiver(receiver, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
 }

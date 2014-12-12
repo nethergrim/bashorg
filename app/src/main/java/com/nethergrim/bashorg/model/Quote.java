@@ -1,10 +1,12 @@
 package com.nethergrim.bashorg.model;
 
 
+import java.io.Serializable;
+
 /**
  * Created by nethergrim on 26.11.2014.
  */
-public class Quote  {
+public class Quote  implements Serializable{
 
     private String text;
     private String date;
