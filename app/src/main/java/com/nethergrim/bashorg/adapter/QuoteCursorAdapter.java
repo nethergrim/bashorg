@@ -1,5 +1,6 @@
 package com.nethergrim.bashorg.adapter;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Build;
@@ -44,7 +45,25 @@ public class QuoteCursorAdapter extends CursorAdapter {
     }
 
     private boolean isChecked(long id){
+        for (Long selectedRow : selectedRows) {
+            if (id == selectedRow) return true;
+        }
         return false;
+    }
+
+    private void check(long id){
+        if (!isChecked(id)){
+            selectedRows.add(id);
+        }
+    }
+
+    private void unCheck(long id){
+        for (int i = 0; i < selectedRows.size(); i++) {
+            if (selectedRows.get(i) == id){
+                selectedRows.remove(i);
+                break;
+            }
+        }
     }
 
 
@@ -58,8 +77,8 @@ public class QuoteCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        QuoteViewHolder quoteViewHolder = (QuoteViewHolder) view.getTag();
-        Quote quote = new QuoteInflater().inflateEntityAtCurrentPosition(cursor);
+        final QuoteViewHolder quoteViewHolder = (QuoteViewHolder) view.getTag();
+        final Quote quote = new QuoteInflater().inflateEntityAtCurrentPosition(cursor);
         quoteViewHolder.textId.setText("#" + String.valueOf(quote.getId()));
         quoteViewHolder.textBody.setText(quote.getText());
         quoteViewHolder.textDate.setText(quote.getDate());
@@ -67,10 +86,33 @@ public class QuoteCursorAdapter extends CursorAdapter {
         if (Build.VERSION.SDK_INT >= 21){
             quoteViewHolder.cardView.setCardElevation(8);
         }
+        if (isChecked(quote.getId())){
+            setBtnHeight(1, quoteViewHolder);
+        } else {
+            setBtnHeight(0, quoteViewHolder);
+        }
         quoteViewHolder.textBody.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                long id = quote.getId();
+                ValueAnimator animator;
+                if (isChecked(id)){
+                    animator = ValueAnimator.ofFloat(1f, 0f);
+                    unCheck(id);
+                } else {
+                    animator = ValueAnimator.ofFloat(0f, 1f);
+                    check(id);
+                }
+                animator.setDuration(Constants.ANIMATION_DURATION);
+                animator.setInterpolator(Constants.INTERPOLATOR);
+                animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        Float value = (Float) animation.getAnimatedValue();
+                        setBtnHeight(value, quoteViewHolder);
+                    }
+                });
+                animator.start();
             }
         });
         quoteViewHolder.btnShare.setOnClickListener(new View.OnClickListener() {
