@@ -1,7 +1,5 @@
 package com.nethergrim.bashorg.web;
 
-import android.util.Log;
-
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.Prefs;
 import com.nethergrim.bashorg.db.DB;
@@ -62,7 +60,7 @@ public class BashorgParser {
                 String currentPage = element.attr("value");
                 String maxPage = element.attr("max");
                 Prefs.setLastPageNumber(Long.parseLong(maxPage));
-                Log.e("log", "current page: " + currentPage + " max page: " + maxPage);
+//                Log.e("PARSE", "current page: " + currentPage + " max page: " + maxPage);
                 lastPage = Integer.parseInt(maxPage);
                 return Integer.parseInt(currentPage);
             }

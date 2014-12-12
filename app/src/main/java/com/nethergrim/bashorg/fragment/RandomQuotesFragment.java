@@ -1,15 +1,12 @@
 package com.nethergrim.bashorg.fragment;
 
 import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +38,7 @@ public class RandomQuotesFragment extends AbstractFragment implements LoaderMana
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ListView listView = (ListView) view.findViewById(R.id.recycler_view);
-        adapter = new QuoteCursorAdapter(getActivity(), null, 0);
+        adapter = new QuoteCursorAdapter(getActivity(), null, true);
         listView.setAdapter(adapter);
         loadData();
     }
@@ -53,29 +50,29 @@ public class RandomQuotesFragment extends AbstractFragment implements LoaderMana
         getLoaderManager().getLoader(LOADER_CODE).forceLoad();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                int loadedPage = intent.getIntExtra(Constants.EXTRA_PAGE_NUMBER, 0);
-                Log.e("LOG", "received broadcast - loaded page # " + loadedPage);
-                loadedPageCounter++;
-                if (loadedPageCounter == 50){
-                    loadData();
-                    loadedPageCounter = 0;
-                }
-            }
-        };
-        getActivity().registerReceiver(receiver, filter);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        getActivity().unregisterReceiver(receiver);
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        receiver = new BroadcastReceiver() {
+//            @Override
+//            public void onReceive(Context context, Intent intent) {
+//                int loadedPage = intent.getIntExtra(Constants.EXTRA_PAGE_NUMBER, 0);
+//                Log.e("LOG", "received broadcast - loaded page # " + loadedPage);
+//                loadedPageCounter++;
+//                if (loadedPageCounter == 50){
+//                    loadData();
+//                    loadedPageCounter = 0;
+//                }
+//            }
+//        };
+//        getActivity().registerReceiver(receiver, filter);
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        getActivity().unregisterReceiver(receiver);
+//    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {

@@ -47,12 +47,12 @@ public class MyIntentService extends IntentService {
                 Intent intent = new Intent(Constants.ACTION_FETCH_PAGE);
                 intent.putExtra(Constants.EXTRA_PAGE_NUMBER, result);
                 sendBroadcast(intent);
-                Log.e("log", "loaded and parsed page: " + result);
+                Log.e("PARSE", "loaded and parsed page: " + result);
             } else {
-                Log.e("log", "error on parsing " + pageNumber);
+//                Log.e("PARSE", "error on parsing " + pageNumber);
             }
         } else {
-            Log.e("TAG",":::" + "page is saved already: " + pageNumber);
+//            Log.e("PARSE",":::" + "page is saved already: " + pageNumber);
             handleActionFetchPage(--pageNumber);
         }
 

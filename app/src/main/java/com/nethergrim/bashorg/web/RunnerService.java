@@ -25,6 +25,10 @@ public class RunnerService extends Service {
         return null;
     }
 
+    public static void start(Context context) {
+        context.startService(new Intent(context, RunnerService.class));
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.e("TAG", ":::" + "started service");
@@ -34,15 +38,16 @@ public class RunnerService extends Service {
         if (isConnected){
             boolean isWiFi = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
             if (isWiFi){
-                loadAllQuotes();
+                if (Prefs.isDatabaseFilled()){
+                    loadLastQuotes();
+                } else {
+                    loadAllQuotes();
+                }
                 Prefs.setConnectionCouner(0);
             } else {
                 Prefs.setConnectionCouner(Prefs.getConnectionCounter() + 1);
                 if (Prefs.getConnectionCounter() >= 3){
-                    MyIntentService.getPageAndSaveQuotes(this, 100000);
-                    MyIntentService.getPageAndSaveQuotes(this, (int) (Prefs.getLastPageNumber() - 1));
-                    MyIntentService.getPageAndSaveQuotes(this, (int) (Prefs.getLastPageNumber() - 2));
-                    MyIntentService.getPageAndSaveQuotes(this, (int) (Prefs.getLastPageNumber() - 3));
+                    loadLastQuotes();
                     Prefs.setConnectionCouner(0);
                 }
             }
@@ -50,8 +55,18 @@ public class RunnerService extends Service {
         return START_STICKY;
     }
 
+    private void loadLastQuotes(){
+        Log.e("TAG",":::" + "loading last quotes");
+        MyIntentService.getPageAndSaveQuotes(this, 100000);
+        MyIntentService.getPageAndSaveQuotes(this, (int) (Prefs.getLastPageNumber() - 1));
+        MyIntentService.getPageAndSaveQuotes(this, (int) (Prefs.getLastPageNumber() + 1));
+        MyIntentService.getPageAndSaveQuotes(this, (int) (Prefs.getLastPageNumber() + 2));
+        MyIntentService.getPageAndSaveQuotes(this, (int) (Prefs.getLastPageNumber() - 2));
+        MyIntentService.getPageAndSaveQuotes(this, (int) (Prefs.getLastPageNumber() - 3));
+    }
 
     private void loadAllQuotes(){
+        Log.e("TAG",":::" + "loading all quotes");
         MyIntentService.getPageAndSaveQuotes(this, 100000);
         receiver = new BroadcastReceiver() {
             @Override
@@ -61,6 +76,7 @@ public class RunnerService extends Service {
                     MyIntentService.getPageAndSaveQuotes(RunnerService.this, loadedPage - 1);
                 if (loadedPage == 1){
                     unregisterReceiver(receiver);
+                    Prefs.setDatabaseFilled(true);
                 }
             }
         };

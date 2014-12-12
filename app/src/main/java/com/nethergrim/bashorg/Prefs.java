@@ -17,6 +17,7 @@ public class Prefs {
 
     private static SharedPreferences prefs;
     private static final String CONNECTION_FAILURE_COUNER = "connection_couner";
+    private static final String DATABASE_FILLED = "database_filled";
 
     public static void init(Context context){
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -59,6 +60,14 @@ public class Prefs {
 
     public static int getConnectionCounter(){
         return prefs.getInt(CONNECTION_FAILURE_COUNER, 0);
+    }
+
+    public static void setDatabaseFilled(boolean filled){
+        prefs.edit().putBoolean(DATABASE_FILLED, filled).apply();
+    }
+
+    public static boolean isDatabaseFilled(){
+        return prefs.getBoolean(DATABASE_FILLED, false);
     }
 
 
