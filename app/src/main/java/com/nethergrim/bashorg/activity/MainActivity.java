@@ -44,8 +44,8 @@ public class MainActivity extends FragmentActivity {
 
     private void initTabs() {
         tabs.setIndicatorHeight((int) (2 * Constants.density));
-        tabs.setIndicatorColor(getResources().getColor(R.color.pink_a200));
-        tabs.setBackgroundColor(getResources().getColor(R.color.dark_purple_a200));
+        tabs.setIndicatorColor(getResources().getColor(R.color.accent));
+        tabs.setBackgroundColor(getResources().getColor(R.color.main_color));
         tabs.setTextColor(Color.WHITE);
         tabs.setDividerColor(Color.TRANSPARENT);
         tabs.setUnderlineColor(Color.TRANSPARENT);
