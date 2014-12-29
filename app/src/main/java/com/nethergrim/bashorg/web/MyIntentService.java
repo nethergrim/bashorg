@@ -70,8 +70,12 @@ public class MyIntentService extends IntentService {
                 Log.e("PARSE", "loaded and parsed page: " + result);
             }
         } else {
-            Log.e("TAG", "page #" + pageNumber + " is loaded");
-            handleActionFetchPage(Prefs.getSmallestLoadedPage() - 1);
+            if (pageNumber != Prefs.getSmallestLoadedPage()){
+                handleActionFetchPage(Prefs.getSmallestLoadedPage() - 1);
+            } else {
+                handleActionFetchPage(Prefs.getSmallestLoadedPage() - 2);
+            }
+
         }
 
     }
