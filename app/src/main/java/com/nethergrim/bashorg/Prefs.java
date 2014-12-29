@@ -16,7 +16,8 @@ import java.util.List;
 public class Prefs {
 
     private static SharedPreferences prefs;
-    private static final String CONNECTION_FAILURE_COUNER = "connection_couner";
+    private static final String SMALLEST_PAGE = "connection_couner";
+    private static final String MAX_TOP_PAGE = "MAX_TOP_PAGE";
     private static final String DATABASE_FILLED = "database_filled";
 
     public static void init(Context context){
@@ -28,7 +29,7 @@ public class Prefs {
     }
 
     public static long getLastPageNumber(){
-        return prefs.getLong(Constants.EXTRA_PAGE_NUMBER, 0l);
+        return prefs.getLong(Constants.EXTRA_PAGE_NUMBER, 1000000000);
     }
 
     private static String convertListOfStringsToString(List<String> stringes){
@@ -54,12 +55,13 @@ public class Prefs {
         return result;
     }
 
-    public static void setConnectionCouner(int counter){
-        prefs.edit().putInt(CONNECTION_FAILURE_COUNER, counter).apply();
+    public static void setSmallestLoadedPage(int counter){
+        if (counter < getSmallestLoadedPage())
+        prefs.edit().putInt(SMALLEST_PAGE, counter).apply();
     }
 
-    public static int getConnectionCounter(){
-        return prefs.getInt(CONNECTION_FAILURE_COUNER, 0);
+    public static int getSmallestLoadedPage(){
+        return prefs.getInt(SMALLEST_PAGE, 10000000);
     }
 
     public static void setDatabaseFilled(boolean filled){
@@ -70,5 +72,13 @@ public class Prefs {
         return prefs.getBoolean(DATABASE_FILLED, false);
     }
 
+    public static void setMaxTopPage(int number){
+        if (number > getMaxTopPage()){
+            prefs.edit().putInt(MAX_TOP_PAGE, number).apply();
+        }
+    }
 
+    public static int getMaxTopPage(){
+        return prefs.getInt(MAX_TOP_PAGE, 1);
+    }
 }

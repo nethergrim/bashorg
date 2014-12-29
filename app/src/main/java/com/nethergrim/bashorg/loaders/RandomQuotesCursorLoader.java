@@ -13,8 +13,6 @@ import com.nethergrim.bashorg.db.DB;
  */
 public class RandomQuotesCursorLoader  extends CursorLoader{
 
-    final ForceLoadContentObserver mObserver = new ForceLoadContentObserver();
-
     public RandomQuotesCursorLoader(Context context) {
         super(context);
     }
@@ -25,8 +23,6 @@ public class RandomQuotesCursorLoader  extends CursorLoader{
         Cursor c = db.getQuotesRandomly();
         if (c != null) {
             c.getCount();
-            c.registerContentObserver(mObserver);
-            c.setNotificationUri(getContext().getContentResolver(), Uri.parse(Constants.URI_QUOTE));
         }
         return c;
     }

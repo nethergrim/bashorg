@@ -2,9 +2,6 @@
 <resources>
 
     <string name="app_name">Bash Org</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
     <string name="last">Последние</string>
     <string name="random">Случайные</string>
     <string name="best">Лучшие</string>

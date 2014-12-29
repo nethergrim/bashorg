@@ -19,6 +19,7 @@ import com.nethergrim.bashorg.fragment.BestQuotesFragment;
 import com.nethergrim.bashorg.fragment.LastQuotesFragment;
 import com.nethergrim.bashorg.fragment.RandomQuotesFragment;
 import com.nethergrim.bashorg.model.Quote;
+import com.nethergrim.bashorg.web.RunnerService;
 
 public class MainActivity extends FragmentActivity {
 
@@ -40,6 +41,7 @@ public class MainActivity extends FragmentActivity {
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         loadFragments();
         initTabs();
+        RunnerService.start(this.getApplicationContext());
     }
 
     private void initTabs() {

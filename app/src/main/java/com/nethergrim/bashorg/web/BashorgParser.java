@@ -11,6 +11,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,11 +22,21 @@ public class BashorgParser {
 
     private static int lastPage = -1;
 
-    public static int parsePage(final String pageNumber) {
+    public static int parseTopTage(int byRatingPage){
+        String url = "http://bash.im/byrating/" + String.valueOf(byRatingPage);
+        try {
+            Document document = Jsoup.connect(url).get();
+            return parseDocument(document);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    private static int parseDocument(Document document){
         DB db = DB.getInstance();
         int pn = -1;
         try {
-            Document document = Jsoup.connect(Constants.URL_BASHORG_PAGE + pageNumber).get();
             List<Long> numbers = getIds(document);
             List<Long> ratings = getRatings(document);
             List<String> texts = getTexts(document);
@@ -53,6 +64,18 @@ public class BashorgParser {
         return pn;
     }
 
+    public static int parsePage(final String pageNumber) {
+        DB db = DB.getInstance();
+        int pn = -1;
+        try {
+            Document document = Jsoup.connect(Constants.URL_BASHORG_PAGE + pageNumber).get();
+            return parseDocument(document);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return pn;
+    }
+
     public static int getPageNumber(Document document) {
         Elements elements = document.select("input");
         for (Element element : elements) {
@@ -60,7 +83,6 @@ public class BashorgParser {
                 String currentPage = element.attr("value");
                 String maxPage = element.attr("max");
                 Prefs.setLastPageNumber(Long.parseLong(maxPage));
-//                Log.e("PARSE", "current page: " + currentPage + " max page: " + maxPage);
                 lastPage = Integer.parseInt(maxPage);
                 return Integer.parseInt(currentPage);
             }

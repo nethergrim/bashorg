@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +15,14 @@ import android.widget.ListView;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.QuoteCursorAdapter;
 import com.nethergrim.bashorg.loaders.LastQuotesCursorLoader;
+import com.nethergrim.bashorg.web.MyIntentService;
 
 /**
  * Created by nethergrim on 01.12.2014.
  */
-public class LastQuotesFragment extends AbstractFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class LastQuotesFragment extends AbstractFragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
 
-
+    private SwipeRefreshLayout refreshLayout;
     private QuoteCursorAdapter adapter;
     private static final int LOADER_CODE = 117;
 
@@ -33,6 +35,9 @@ public class LastQuotesFragment extends AbstractFragment implements LoaderManage
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe);
+        refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setColorSchemeResources(R.color.main_color, R.color.accent, R.color.main_color, R.color.accent);
         ListView listView = (ListView) view.findViewById(R.id.recycler_view);
         adapter = new QuoteCursorAdapter(getActivity(), null);
         listView.setAdapter(adapter);
@@ -54,10 +59,16 @@ public class LastQuotesFragment extends AbstractFragment implements LoaderManage
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         adapter.swapCursor(data);
+        refreshLayout.setRefreshing(false);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         adapter.swapCursor(null);
+    }
+
+    @Override
+    public void onRefresh() {
+        loadData();
     }
 }

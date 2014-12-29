@@ -14,25 +14,20 @@ import com.nethergrim.bashorg.web.RunnerService;
  */
 public class App extends Application {
 
-//    private static App mInstance;
+    private static App mInstance;
 
     @Override
     public void onCreate() {
         super.onCreate();
-//        mInstance = this;
+        mInstance = this;
         Prefs.init(this.getApplicationContext());
         DB.init(this.getApplicationContext());
         Constants.density = getResources().getDisplayMetrics().density;
-
-        Intent intent = new Intent(this, RunnerService.class);
-        PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
-        AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        alarm.setRepeating(AlarmManager.RTC_WAKEUP, 0, Constants.ALARM_REPEATING_TIMER, pendingIntent);
     }
 
-//    public static synchronized App getInstance() {
-//        return mInstance;
-//    }
+    public static synchronized App getInstance() {
+        return mInstance;
+    }
 
 
 }
