@@ -15,13 +15,14 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.FragmentAdapter;
+import com.nethergrim.bashorg.callback.OnTopBarHeightListener;
 import com.nethergrim.bashorg.fragment.BestQuotesFragment;
 import com.nethergrim.bashorg.fragment.LastQuotesFragment;
 import com.nethergrim.bashorg.fragment.RandomQuotesFragment;
 import com.nethergrim.bashorg.model.Quote;
 import com.nethergrim.bashorg.web.RunnerService;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements OnTopBarHeightListener {
 
     private ViewPager pager;
     private FragmentAdapter adapter;
@@ -87,5 +88,14 @@ public class MainActivity extends FragmentActivity {
     protected void onPause() {
         super.onPause();
         unregisterReceiver(receiver);
+    }
+
+    @Override
+    public void onTopBarHeightChanged(float height) {
+        int maxHeight = (int) (getResources().getDimension(R.dimen.top_bar_opened) * Constants.density);
+        tabs.getLayoutParams().height  += height;
+        if (tabs.getLayoutParams().height < 0) tabs.getLayoutParams().height = 0;
+        if (tabs.getLayoutParams().height > maxHeight) tabs.getLayoutParams().height = maxHeight;
+        tabs.requestLayout();
     }
 }

@@ -7,14 +7,18 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.QuoteCursorAdapter;
 import com.nethergrim.bashorg.loaders.LastQuotesCursorLoader;
+import com.nethergrim.bashorg.views.MyScrollListener;
 import com.nethergrim.bashorg.web.MyIntentService;
 
 /**
@@ -41,11 +45,13 @@ public class LastQuotesFragment extends AbstractFragment implements LoaderManage
         ListView listView = (ListView) view.findViewById(R.id.recycler_view);
         adapter = new QuoteCursorAdapter(getActivity(), null);
         listView.setAdapter(adapter);
+        listView.setOnScrollListener(new MyScrollListener(onTopBarHeightListener));
         loadData();
     }
 
-    private void loadData(){
-        if (getLoaderManager().getLoader(LOADER_CODE) == null){
+
+    private void loadData() {
+        if (getLoaderManager().getLoader(LOADER_CODE) == null) {
             getLoaderManager().initLoader(LOADER_CODE, null, this);
         }
         getLoaderManager().getLoader(LOADER_CODE).forceLoad();
