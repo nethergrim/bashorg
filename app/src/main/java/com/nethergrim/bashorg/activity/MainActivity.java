@@ -1,5 +1,7 @@
 package com.nethergrim.bashorg.activity;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -29,12 +31,15 @@ public class MainActivity extends FragmentActivity implements OnTopBarHeightList
     private PagerSlidingTabStrip tabs;
     private IntentFilter filter = new IntentFilter(Constants.ACTION_SHARE_QUOTE);
     private BroadcastReceiver receiver;
+    private int maxHeight;
+    private boolean collapsed = false;
+    private boolean animating = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        maxHeight = (int) (getResources().getDimension(R.dimen.top_bar_opened));
         pager = (ViewPager) findViewById(R.id.pager);
         adapter = new FragmentAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
@@ -91,11 +96,52 @@ public class MainActivity extends FragmentActivity implements OnTopBarHeightList
     }
 
     @Override
-    public void onTopBarHeightChanged(float height) {
-        int maxHeight = (int) (getResources().getDimension(R.dimen.top_bar_opened) * Constants.density);
-        tabs.getLayoutParams().height  += height;
-        if (tabs.getLayoutParams().height < 0) tabs.getLayoutParams().height = 0;
-        if (tabs.getLayoutParams().height > maxHeight) tabs.getLayoutParams().height = maxHeight;
+    public void onTopBarHeightChanged(boolean scrollDown) {
+        if (!animating){
+            ValueAnimator animator = null;
+            if (!collapsed && scrollDown){
+                //scroliing down, collapsing
+                animator = ValueAnimator.ofFloat(1f, 0f);
+            } else if (collapsed && !scrollDown){
+                //scrolling up, appearing
+                animator = ValueAnimator.ofFloat(0f, 1f);
+            }
+            if (animator == null) return;
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    changeTabsHeight((Float) animation.getAnimatedValue());
+                }
+            });
+            animator.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    animating = true;
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    animating = false;
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+            animator.start();
+        }
+    }
+
+    private void changeTabsHeight(float value){
+        float newHeight = value * maxHeight;
+        tabs.getLayoutParams().height = (int) newHeight;
         tabs.requestLayout();
+        collapsed = value <= 0.99;
     }
 }
