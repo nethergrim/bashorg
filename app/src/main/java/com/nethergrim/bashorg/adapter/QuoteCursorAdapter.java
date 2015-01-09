@@ -11,11 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
+import com.nethergrim.bashorg.db.DB;
 import com.nethergrim.bashorg.db.QuoteInflater;
 import com.nethergrim.bashorg.model.Quote;
 
@@ -72,6 +73,11 @@ public class QuoteCursorAdapter extends CursorAdapter {
         quoteViewHolder.textBody.setText(quote.getText());
         quoteViewHolder.textDate.setText(quote.getDate());
         quoteViewHolder.textRating.setText(String.valueOf(quote.getRating()));
+        if (quote.isLiked()){
+            quoteViewHolder.btnLike.setImageResource(R.drawable.ic_action_favorite);
+        } else {
+            quoteViewHolder.btnLike.setImageResource(R.drawable.ic_action_favorite_outline);
+        }
         if (Build.VERSION.SDK_INT >= 21){
             quoteViewHolder.cardView.setCardElevation(8);
         }
@@ -112,6 +118,12 @@ public class QuoteCursorAdapter extends CursorAdapter {
                 context.sendBroadcast(intent);
             }
         });
+        quoteViewHolder.btnLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DB.getInstance().setQuoteLiked(quote.getId(), !quote.isLiked());
+            }
+        });
     }
 
     public static class QuoteViewHolder{
@@ -121,7 +133,9 @@ public class QuoteCursorAdapter extends CursorAdapter {
         public TextView textBody;
         public CardView cardView;
         public ImageButton btnShare;
+        public ImageButton btnLike;
         public TextView textRating;
+        public LinearLayout layoutBottom;
 
         public QuoteViewHolder(View v) {
             textId = (TextView) v.findViewById(R.id.text_id);
@@ -130,13 +144,14 @@ public class QuoteCursorAdapter extends CursorAdapter {
             textRating = (TextView) v.findViewById(R.id.text_rating);
             cardView = (CardView) v.findViewById(R.id.card);
             btnShare = (ImageButton) v.findViewById(R.id.btn_share);
+            btnLike = (ImageButton) v.findViewById(R.id.btn_like);
+            layoutBottom = (LinearLayout) v.findViewById(R.id.layout_bottom);
         }
     }
 
     public void setBtnHeight(float value, QuoteViewHolder viewHolder){
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) viewHolder.btnShare.getLayoutParams();
-        params.height = (int) (value * Constants.density * 48);
-        viewHolder.btnShare.setLayoutParams(params);
-        viewHolder.btnShare.setAlpha(value);
+        viewHolder.layoutBottom.getLayoutParams().height = (int) (value * Constants.density * 48);
+        viewHolder.layoutBottom.setAlpha(value);
+        viewHolder.layoutBottom.requestLayout();
     }
 }

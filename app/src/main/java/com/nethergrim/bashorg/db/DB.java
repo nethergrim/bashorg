@@ -20,7 +20,7 @@ import java.util.List;
 public class DB {
 
     public static final String DB_NAME = "db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
     private Context mCtx;
     private DBHelper mDBHelper;
     private SQLiteDatabase mDB;
@@ -83,6 +83,17 @@ public class DB {
         mDB.insertWithOnConflict(Quote.Columns.TABLE, null, cv, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
+    public void setQuoteLiked(long quoteId, boolean like){
+        ContentValues cv = new ContentValues();
+        cv.put(Quote.Columns.FIELD_LIKED, like);
+        mDB.update(Quote.Columns.TABLE, cv, Quote.Columns.FIELD_ID + "=?", new String[]{String.valueOf(quoteId)});
+        notifyAboutChange();
+    }
+
+    private void notifyAboutChange(){
+        mCtx.getContentResolver().notifyChange(Uri.parse(Constants.URI_QUOTE), null);
+    }
+
     public boolean isQuoteSaved(Quote quote){
         long size = DatabaseUtils.queryNumEntries(mDB, Quote.Columns.TABLE, Quote.Columns.FIELD_ID + "=?", new String[]{String.valueOf(quote.getId())});
         return size > 0;
@@ -103,7 +114,7 @@ public class DB {
         } finally {
             mDB.endTransaction();
         }
-       mCtx.getContentResolver().notifyChange(Uri.parse(Constants.URI_QUOTE), null);
+        notifyAboutChange();
     }
 
     public Cursor getQuotesFromEnd(){
@@ -140,7 +151,9 @@ public class DB {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+            if (oldVersion == 1 && newVersion == 2){
+                db.execSQL("ALTER TABLE " + Quote.Columns.TABLE + " ADD COLUMN " + Quote.Columns.FIELD_LIKED + " INTEGER");
+            }
         }
     }
 
