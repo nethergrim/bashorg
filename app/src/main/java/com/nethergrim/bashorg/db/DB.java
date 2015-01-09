@@ -72,15 +72,17 @@ public class DB {
     }
 
     public void persist(Quote quote){
-        ContentValues cv = new ContentValues();
-        cv.put(Quote.Columns.FIELD_ID, quote.getId());
-        cv.put(Quote.Columns.FIELD_BODY, quote.getText());
-        cv.put(Quote.Columns.FIELD_DATE, quote.getDate());
-        cv.put(Quote.Columns.FIELD_INDEX_ON_PAGE, quote.getIndexOnPage());
-        cv.put(Quote.Columns.FIELD_PAGE, quote.getPage());
-        cv.put(Quote.Columns.FIELD_RATING, quote.getRating());
-        cv.put(Quote.Columns.FIELD_LIKED, quote.isLiked() ? 1 : 0);
-        mDB.insertWithOnConflict(Quote.Columns.TABLE, null, cv, SQLiteDatabase.CONFLICT_REPLACE);
+        if (!isQuoteSaved(quote)){
+            ContentValues cv = new ContentValues();
+            cv.put(Quote.Columns.FIELD_ID, quote.getId());
+            cv.put(Quote.Columns.FIELD_BODY, quote.getText());
+            cv.put(Quote.Columns.FIELD_DATE, quote.getDate());
+            cv.put(Quote.Columns.FIELD_INDEX_ON_PAGE, quote.getIndexOnPage());
+            cv.put(Quote.Columns.FIELD_PAGE, quote.getPage());
+            cv.put(Quote.Columns.FIELD_RATING, quote.getRating());
+            cv.put(Quote.Columns.FIELD_LIKED, quote.isLiked() ? 1 : 0);
+            mDB.insertWithOnConflict(Quote.Columns.TABLE, null, cv, SQLiteDatabase.CONFLICT_REPLACE);
+        }
     }
 
     public void setQuoteLiked(long quoteId, boolean like){
