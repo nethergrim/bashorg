@@ -20,9 +20,8 @@ import com.nethergrim.bashorg.loaders.LikedQuotesLoader;
  */
 public class LikedQuotesFragment extends AbstractFragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    private SwipeRefreshLayout refreshLayout;
     private QuoteCursorAdapter adapter;
-    private static final int LOADER_CODE = 117;
+    private static final int LOADER_CODE = 12312;
 
     @Nullable
     @Override
@@ -33,14 +32,13 @@ public class LikedQuotesFragment extends AbstractFragment implements LoaderManag
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe);
+        SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe);
         refreshLayout.setEnabled(false);
         ListView listView = (ListView) view.findViewById(R.id.recycler_view);
         adapter = new QuoteCursorAdapter(getActivity(), null);
         listView.setAdapter(adapter);
         loadData();
     }
-
 
     private void loadData() {
         if (getLoaderManager().getLoader(LOADER_CODE) == null) {
@@ -57,7 +55,6 @@ public class LikedQuotesFragment extends AbstractFragment implements LoaderManag
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         adapter.swapCursor(data);
-        refreshLayout.setRefreshing(false);
     }
 
     @Override
