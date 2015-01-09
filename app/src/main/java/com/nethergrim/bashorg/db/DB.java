@@ -129,6 +129,10 @@ public class DB {
         return mDB.query(Quote.Columns.TABLE, null,null,null,null,null, Quote.Columns.FIELD_RATING + " DESC");
     }
 
+    public Cursor getQuotesLiked(){
+        return mDB.query(Quote.Columns.TABLE, null,Quote.Columns.FIELD_LIKED + " = ?",new String[]{String.valueOf(1)},null,null, Quote.Columns.FIELD_ID + " DESC");
+    }
+
     public Cursor getQuotesFromEnd(int limit){
         return mDB.query(Quote.Columns.TABLE, null,null,null,null,null, Quote.Columns.FIELD_ID + " DESC" , String.valueOf(limit));
     }

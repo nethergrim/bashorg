@@ -20,6 +20,7 @@ import com.nethergrim.bashorg.adapter.FragmentAdapter;
 import com.nethergrim.bashorg.callback.OnTopBarHeightListener;
 import com.nethergrim.bashorg.fragment.BestQuotesFragment;
 import com.nethergrim.bashorg.fragment.LastQuotesFragment;
+import com.nethergrim.bashorg.fragment.LikedQuotesFragment;
 import com.nethergrim.bashorg.fragment.RandomQuotesFragment;
 import com.nethergrim.bashorg.model.Quote;
 import com.nethergrim.bashorg.web.RunnerService;
@@ -68,6 +69,7 @@ public class MainActivity extends FragmentActivity implements OnTopBarHeightList
         adapter.addFragment(new LastQuotesFragment(), getString(R.string.last));
         adapter.addFragment(new RandomQuotesFragment(), getString(R.string.random));
         adapter.addFragment(new BestQuotesFragment(), getString(R.string.best));
+        adapter.addFragment(new LikedQuotesFragment(), getString(R.string.liked));
         tabs.setViewPager(pager);
     }
 
