@@ -19,6 +19,7 @@ public class QuoteInflater extends EntityInflater<Quote> implements Quote.Column
         quote.setIndexOnPage(c.getInt(c.getColumnIndex(FIELD_INDEX_ON_PAGE)));
         quote.setPage(c.getLong(c.getColumnIndex(FIELD_PAGE)));
         quote.setRating(c.getLong(c.getColumnIndex(FIELD_RATING)));
+        quote.setLiked(c.getInt(c.getColumnIndex(FIELD_LIKED)) == 1);
         return quote;
     }
 }

@@ -34,7 +34,8 @@ public class DB {
             + Quote.Columns.FIELD_PAGE + " integer, "
             + Quote.Columns.FIELD_RATING + " integer, "
             + Quote.Columns.FIELD_DATE + " text, "
-            + Quote.Columns.FIELD_INDEX_ON_PAGE + " integer, " +
+            + Quote.Columns.FIELD_INDEX_ON_PAGE + " integer, "
+            + Quote.Columns.FIELD_LIKED + " integer, " +
             "UNIQUE (" + Quote.Columns.FIELD_ID + ") ON CONFLICT REPLACE" + " );";
 
 
@@ -78,6 +79,7 @@ public class DB {
         cv.put(Quote.Columns.FIELD_INDEX_ON_PAGE, quote.getIndexOnPage());
         cv.put(Quote.Columns.FIELD_PAGE, quote.getPage());
         cv.put(Quote.Columns.FIELD_RATING, quote.getRating());
+        cv.put(Quote.Columns.FIELD_LIKED, quote.isLiked() ? 1 : 0);
         mDB.insertWithOnConflict(Quote.Columns.TABLE, null, cv, SQLiteDatabase.CONFLICT_REPLACE);
     }
 

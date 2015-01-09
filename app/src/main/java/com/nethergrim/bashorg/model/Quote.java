@@ -14,6 +14,7 @@ public class Quote  implements Serializable{
     private long id;
     private long page;
     private long rating;
+    private boolean liked = false;
 
 
     public String getText() {
@@ -64,6 +65,14 @@ public class Quote  implements Serializable{
         this.indexOnPage = indexOnPage;
     }
 
+    public boolean isLiked() {
+        return liked;
+    }
+
+    public void setLiked(boolean liked) {
+        this.liked = liked;
+    }
+
     public interface Columns{
         public static final String TABLE = "quote_table";
 
@@ -73,5 +82,6 @@ public class Quote  implements Serializable{
         public static final String FIELD_RATING = "rating";
         public static final String FIELD_DATE = "date";
         public static final String FIELD_INDEX_ON_PAGE = "index_on_page";
+        public static final String FIELD_LIKED = "liked";
     }
 }
