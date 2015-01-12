@@ -121,7 +121,13 @@ public class QuoteCursorAdapter extends CursorAdapter {
         quoteViewHolder.btnLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DB.getInstance().setQuoteLiked(quote.getId(), !quote.isLiked());
+                boolean liked = !quote.isLiked();
+                DB.getInstance().setQuoteLiked(quote.getId(), liked);
+                if (liked){
+                    quoteViewHolder.btnLike.setImageResource(R.drawable.ic_action_favorite);
+                } else {
+                    quoteViewHolder.btnLike.setImageResource(R.drawable.ic_action_favorite_outline);
+                }
             }
         });
     }

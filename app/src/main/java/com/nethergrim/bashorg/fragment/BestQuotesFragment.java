@@ -57,7 +57,6 @@ public class BestQuotesFragment extends AbstractFragment implements LoaderManage
             public void onReceive(Context context, Intent intent) {
                 if (loading && intent.getIntExtra(Constants.EXTRA_PAGE_NUMBER, 1) > 1){
                     loading = false;
-                    loading = false;
                 }
             }
         };
