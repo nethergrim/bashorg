@@ -120,25 +120,27 @@ public class DB {
         notifyAboutChange();
     }
 
-    public Cursor getQuotesFromEnd(int limit){
-        return mDB.query(Quote.Columns.TABLE, null,null,null,null,null, Quote.Columns.FIELD_ID + " DESC", String.valueOf(limit));
-    }
-
-    public Cursor getQuotesRandomly(int limit){
-        return mDB.query(Quote.Columns.TABLE, null,null,null,null,null, " RANDOM()", String.valueOf(limit));
-    }
-
-    public Cursor getQuotesByRating(int limit){
-        return mDB.query(Quote.Columns.TABLE, null,null,null,null,null, Quote.Columns.FIELD_RATING + " DESC", String.valueOf(limit));
-    }
-
-    public Cursor getQuotesLiked(int limit){
-        return mDB.query(Quote.Columns.TABLE, null,Quote.Columns.FIELD_LIKED + " = ?",new String[]{String.valueOf(1)},null,null, Quote.Columns.FIELD_ID + " DESC", String.valueOf(limit));
-    }
-
-    public Cursor fetch(QuoteSelection selection, int limit){
-        // TODO
-        return null;
+    public Cursor fetch(QuoteSelection quoteSelection, int limit){
+        String selection = null;
+        String[] args = null;
+        String orderBy = null;
+        switch (quoteSelection){
+            case LAST:
+                orderBy = Quote.Columns.FIELD_ID + " DESC";
+                break;
+            case RANDOM:
+                orderBy = " RANDOM()";
+                break;
+            case BEST:
+                orderBy = Quote.Columns.FIELD_RATING + " DESC";
+                break;
+            case LIKED:
+                selection = Quote.Columns.FIELD_LIKED + " = ?";
+                args = new String[]{String.valueOf(1)};
+                orderBy =  Quote.Columns.FIELD_ID + " DESC";
+                break;
+        }
+        return mDB.query(Quote.Columns.TABLE, null,selection,args,null,null, orderBy, String.valueOf(limit));
     }
 
     private class DBHelper extends SQLiteOpenHelper {
