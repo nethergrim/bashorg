@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +46,7 @@ public class BestQuotesFragment extends AbstractFragment implements LoaderManage
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setColorSchemeResources(R.color.main_color, R.color.accent, R.color.main_color, R.color.accent);
         ListView listView = (ListView) view.findViewById(R.id.recycler_view);
-        adapter = new QuoteCursorAdapter(getActivity(), null);
+        adapter = new QuoteCursorAdapter(getActivity());
         listView.setAdapter(adapter);
         listView.setOnScrollListener(this);
         loadData();
@@ -55,7 +54,7 @@ public class BestQuotesFragment extends AbstractFragment implements LoaderManage
         BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (loading && intent.getIntExtra(Constants.EXTRA_PAGE_NUMBER, 1) > 1){
+                if (loading && intent.getIntExtra(Constants.EXTRA_PAGE_NUMBER, 1) > 1) {
                     loading = false;
                 }
             }
@@ -63,8 +62,8 @@ public class BestQuotesFragment extends AbstractFragment implements LoaderManage
         getActivity().registerReceiver(receiver, filter);
     }
 
-    private void loadData(){
-        if (getLoaderManager().getLoader(LOADER_CODE) == null){
+    private void loadData() {
+        if (getLoaderManager().getLoader(LOADER_CODE) == null) {
             getLoaderManager().initLoader(LOADER_CODE, null, this);
         }
         getLoaderManager().getLoader(LOADER_CODE).forceLoad();
@@ -104,7 +103,7 @@ public class BestQuotesFragment extends AbstractFragment implements LoaderManage
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         int lastVisiblePage = firstVisibleItem + visibleItemCount;
-        if (lastVisiblePage  + 5 == Prefs.getMaxTopPage() * 50){
+        if (lastVisiblePage + 5 == Prefs.getMaxTopPage() * 50) {
             loading = true;
             MyIntentService.getTopPageAndSaveQuotes(getActivity(), Prefs.getMaxTopPage() + 1);
         }

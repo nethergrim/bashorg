@@ -30,8 +30,8 @@ public class QuoteCursorAdapter extends CursorAdapter {
 
     public List<Long> selectedRows = new ArrayList<>();
 
-    public QuoteCursorAdapter(Context context, Cursor c) {
-        super(context, c, 0);
+    public QuoteCursorAdapter(Context context) {
+        super(context, null, 0);
     }
 
     private boolean isChecked(long id){

@@ -37,13 +37,13 @@ public class RandomQuotesFragment extends AbstractFragment implements LoaderMana
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setColorSchemeResources(R.color.main_color, R.color.accent, R.color.main_color, R.color.accent);
         ListView listView = (ListView) view.findViewById(R.id.recycler_view);
-        adapter = new QuoteCursorAdapter(getActivity(), null);
+        adapter = new QuoteCursorAdapter(getActivity());
         listView.setAdapter(adapter);
         loadData();
     }
 
-    private void loadData(){
-        if (getLoaderManager().getLoader(LOADER_CODE) == null){
+    private void loadData() {
+        if (getLoaderManager().getLoader(LOADER_CODE) == null) {
             getLoaderManager().initLoader(LOADER_CODE, null, this);
         }
         getLoaderManager().getLoader(LOADER_CODE).forceLoad();

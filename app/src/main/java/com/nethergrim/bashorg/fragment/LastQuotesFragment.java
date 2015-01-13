@@ -38,7 +38,7 @@ public class LastQuotesFragment extends AbstractFragment implements LoaderManage
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setColorSchemeResources(R.color.main_color, R.color.accent, R.color.main_color, R.color.accent);
         ListView listView = (ListView) view.findViewById(R.id.recycler_view);
-        adapter = new QuoteCursorAdapter(getActivity(), null);
+        adapter = new QuoteCursorAdapter(getActivity());
         listView.setAdapter(adapter);
 //        listView.setOnScrollListener(new Scroller(onTopBarHeightListener));
         loadData();

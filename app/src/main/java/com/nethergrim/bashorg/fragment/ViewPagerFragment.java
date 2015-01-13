@@ -1,6 +1,7 @@
 package com.nethergrim.bashorg.fragment;
 
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -12,8 +13,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.ListAdapter;
+import android.widget.CursorAdapter;
 import android.widget.ListView;
 
 import com.nethergrim.bashorg.R;
@@ -30,11 +30,15 @@ public abstract class ViewPagerFragment extends AbstractFragment implements Swip
     protected int loaderId;
     private BroadcastReceiver receiver;
     private IntentFilter filter;
+    private CursorAdapter adapter;
 
-    protected abstract ListAdapter getAdapter();
+    protected abstract CursorAdapter getAdapter(Context context);
+
     protected abstract void refresh();
-    protected abstract CursorLoader getLoader(Bundle args);
-    protected abstract void onLoaded(Loader<Cursor> loader,Cursor cursor);
+
+    protected abstract CursorLoader getLoader(Context context, Bundle args);
+
+    protected abstract void onLoaded(Loader<Cursor> loader, Cursor cursor);
 
 
     @Override
@@ -50,7 +54,8 @@ public abstract class ViewPagerFragment extends AbstractFragment implements Swip
         this.refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe);
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setColorSchemeResources(R.color.main_color, R.color.accent, R.color.main_color, R.color.accent);
-        list.setAdapter(getAdapter());
+        this.adapter = getAdapter(getActivity());
+        list.setAdapter(adapter);
     }
 
     @Override
@@ -62,7 +67,7 @@ public abstract class ViewPagerFragment extends AbstractFragment implements Swip
     public void onResume() {
         super.onResume();
         loadData();
-        if (receiver != null && filter != null){
+        if (receiver != null && filter != null) {
             getActivity().registerReceiver(receiver, filter);
         }
     }
@@ -70,33 +75,43 @@ public abstract class ViewPagerFragment extends AbstractFragment implements Swip
     @Override
     public void onPause() {
         super.onPause();
-        if (receiver != null){
+        if (receiver != null) {
             getActivity().unregisterReceiver(receiver);
         }
     }
 
-    protected void loadData(){
-        if (getLoaderManager().getLoader(loaderId) == null){
+    protected void loadData() {
+        if (getLoaderManager().getLoader(loaderId) == null) {
             getLoaderManager().initLoader(loaderId, null, this);
         }
         getLoaderManager().getLoader(loaderId).forceLoad();
     }
 
-    public Loader<Cursor> onCreateLoader(int id, Bundle args){
-        return getLoader(args);
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return getLoader(getActivity(), args);
     }
 
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data){
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Cursor oldCursor = adapter.swapCursor(data);
+        if (oldCursor != null)
+            oldCursor.close();
         onLoaded(loader, data);
     }
 
-    public void onLoaderReset(Loader<Cursor> loader){
+    public void onLoaderReset(Loader<Cursor> loader) {
+        Cursor oldCursor = adapter.swapCursor(null);
+        if (oldCursor != null)
+            oldCursor.close();
         onLoaded(loader, null);
     }
 
-    protected void addBroadcastReceiver(BroadcastReceiver receiver, IntentFilter filter){
+    protected void addBroadcastReceiver(BroadcastReceiver receiver, IntentFilter filter) {
         this.receiver = receiver;
         this.filter = filter;
+    }
+
+    protected void stopRefreshing(){
+        if (refreshLayout != null) refreshLayout.setRefreshing(false);
     }
 
 }
