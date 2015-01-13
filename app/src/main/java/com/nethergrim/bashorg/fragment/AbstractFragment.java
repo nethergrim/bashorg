@@ -12,7 +12,6 @@ import com.nethergrim.bashorg.callback.OnTopBarHeightListener;
  */
 public abstract class AbstractFragment extends Fragment {
 
-
     protected OnTopBarHeightListener onTopBarHeightListener;
 
     @Override
@@ -29,5 +28,11 @@ public abstract class AbstractFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        this.onTopBarHeightListener = null;
     }
 }
