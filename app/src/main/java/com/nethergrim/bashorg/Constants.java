@@ -23,5 +23,6 @@ public class Constants {
     public static final int ALARM_REPEATING_TIMER = 1000 * 60 * 60 * 4;
     public static final int ANIMATION_DURATION = 200;
     public static final Interpolator INTERPOLATOR = new AccelerateDecelerateInterpolator();
+    public static final String EXTRA_LIMIT = "com.nethergrim.bashorg.web.extra.LIMIT";
     public static float density;
 }

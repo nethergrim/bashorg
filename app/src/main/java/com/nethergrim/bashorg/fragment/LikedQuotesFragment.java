@@ -8,6 +8,7 @@ import android.support.v4.content.Loader;
 import android.widget.CursorAdapter;
 
 import com.nethergrim.bashorg.adapter.QuoteCursorAdapter;
+import com.nethergrim.bashorg.loaders.AbstractLoader;
 import com.nethergrim.bashorg.loaders.LikedQuotesLoader;
 
 /**
@@ -22,19 +23,29 @@ public class LikedQuotesFragment extends ViewPagerFragment {
     }
 
     @Override
-    protected void refresh() {
+    protected void onRefreshTriggered() {
         loadData();
     }
 
     @Override
-    protected CursorLoader getLoader(Context context, Bundle args) {
-        return new LikedQuotesLoader(context);
+    protected AbstractLoader getLoader(Context context, Bundle args) {
+        return new LikedQuotesLoader(context, args);
     }
 
 
     @Override
     protected void onLoaded(Loader<Cursor> loader, Cursor cursor) {
         stopRefreshing();
+    }
+
+    @Override
+    protected int getDefaultPageSize() {
+        return 100;
+    }
+
+    @Override
+    protected void resumed() {
+        
     }
 
 }

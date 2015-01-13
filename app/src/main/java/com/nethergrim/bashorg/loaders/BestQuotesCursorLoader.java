@@ -22,7 +22,7 @@ public class BestQuotesCursorLoader extends CursorLoader {
     @Override
     public Cursor loadInBackground() {
         DB db = DB.getInstance();
-        Cursor c =  db.getQuotesByRating();
+        Cursor c =  db.getQuotesByRating(100);
         if (c != null) {
             c.getCount();
             c.registerContentObserver(mObserver);

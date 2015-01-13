@@ -119,28 +119,20 @@ public class DB {
         notifyAboutChange();
     }
 
-    public Cursor getQuotesFromEnd(){
-        return mDB.query(Quote.Columns.TABLE, null,null,null,null,null, Quote.Columns.FIELD_ID + " DESC");
-    }
-
-    public Cursor getQuotesRandomly(){
-        return mDB.query(Quote.Columns.TABLE, null,null,null,null,null, " RANDOM()");
-    }
-
-    public Cursor getQuotesByRating(){
-        return mDB.query(Quote.Columns.TABLE, null,null,null,null,null, Quote.Columns.FIELD_RATING + " DESC");
-    }
-
-    public Cursor getQuotesLiked(){
-        return mDB.query(Quote.Columns.TABLE, null,Quote.Columns.FIELD_LIKED + " = ?",new String[]{String.valueOf(1)},null,null, Quote.Columns.FIELD_ID + " DESC");
-    }
-
     public Cursor getQuotesFromEnd(int limit){
-        return mDB.query(Quote.Columns.TABLE, null,null,null,null,null, Quote.Columns.FIELD_ID + " DESC" , String.valueOf(limit));
+        return mDB.query(Quote.Columns.TABLE, null,null,null,null,null, Quote.Columns.FIELD_ID + " DESC", String.valueOf(limit));
     }
 
-    public Cursor getQuotesFrom(int limit, long idToQueryFrom){
-        return mDB.query(Quote.Columns.TABLE, null,Quote.Columns.FIELD_ID + "< ?", new String[]{String.valueOf(idToQueryFrom)},null,null, Quote.Columns.FIELD_ID + " DESC" , String.valueOf(limit));
+    public Cursor getQuotesRandomly(int limit){
+        return mDB.query(Quote.Columns.TABLE, null,null,null,null,null, " RANDOM()", String.valueOf(limit));
+    }
+
+    public Cursor getQuotesByRating(int limit){
+        return mDB.query(Quote.Columns.TABLE, null,null,null,null,null, Quote.Columns.FIELD_RATING + " DESC", String.valueOf(limit));
+    }
+
+    public Cursor getQuotesLiked(int limit){
+        return mDB.query(Quote.Columns.TABLE, null,Quote.Columns.FIELD_LIKED + " = ?",new String[]{String.valueOf(1)},null,null, Quote.Columns.FIELD_ID + " DESC", String.valueOf(limit));
     }
 
     private class DBHelper extends SQLiteOpenHelper {

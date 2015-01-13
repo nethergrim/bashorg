@@ -22,7 +22,7 @@ public class LastQuotesCursorLoader extends CursorLoader {
     @Override
     public Cursor loadInBackground() {
         DB db = DB.getInstance();
-        Cursor c =  db.getQuotesFromEnd();
+        Cursor c =  db.getQuotesFromEnd(100);
         if (c != null) {
             c.getCount();
             c.registerContentObserver(mObserver);

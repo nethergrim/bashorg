@@ -20,7 +20,7 @@ public class RandomQuotesCursorLoader  extends CursorLoader{
     @Override
     public Cursor loadInBackground() {
         DB db = DB.getInstance();
-        Cursor c = db.getQuotesRandomly();
+        Cursor c = db.getQuotesRandomly(100);
         if (c != null) {
             c.getCount();
         }
