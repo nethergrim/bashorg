@@ -2,8 +2,7 @@ package com.nethergrim.bashorg.loaders;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
-import android.support.v4.content.CursorLoader;
+import android.os.Bundle;
 
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.db.DB;
@@ -11,25 +10,21 @@ import com.nethergrim.bashorg.db.DB;
 /**
  * Created by andrey_drobyazko on 11.12.14 19:42.
  */
-public class BestQuotesCursorLoader extends CursorLoader {
+@Deprecated
+public class BestQuotesCursorLoader extends QuotesLoader {
 
-    final ForceLoadContentObserver mObserver = new ForceLoadContentObserver();
 
-    public BestQuotesCursorLoader(Context context) {
-        super(context);
+    public BestQuotesCursorLoader(Context context, Bundle args) {
+        super(context, args);
     }
 
     @Override
     public Cursor loadInBackground() {
-        DB db = DB.getInstance();
-        Cursor c =  db.getQuotesByRating(100);
-        if (c != null) {
-            c.getCount();
-            c.registerContentObserver(mObserver);
-            c.setNotificationUri(getContext().getContentResolver(), Uri.parse(Constants.URI_QUOTE));
-        }
-        return c;
+//        DB db = DB.getInstance();
+//        Cursor c =  db.getQuotesByRating(getLimit());
+//        registerCursor(c, Constants.URI_QUOTE);
+//        return c;
+        return null;
     }
-
 
 }

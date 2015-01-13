@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.model.Quote;
+import com.nethergrim.bashorg.model.QuoteSelection;
 
 import java.util.List;
 
@@ -133,6 +134,11 @@ public class DB {
 
     public Cursor getQuotesLiked(int limit){
         return mDB.query(Quote.Columns.TABLE, null,Quote.Columns.FIELD_LIKED + " = ?",new String[]{String.valueOf(1)},null,null, Quote.Columns.FIELD_ID + " DESC", String.valueOf(limit));
+    }
+
+    public Cursor fetch(QuoteSelection selection, int limit){
+        // TODO
+        return null;
     }
 
     private class DBHelper extends SQLiteOpenHelper {

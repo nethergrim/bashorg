@@ -24,5 +24,6 @@ public class Constants {
     public static final int ANIMATION_DURATION = 200;
     public static final Interpolator INTERPOLATOR = new AccelerateDecelerateInterpolator();
     public static final String EXTRA_LIMIT = "com.nethergrim.bashorg.web.extra.LIMIT";
+    public static final String EXTRA_QUOTE_SELECTION = "com.nethergrim.bashorg.web.extra.QUOTE_SELECTION";
     public static float density;
 }

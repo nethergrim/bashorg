@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -18,7 +17,8 @@ import android.widget.ListView;
 
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
-import com.nethergrim.bashorg.loaders.AbstractLoader;
+import com.nethergrim.bashorg.loaders.QuotesLoader;
+import com.nethergrim.bashorg.model.QuoteSelection;
 
 import java.util.Random;
 
@@ -35,10 +35,11 @@ public abstract class ViewPagerFragment extends AbstractFragment implements Swip
     private CursorAdapter adapter;
     private int pageSize = 0;
     private int loadedItemsCount = 0;
+    private QuoteSelection quoteSelection;
 
     protected abstract CursorAdapter getAdapter(Context context);
 
-    protected abstract AbstractLoader getLoader(Context context, Bundle args);
+    protected abstract QuoteSelection getQuoteSelection();
 
     protected abstract void onRefreshTriggered();
 
@@ -52,7 +53,8 @@ public abstract class ViewPagerFragment extends AbstractFragment implements Swip
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.pageSize = getDefaultPageSize();
-        if (pageSize < 10) pageSize = 15;
+        if (pageSize < 5) pageSize = 5;
+        this.quoteSelection = getQuoteSelection();
     }
 
     @Override
@@ -98,11 +100,12 @@ public abstract class ViewPagerFragment extends AbstractFragment implements Swip
     protected void loadData() {
         Bundle args = new Bundle();
         args.putInt(Constants.EXTRA_LIMIT, pageSize);
+        args.putSerializable(Constants.EXTRA_QUOTE_SELECTION, quoteSelection);
         getLoaderManager().restartLoader(loaderId, args, this);
     }
 
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return getLoader(getActivity(), args);
+        return new QuotesLoader(getActivity(), args);
     }
 
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
