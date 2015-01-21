@@ -19,6 +19,7 @@ import com.nethergrim.bashorg.model.QuoteSelection;
 public class RandomQuotesFragment extends ViewPagerFragment implements View.OnClickListener {
 
     boolean emptyScreen = false;
+    boolean loadingMore = false;
 
     @Override
     protected QuoteSelection getQuoteSelection() {
@@ -33,6 +34,10 @@ public class RandomQuotesFragment extends ViewPagerFragment implements View.OnCl
     @Override
     protected void onLoaded(Loader<Cursor> loader, Cursor cursor) {
         emptyScreen = cursor == null || cursor.getCount() == 0;
+        if (loadingMore){
+            loadingMore = false;
+            list.smoothScrollToPosition(0);
+        }
         stopRefreshing();
     }
 
@@ -65,6 +70,7 @@ public class RandomQuotesFragment extends ViewPagerFragment implements View.OnCl
 
     @Override
     public void onClick(View v) {
+        loadingMore = true;
         loadData(getDefaultPageSize());
     }
 }
