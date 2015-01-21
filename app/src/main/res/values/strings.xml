@@ -6,5 +6,6 @@
     <string name="random">Случайные</string>
     <string name="best">Лучшие</string>
     <string name="liked">Избранные</string>
+    <string name="load_more">Загрузить еще</string>
 
 </resources>

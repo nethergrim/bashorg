@@ -31,7 +31,6 @@ public class LastQuotesFragment extends ViewPagerFragment{
 
     @Override
     protected void onLoaded(Loader<Cursor> loader, Cursor cursor) {
-        stopRefreshing();
     }
 
     @Override
@@ -46,6 +45,7 @@ public class LastQuotesFragment extends ViewPagerFragment{
             public void onReceive(Context context, Intent intent) {
                 int pageNumber = intent.getExtras().getInt(Constants.EXTRA_PAGE_NUMBER);
                 if (pageNumber == Prefs.getLastPageNumber()){
+                    stopRefreshing();
                     loadData(150 + loadedItemsCount);
                 }
             }
