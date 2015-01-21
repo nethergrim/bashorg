@@ -1,10 +1,15 @@
 package com.nethergrim.bashorg.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.model.QuoteSelection;
 
@@ -12,6 +17,8 @@ import com.nethergrim.bashorg.model.QuoteSelection;
  * Created by andrey_drobyazko on 11.12.14 19:29.
  */
 public class RandomQuotesFragment extends ViewPagerFragment implements View.OnClickListener {
+
+    boolean emptyScreen = false;
 
     @Override
     protected QuoteSelection getQuoteSelection() {
@@ -25,6 +32,7 @@ public class RandomQuotesFragment extends ViewPagerFragment implements View.OnCl
 
     @Override
     protected void onLoaded(Loader<Cursor> loader, Cursor cursor) {
+        emptyScreen = cursor == null || cursor.getCount() == 0;
         stopRefreshing();
     }
 
@@ -40,6 +48,14 @@ public class RandomQuotesFragment extends ViewPagerFragment implements View.OnCl
             list.addFooterView(footer);
             footer.findViewById(R.id.btn_load_more).setOnClickListener(this);
         }
+        setBroadcastReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (emptyScreen){
+                    loadData(getDefaultPageSize());
+                }
+            }
+        }, new IntentFilter(Constants.ACTION_FETCH_PAGE));
     }
 
     @Override
