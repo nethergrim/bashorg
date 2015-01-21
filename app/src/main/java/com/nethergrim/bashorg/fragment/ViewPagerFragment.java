@@ -1,7 +1,6 @@
 package com.nethergrim.bashorg.fragment;
 
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -12,11 +11,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
+import com.nethergrim.bashorg.adapter.QuoteCursorAdapter;
 import com.nethergrim.bashorg.loaders.QuotesLoader;
 import com.nethergrim.bashorg.model.QuoteSelection;
 
@@ -25,19 +26,19 @@ import java.util.Random;
 /**
  * Created by nethergrim on 13.01.2015.
  */
-public abstract class ViewPagerFragment extends AbstractFragment implements SwipeRefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<Cursor> {
+public abstract class ViewPagerFragment extends AbstractFragment implements SwipeRefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<Cursor>, AbsListView.OnScrollListener {
 
     protected ListView list;
     protected SwipeRefreshLayout refreshLayout;
-    protected int loaderId;
+    private int loaderId;
     private BroadcastReceiver receiver;
     private IntentFilter filter;
     private CursorAdapter adapter;
     private int pageSize = 0;
-    private int loadedItemsCount = 0;
+    protected int loadedItemsCount = 0;
+    private int maxLoadedItem = 0;
     private QuoteSelection quoteSelection;
 
-    protected abstract CursorAdapter getAdapter(Context context);
 
     protected abstract QuoteSelection getQuoteSelection();
 
@@ -48,6 +49,8 @@ public abstract class ViewPagerFragment extends AbstractFragment implements Swip
     protected abstract int getDefaultPageSize();
 
     protected abstract void resumed();
+
+    protected abstract boolean autoLoadNextPage();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,19 +73,21 @@ public abstract class ViewPagerFragment extends AbstractFragment implements Swip
         this.refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe);
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setColorSchemeResources(R.color.main_color, R.color.accent, R.color.main_color, R.color.accent);
-        this.adapter = getAdapter(getActivity());
+        this.adapter = new QuoteCursorAdapter(getActivity());
         list.setAdapter(adapter);
+        list.setOnScrollListener(this);
+        loadData(getDefaultPageSize());
     }
 
     @Override
     public void onRefresh() {
+        maxLoadedItem = 0;
         onRefreshTriggered();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        loadData();
         resumed();
         if (receiver != null && filter != null) {
             getActivity().registerReceiver(receiver, filter);
@@ -97,9 +102,9 @@ public abstract class ViewPagerFragment extends AbstractFragment implements Swip
         }
     }
 
-    protected void loadData() {
+    protected void loadData(int count) {
         Bundle args = new Bundle();
-        args.putInt(Constants.EXTRA_LIMIT, pageSize);
+        args.putInt(Constants.EXTRA_LIMIT, count);
         args.putSerializable(Constants.EXTRA_QUOTE_SELECTION, quoteSelection);
         getLoaderManager().restartLoader(loaderId, args, this);
     }
@@ -133,4 +138,21 @@ public abstract class ViewPagerFragment extends AbstractFragment implements Swip
         if (refreshLayout != null) refreshLayout.setRefreshing(false);
     }
 
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        if (autoLoadNextPage()){
+            int lastVisibleItem = firstVisibleItem + visibleItemCount;
+            if (maxLoadedItem < lastVisibleItem){
+                maxLoadedItem = lastVisibleItem;
+                if (maxLoadedItem + 3 >= loadedItemsCount ){
+                    loadData(loadedItemsCount + pageSize);
+                }
+            }
+        }
+    }
 }

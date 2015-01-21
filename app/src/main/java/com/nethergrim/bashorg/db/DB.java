@@ -117,7 +117,7 @@ public class DB {
         } finally {
             mDB.endTransaction();
         }
-        notifyAboutChange();
+//        notifyAboutChange();
     }
 
     public Cursor fetch(QuoteSelection quoteSelection, int limit){
