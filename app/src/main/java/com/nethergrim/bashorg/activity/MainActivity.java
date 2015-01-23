@@ -1,7 +1,5 @@
 package com.nethergrim.bashorg.activity;
 
-import android.animation.Animator;
-import android.animation.ValueAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -82,7 +80,7 @@ public class MainActivity extends FragmentActivity implements OnTopBarHeightList
                 Quote quote = (Quote) intent.getSerializableExtra(Constants.EXTRA_QUOTE);
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, quote.getText());
+                sendIntent.putExtra(Intent.EXTRA_TEXT, quote.getText() + getString(R.string.from_app) + " " + getString(R.string.app_name) + ":\n" + Constants.LINK_TO_PLAY_MARKET);
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
 
@@ -98,46 +96,8 @@ public class MainActivity extends FragmentActivity implements OnTopBarHeightList
     }
 
     @Override
-    public void onTopBarHeightChanged(boolean scrollDown) {
-        if (!animating){
-            ValueAnimator animator = null;
-            if (!collapsed && scrollDown){
-                //scroliing down, collapsing
-                animator = ValueAnimator.ofFloat(1f, 0f);
-            } else if (collapsed && !scrollDown){
-                //scrolling up, appearing
-                animator = ValueAnimator.ofFloat(0f, 1f);
-            }
-            if (animator == null) return;
-            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    changeTabsHeight((Float) animation.getAnimatedValue());
-                }
-            });
-            animator.addListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-                    animating = true;
-                }
+    public void onTopBarHeightChanged(float heightDelta) {
 
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    animating = false;
-                }
-
-                @Override
-                public void onAnimationCancel(Animator animation) {
-
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animation) {
-
-                }
-            });
-            animator.start();
-        }
     }
 
     private void changeTabsHeight(float value){

@@ -56,7 +56,11 @@ public class RunnerService extends Service {
         MyIntentService.getPageAndSaveQuotes(this, (int) (Prefs.getLastPageNumber() - 1));
         MyIntentService.getPageAndSaveQuotes(this, (int) (Prefs.getLastPageNumber() - 2));
         MyIntentService.getPageAndSaveQuotes(this, (int) (Prefs.getLastPageNumber() - 3));
+        MyIntentService.getPageAndSaveQuotes(this, (int) (Prefs.getLastPageNumber() - 4));
         MyIntentService.getPageAndSaveQuotes(this, (int) (Prefs.getLastPageNumber() + 1));
+        MyIntentService.getPageAndSaveQuotes(this, (int) (Prefs.getLastPageNumber() + 2));
+        MyIntentService.getPageAndSaveQuotes(this, (int) (Prefs.getLastPageNumber() + 3));
+        MyIntentService.getPageAndSaveQuotes(this, (int) (Prefs.getLastPageNumber() + 4));
         stopSelf();
     }
 
