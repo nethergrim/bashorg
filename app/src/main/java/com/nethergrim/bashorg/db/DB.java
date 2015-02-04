@@ -13,8 +13,6 @@ import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.model.Quote;
 import com.nethergrim.bashorg.model.QuoteSelection;
 
-import java.util.List;
-
 /**
  * Created by andrey_drobyazko on 09.12.14 19:21.
  */
@@ -107,7 +105,7 @@ public class DB {
         return size > 49;
     }
 
-    public void persist(List<Quote> quotes){
+    public void persist(Quote[] quotes){
         mDB.beginTransaction();
         try{
             for (Quote quote : quotes) {
@@ -117,7 +115,6 @@ public class DB {
         } finally {
             mDB.endTransaction();
         }
-//        notifyAboutChange();
     }
 
     public Cursor fetch(QuoteSelection quoteSelection, int limit){

@@ -1,7 +1,6 @@
 package com.nethergrim.bashorg;
 
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
 /**
@@ -25,5 +24,6 @@ public class Constants {
     public static final Interpolator INTERPOLATOR = new AccelerateDecelerateInterpolator();
     public static final String EXTRA_LIMIT = "com.nethergrim.bashorg.web.extra.LIMIT";
     public static final String EXTRA_QUOTE_SELECTION = "com.nethergrim.bashorg.web.extra.QUOTE_SELECTION";
+    public static final int DEFAULT_PAGE_SIZE = 50;
     public static float density;
 }

@@ -12,8 +12,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by nethergrim on 26.11.2014.
@@ -37,25 +35,25 @@ public class BashorgParser {
         DB db = DB.getInstance();
         int pn = -1;
         try {
-            List<Long> numbers = getIds(document);
-            List<Long> ratings = getRatings(document);
-            List<String> texts = getTexts(document);
-            List<String> dates = getDates(document);
+            long[] numbers = getIds(document);
+            long[] ratings = getRatings(document);
+            String[] texts = getTexts(document);
+            String[] dates = getDates(document);
             pn = getPageNumber(document);
-            int size = texts.size();
-            List<Quote> quotes = new ArrayList<>(texts.size() + 1);
-            for (int i = 0; i < texts.size(); i++) {
+            int size = texts.length;
+            Quote[] quotes = new Quote[size];
+            for (int i = 0; i < size; i++) {
                 Quote quote = new Quote();
-                quote.setDate(dates.get(i));
-                quote.setId(numbers.get(i));
-                quote.setText(texts.get(i));
-                quote.setRating(ratings.get(i));
+                quote.setDate(dates[i]);
+                quote.setId(numbers[i]);
+                quote.setText(texts[i]);
+                quote.setRating(ratings[i]);
                 quote.setPage(pn);
                 if (lastPage != pn) {
                     size--;
                     quote.setIndexOnPage(size);
                 }
-                quotes.add(quote);
+                quotes[i] = quote;
             }
             db.persist(quotes);
         } catch (Exception e) {
@@ -90,62 +88,71 @@ public class BashorgParser {
         return -1;
     }
 
-    public static List<Long> getIds(Document document) {
-        List<Long> strings = new ArrayList<Long>();
+    public static long[] getIds(Document document) {
+        long[] array = new long[Constants.DEFAULT_PAGE_SIZE];
+        int counter = 0;
         Elements numberElements = document.select("a");
         for (Element numberElement : numberElements) {
             if (numberElement.attr("class").equals("id")) {
                 String text = numberElement.html();
                 text = text.substring(1, text.length());
-                strings.add(Long.parseLong(text));
+                array[counter] = Long.parseLong(text);
+                counter++;
             }
         }
-        return strings;
+        return array;
     }
 
-    public static List<String> getTexts(Document document) {
-        List<String> texts = new ArrayList<String>();
+    public static String[] getTexts(Document document) {
+        String[] array = new String[Constants.DEFAULT_PAGE_SIZE];
+        int counter = 0;
         Elements divs = document.select("div");
         for (Element element : divs) {
             if (element.attr("class").equals("text")) {
                 String text = element.html();
                 text = text.replace("<br>", "");
-                texts.add(StringEscapeUtils.unescapeHtml4(text));
+                text = StringEscapeUtils.unescapeHtml4(text);
+                array[counter] = text;
+                counter++;
             }
         }
-        return texts;
+        return array;
     }
 
-    public static List<String> getDates(Document document) {
-        List<String> texts = new ArrayList<String>();
+    public static String[]  getDates(Document document) {
+        String[] array = new String[Constants.DEFAULT_PAGE_SIZE];
+        int counter = 0;
         Elements divs = document.select("span");
         for (Element element : divs) {
             if (element.attr("class").equals("date")) {
                 String text = element.html();
-                texts.add(text);
+                array[counter] = text;
+                counter++;
             }
         }
-        return texts;
+        return array;
     }
 
-    public static List<Long> getRatings(Document document){
-        List<Long> ratings = new ArrayList<>();
+    public static long[] getRatings(Document document){
+        long[] array = new long[Constants.DEFAULT_PAGE_SIZE];
         Elements spans = document.select("span");
+        int counter = 0;
         for (Element span : spans) {
             if (span.attr("class").equals("rating")){
                 if (span.html().equals("...")) {
-                    ratings.add(0l);
+                    array[counter] = 0l;
                     continue;
                 }
                 try {
                     String rating = span.html();
-                    ratings.add(Long.parseLong(rating));
+                    array[counter] = Long.parseLong(rating);
                 } catch (NumberFormatException e) {
-                    ratings.add(0l);
+                    array[counter] = 0l;
                     e.printStackTrace();
                 }
+                counter++;
             }
         }
-        return ratings;
+        return array;
     }
 }
