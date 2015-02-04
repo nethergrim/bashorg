@@ -34,28 +34,27 @@ public class QuoteCursorAdapter extends CursorAdapter {
         super(context, null, 0);
     }
 
-    private boolean isChecked(long id){
+    private boolean isChecked(long id) {
         for (Long selectedRow : selectedRows) {
             if (id == selectedRow) return true;
         }
         return false;
     }
 
-    private void check(long id){
-        if (!isChecked(id)){
+    private void check(long id) {
+        if (!isChecked(id)) {
             selectedRows.add(id);
         }
     }
 
-    private void unCheck(long id){
+    private void unCheck(long id) {
         for (int i = 0; i < selectedRows.size(); i++) {
-            if (selectedRows.get(i) == id){
+            if (selectedRows.get(i) == id) {
                 selectedRows.remove(i);
                 break;
             }
         }
     }
-
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -73,15 +72,15 @@ public class QuoteCursorAdapter extends CursorAdapter {
         quoteViewHolder.textBody.setText(quote.getText());
         quoteViewHolder.textDate.setText(quote.getDate());
         quoteViewHolder.textRating.setText(String.valueOf(quote.getRating()));
-        if (quote.isLiked()){
+        if (quote.isLiked()) {
             quoteViewHolder.btnLike.setImageResource(R.drawable.ic_action_favorite);
         } else {
             quoteViewHolder.btnLike.setImageResource(R.drawable.ic_action_favorite_outline);
         }
-        if (Build.VERSION.SDK_INT >= 21){
+        if (Build.VERSION.SDK_INT >= 21) {
             quoteViewHolder.cardView.setCardElevation(8);
         }
-        if (isChecked(quote.getId())){
+        if (isChecked(quote.getId())) {
             setBtnHeight(1, quoteViewHolder);
         } else {
             setBtnHeight(0, quoteViewHolder);
@@ -91,7 +90,7 @@ public class QuoteCursorAdapter extends CursorAdapter {
             public void onClick(View v) {
                 long id = quote.getId();
                 ValueAnimator animator;
-                if (isChecked(id)){
+                if (isChecked(id)) {
                     animator = ValueAnimator.ofFloat(1f, 0f);
                     unCheck(id);
                 } else {
@@ -123,7 +122,7 @@ public class QuoteCursorAdapter extends CursorAdapter {
             public void onClick(View v) {
                 boolean liked = !quote.isLiked();
                 DB.getInstance().setQuoteLiked(quote.getId(), liked);
-                if (liked){
+                if (liked) {
                     quoteViewHolder.btnLike.setImageResource(R.drawable.ic_action_favorite);
                 } else {
                     quoteViewHolder.btnLike.setImageResource(R.drawable.ic_action_favorite_outline);
@@ -132,7 +131,15 @@ public class QuoteCursorAdapter extends CursorAdapter {
         });
     }
 
-    public static class QuoteViewHolder{
+    public void setBtnHeight(float value, QuoteViewHolder viewHolder) {
+        viewHolder.layoutBottom.getLayoutParams().height = (int) (value * Constants.density * 48);
+        viewHolder.layoutBottom.setAlpha(value);
+        viewHolder.layoutBottom.requestLayout();
+        viewHolder.layoutBottom.setScaleX(value);
+        viewHolder.layoutBottom.setScaleY(value);
+    }
+
+    public static class QuoteViewHolder {
 
         public TextView textId;
         public TextView textDate;
@@ -153,11 +160,5 @@ public class QuoteCursorAdapter extends CursorAdapter {
             btnLike = (ImageButton) v.findViewById(R.id.btn_like);
             layoutBottom = (LinearLayout) v.findViewById(R.id.layout_bottom);
         }
-    }
-
-    public void setBtnHeight(float value, QuoteViewHolder viewHolder){
-        viewHolder.layoutBottom.getLayoutParams().height = (int) (value * Constants.density * 48);
-        viewHolder.layoutBottom.setAlpha(value);
-        viewHolder.layoutBottom.requestLayout();
     }
 }
