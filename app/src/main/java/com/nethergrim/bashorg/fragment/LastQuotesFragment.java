@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.support.v4.content.Loader;
+import android.util.Log;
 
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.Prefs;
@@ -26,16 +27,25 @@ public class LastQuotesFragment extends ViewPagerFragment{
     @Override
     protected void onRefreshTriggered() {
         loadData(getDefaultPageSize());
-        MyIntentService.getPageAndSaveQuotes(getActivity(), 10000000);
     }
 
     @Override
     protected void onLoaded(Loader<Cursor> loader, Cursor cursor) {
+        if (cursor == null || cursor.getCount() == 0){
+            // TODO LOAD FIRST PAGE
+            Log.e("TAG","load first page");
+            MyIntentService.getPageAndSaveQuotes(getActivity(), Constants.PAGE_MAX);
+        } else {
+            // TODO LOAD NEXT PAGE
+            int nextPage = (int) (Prefs.getLastPageNumber() - ( cursor.getCount() / getDefaultPageSize() ));
+            Log.e("TAG", "load next page: " + nextPage);
+            MyIntentService.getPageAndSaveQuotes(getActivity(), nextPage);
+        }
     }
 
     @Override
     protected int getDefaultPageSize() {
-        return 10;
+        return Constants.DEFAULT_PAGE_SIZE;
     }
 
     @Override
@@ -44,9 +54,10 @@ public class LastQuotesFragment extends ViewPagerFragment{
             @Override
             public void onReceive(Context context, Intent intent) {
                 int pageNumber = intent.getExtras().getInt(Constants.EXTRA_PAGE_NUMBER);
+                Log.e("TAG","page fetched: " + pageNumber);
                 if (pageNumber == Prefs.getLastPageNumber()){
                     stopRefreshing();
-                    loadData(150 + loadedItemsCount);
+                    loadData(getDefaultPageSize() + loadedItemsCount);
                 }
             }
         }, new IntentFilter(Constants.ACTION_FETCH_PAGE));

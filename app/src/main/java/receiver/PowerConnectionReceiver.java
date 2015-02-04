@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.BatteryManager;
 
-import com.nethergrim.bashorg.web.RunnerService;
-
 /**
  * Created by andrey_drobyazko on 23.01.15 19:26.
  */
@@ -23,7 +21,7 @@ public class PowerConnectionReceiver extends BroadcastReceiver {
         boolean usbCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_USB;
         boolean acCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_AC;
         if (isCharging){
-            RunnerService.start(context);
+//            RunnerService.start(context);
         }
     }
 }

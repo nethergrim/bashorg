@@ -3,7 +3,6 @@ package com.nethergrim.bashorg.web;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.Prefs;
@@ -48,13 +47,11 @@ public class MyIntentService extends IntentService {
         }
     }
     private void handeActionFetchTopTage(int pageNumber){
-        Log.e("TAG", "fetching top page: " + pageNumber);
         int pn = BashorgParser.parsePageFromTop(pageNumber);
         Prefs.setMaxTopPage(pn);
         Intent intent = new Intent(Constants.ACTION_FETCH_TOP_PAGE);
         intent.putExtra(Constants.EXTRA_PAGE_NUMBER, pn);
         sendBroadcast(intent);
-        Log.e("TAG", "loaded top page: " + pn);
     }
 
     private void handleActionFetchPage(int pageNumber) {
@@ -67,7 +64,6 @@ public class MyIntentService extends IntentService {
                 Intent intent = new Intent(Constants.ACTION_FETCH_PAGE);
                 intent.putExtra(Constants.EXTRA_PAGE_NUMBER, result);
                 sendBroadcast(intent);
-                Log.e("PARSE", "loaded and parsed page: " + result);
             }
         } else {
             if (pageNumber != Prefs.getSmallestLoadedPage()){

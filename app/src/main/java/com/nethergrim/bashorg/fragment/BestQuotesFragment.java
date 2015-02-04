@@ -40,7 +40,7 @@ public class BestQuotesFragment extends ViewPagerFragment {
 
     @Override
     protected int getDefaultPageSize() {
-        return 10;
+        return Constants.DEFAULT_PAGE_SIZE;
     }
 
     @Override

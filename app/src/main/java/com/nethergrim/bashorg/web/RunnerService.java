@@ -27,6 +27,7 @@ public class RunnerService extends Service {
     }
 
     public static void start(Context context) {
+        // TODO fix later
         context.startService(new Intent(context, RunnerService.class));
     }
 

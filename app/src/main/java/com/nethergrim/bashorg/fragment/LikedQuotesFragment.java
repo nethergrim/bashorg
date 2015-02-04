@@ -3,6 +3,7 @@ package com.nethergrim.bashorg.fragment;
 import android.database.Cursor;
 import android.support.v4.content.Loader;
 
+import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.model.QuoteSelection;
 
 /**
@@ -28,7 +29,7 @@ public class LikedQuotesFragment extends ViewPagerFragment {
 
     @Override
     protected int getDefaultPageSize() {
-        return 1000;
+        return Constants.DEFAULT_PAGE_SIZE;
     }
 
     @Override

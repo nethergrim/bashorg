@@ -21,7 +21,6 @@ import com.nethergrim.bashorg.fragment.LastQuotesFragment;
 import com.nethergrim.bashorg.fragment.LikedQuotesFragment;
 import com.nethergrim.bashorg.fragment.RandomQuotesFragment;
 import com.nethergrim.bashorg.model.Quote;
-import com.nethergrim.bashorg.web.RunnerService;
 
 public class MainActivity extends FragmentActivity implements OnTopBarHeightListener {
 
@@ -46,7 +45,7 @@ public class MainActivity extends FragmentActivity implements OnTopBarHeightList
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         loadFragments();
         initTabs();
-        RunnerService.start(this.getApplicationContext());
+//        RunnerService.start(this.getApplicationContext());
     }
 
     private void initTabs() {
