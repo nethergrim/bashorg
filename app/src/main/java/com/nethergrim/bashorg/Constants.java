@@ -24,10 +24,8 @@ public class Constants {
     public static final Interpolator INTERPOLATOR = new AccelerateDecelerateInterpolator();
     public static final String EXTRA_LIMIT = "com.nethergrim.bashorg.web.extra.LIMIT";
     public static final String EXTRA_QUOTE_SELECTION = "com.nethergrim.bashorg.web.extra.QUOTE_SELECTION";
-<<<<<<< HEAD
     public static final int DEFAULT_PAGE_SIZE = 50;
-=======
     public static final String LINK_TO_PLAY_MARKET = "https://play.google.com/store/apps/details?id=com.nethergrim.bashorg";
->>>>>>> 46736d4216003d50ed495a9ddf91d35fcf490065
+    public static final String URL_BASHORG_TOP = "http://bash.im/byrating/";
     public static float density;
 }

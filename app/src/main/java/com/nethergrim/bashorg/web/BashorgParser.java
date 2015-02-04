@@ -20,15 +20,24 @@ public class BashorgParser {
 
     private static int lastPage = -1;
 
-    public static int parseTopTage(int byRatingPage){
-        String url = "http://bash.im/byrating/" + String.valueOf(byRatingPage);
+    public static int parsePageFromTop(int byRatingPage){
         try {
-            Document document = Jsoup.connect(url).get();
+            Document document = Jsoup.connect(Constants.URL_BASHORG_TOP + String.valueOf(byRatingPage)).get();
             return parseDocument(document);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return 0;
+        return -1;
+    }
+
+    public static int parsePage(final String pageNumber) {
+        try {
+            Document document = Jsoup.connect(Constants.URL_BASHORG_PAGE + pageNumber).get();
+            return parseDocument(document);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     private static int parseDocument(Document document){
@@ -56,18 +65,6 @@ public class BashorgParser {
                 quotes[i] = quote;
             }
             db.persist(quotes);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return pn;
-    }
-
-    public static int parsePage(final String pageNumber) {
-        DB db = DB.getInstance();
-        int pn = -1;
-        try {
-            Document document = Jsoup.connect(Constants.URL_BASHORG_PAGE + pageNumber).get();
-            return parseDocument(document);
         } catch (Exception e) {
             e.printStackTrace();
         }

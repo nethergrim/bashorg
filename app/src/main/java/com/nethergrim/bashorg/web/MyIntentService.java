@@ -49,7 +49,7 @@ public class MyIntentService extends IntentService {
     }
     private void handeActionFetchTopTage(int pageNumber){
         Log.e("TAG", "fetching top page: " + pageNumber);
-        int pn = BashorgParser.parseTopTage(pageNumber);
+        int pn = BashorgParser.parsePageFromTop(pageNumber);
         Prefs.setMaxTopPage(pn);
         Intent intent = new Intent(Constants.ACTION_FETCH_TOP_PAGE);
         intent.putExtra(Constants.EXTRA_PAGE_NUMBER, pn);
