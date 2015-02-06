@@ -32,13 +32,11 @@ public class LastQuotesFragment extends ViewPagerFragment{
     @Override
     protected void onLoaded(Loader<Cursor> loader, Cursor cursor) {
         if (cursor == null || cursor.getCount() == 0){
-            // TODO LOAD FIRST PAGE
-            Log.e("TAG","load first page");
-            MyIntentService.getPageAndSaveQuotes(getActivity(), Constants.PAGE_MAX);
+            MyIntentService.getLastPage();
+            Log.e("TAG", "loading first page");
         } else {
-            // TODO LOAD NEXT PAGE
             int nextPage = (int) (Prefs.getLastPageNumber() - ( cursor.getCount() / getDefaultPageSize() ));
-            Log.e("TAG", "load next page: " + nextPage);
+            Log.e("TAG", "loading next page: " + nextPage);
             MyIntentService.getPageAndSaveQuotes(getActivity(), nextPage);
         }
     }
@@ -57,7 +55,7 @@ public class LastQuotesFragment extends ViewPagerFragment{
                 Log.e("TAG","page fetched: " + pageNumber);
                 if (pageNumber == Prefs.getLastPageNumber()){
                     stopRefreshing();
-                    loadData(getDefaultPageSize() + loadedItemsCount);
+                    onRefreshTriggered();
                 }
             }
         }, new IntentFilter(Constants.ACTION_FETCH_PAGE));

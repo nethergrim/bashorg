@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 
+import com.nethergrim.bashorg.App;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.Prefs;
 import com.nethergrim.bashorg.db.DB;
@@ -18,6 +19,10 @@ public class MyIntentService extends IntentService {
 
     public MyIntentService() {
         super("MyIntentService");
+    }
+
+    public static void getLastPage(){
+        getPageAndSaveQuotes(App.getInstance().getApplicationContext(), Constants.PAGE_MAX);
     }
 
     public static void getPageAndSaveQuotes(Context context, int pageNumber) {
@@ -65,15 +70,7 @@ public class MyIntentService extends IntentService {
                 intent.putExtra(Constants.EXTRA_PAGE_NUMBER, result);
                 sendBroadcast(intent);
             }
-        } else {
-            if (pageNumber != Prefs.getSmallestLoadedPage()){
-                handleActionFetchPage(Prefs.getSmallestLoadedPage() - 1);
-            } else {
-                handleActionFetchPage(Prefs.getSmallestLoadedPage() - 2);
-            }
-
         }
-
     }
 
 }

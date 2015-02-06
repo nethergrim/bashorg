@@ -1,4 +1,4 @@
-package receiver;
+package com.nethergrim.bashorg.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

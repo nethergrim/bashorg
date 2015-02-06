@@ -96,11 +96,13 @@ public class DB {
     }
 
     public boolean isQuoteSaved(Quote quote){
+        if (quote == null) return false;
         long size = DatabaseUtils.queryNumEntries(mDB, Quote.Columns.TABLE, Quote.Columns.FIELD_ID + "=?", new String[]{String.valueOf(quote.getId())});
         return size > 0;
     }
 
     public boolean isPageSaved(String pageNumber){
+        if (Integer.parseInt(pageNumber) == Constants.PAGE_MAX) return false;
         long size = DatabaseUtils.queryNumEntries(mDB, Quote.Columns.TABLE, Quote.Columns.FIELD_PAGE + "=?", new String[]{pageNumber});
         return size > 49;
     }

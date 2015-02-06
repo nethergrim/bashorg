@@ -39,6 +39,9 @@ public abstract class ViewPagerFragment extends AbstractFragment implements Swip
     private int maxLoadedItem = 0;
     private QuoteSelection quoteSelection;
 
+    public int getLoadedItemsCount() {
+        return loadedItemsCount;
+    }
 
     protected abstract QuoteSelection getQuoteSelection();
 
@@ -149,7 +152,7 @@ public abstract class ViewPagerFragment extends AbstractFragment implements Swip
             int lastVisibleItem = firstVisibleItem + visibleItemCount;
             if (maxLoadedItem < lastVisibleItem){
                 maxLoadedItem = lastVisibleItem;
-                if (maxLoadedItem + 3 >= loadedItemsCount ){
+                if (maxLoadedItem + 5 >= loadedItemsCount ){
                     loadData(loadedItemsCount + pageSize);
                 }
             }

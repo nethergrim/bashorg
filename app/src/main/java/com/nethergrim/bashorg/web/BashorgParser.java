@@ -44,17 +44,17 @@ public class BashorgParser {
         DB db = DB.getInstance();
         int pn = -1;
         try {
-            long[] numbers = getIds(document);
+            long[] ids = getIds(document);
             long[] ratings = getRatings(document);
             String[] texts = getTexts(document);
             String[] dates = getDates(document);
             pn = getPageNumber(document);
-            int size = texts.length;
+            int size = ids.length;
             Quote[] quotes = new Quote[size];
-            for (int i = 0; i < size; i++) {
+            for (int i = 0; i < quotes.length; i++) {
                 Quote quote = new Quote();
                 quote.setDate(dates[i]);
-                quote.setId(numbers[i]);
+                quote.setId(ids[i]);
                 quote.setText(texts[i]);
                 quote.setRating(ratings[i]);
                 quote.setPage(pn);
