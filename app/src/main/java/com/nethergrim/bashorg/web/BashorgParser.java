@@ -40,6 +40,16 @@ public class BashorgParser {
         return -1;
     }
 
+    public static int parseRandomPage(){
+        try {
+            Document document = Jsoup.connect(Constants.URL_BASHORG_RANDOM_PAGE + "?" + String.valueOf(System.currentTimeMillis())).get();
+            return parseDocument(document);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
     private static int parseDocument(Document document){
         DB db = DB.getInstance();
         int pn = -1;

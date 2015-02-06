@@ -25,6 +25,7 @@ public class LastQuotesFragment extends ViewPagerFragment{
 
     @Override
     protected void onRefreshTriggered() {
+        MyIntentService.getRandomPage();
         MyIntentService.getLastPage();
         loadData(getDefaultPageSize());
     }
@@ -52,7 +53,7 @@ public class LastQuotesFragment extends ViewPagerFragment{
                 int pageNumber = intent.getExtras().getInt(Constants.EXTRA_PAGE_NUMBER);
                 stopRefreshing();
                 if (pageNumber == Prefs.getLastPageNumber()){
-                    onRefreshTriggered();
+                    loadData(getDefaultPageSize());
                 }
             }
         }, new IntentFilter(Constants.ACTION_FETCH_PAGE));

@@ -23,18 +23,17 @@ public class BestQuotesFragment extends ViewPagerFragment {
 
     @Override
     protected void onRefreshTriggered() {
-        loadData(getDefaultPageSize());
         MyIntentService.getTopPageAndSaveQuotes(getActivity(), 1);
-        MyIntentService.getTopPageAndSaveQuotes(getActivity(), 2);
-        MyIntentService.getTopPageAndSaveQuotes(getActivity(), 3);
-        MyIntentService.getTopPageAndSaveQuotes(getActivity(), 4);
-        MyIntentService.getTopPageAndSaveQuotes(getActivity(), 5);
+        loadData(getDefaultPageSize());
     }
 
     @Override
     protected void onLoaded(Loader<Cursor> loader, Cursor cursor) {
-        if (cursor != null && cursor.getCount() == 0){
+        if (cursor == null || cursor.getCount() == 0){
             MyIntentService.getTopPageAndSaveQuotes(getActivity(), 1);
+        } else {
+            int nextPage =  (cursor.getCount() / getDefaultPageSize() )+ 1;
+            MyIntentService.getTopPageAndSaveQuotes(getActivity(), nextPage);
         }
     }
 
@@ -49,9 +48,9 @@ public class BestQuotesFragment extends ViewPagerFragment {
             @Override
             public void onReceive(Context context, Intent intent) {
                 int pageNumber = intent.getExtras().getInt(Constants.EXTRA_PAGE_NUMBER);
+                stopRefreshing();
                 if (pageNumber == 1){
                     loadData(getDefaultPageSize());
-                    stopRefreshing();
                 }
             }
         }, new IntentFilter(Constants.ACTION_FETCH_TOP_PAGE));

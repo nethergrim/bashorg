@@ -25,6 +25,12 @@ public class MyIntentService extends IntentService {
         getPageAndSaveQuotes(App.getInstance().getApplicationContext(), Constants.PAGE_MAX);
     }
 
+    public static void getRandomPage(){
+        Intent intent = new Intent(App.getInstance().getApplicationContext(), MyIntentService.class);
+        intent.setAction(Constants.ACTION_FETCH_RANDOM_PAGE);
+        App.getInstance().getApplicationContext().startService(intent);
+    }
+
     public static void getPageAndSaveQuotes(Context context, int pageNumber) {
         Intent intent = new Intent(context, MyIntentService.class);
         intent.setAction(Constants.ACTION_FETCH_PAGE);
@@ -44,13 +50,20 @@ public class MyIntentService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
             if (Constants.ACTION_FETCH_PAGE.equals(action)) {
-                final int param1 = intent.getIntExtra(Constants.EXTRA_PAGE_NUMBER, 10000000);
+                final int param1 = intent.getIntExtra(Constants.EXTRA_PAGE_NUMBER, Constants.PAGE_MAX);
                 handleActionFetchPage(param1);
             } else if (Constants.ACTION_FETCH_TOP_PAGE.equals(action)){
                 handeActionFetchTopTage(intent.getIntExtra(Constants.EXTRA_PAGE_NUMBER, 1));
+            } else if (Constants.ACTION_FETCH_RANDOM_PAGE.equals(action)){
+                handleActionFetchRandomPage();
             }
         }
     }
+
+    private void handleActionFetchRandomPage(){
+        BashorgParser.parseRandomPage();
+    }
+
     private void handeActionFetchTopTage(int pageNumber){
         int pn = BashorgParser.parsePageFromTop(pageNumber);
         Prefs.setMaxTopPage(pn);

@@ -12,6 +12,7 @@ import android.view.View;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.model.QuoteSelection;
+import com.nethergrim.bashorg.web.MyIntentService;
 
 /**
  * Created by andrey_drobyazko on 11.12.14 19:29.
@@ -27,6 +28,7 @@ public class RandomQuotesFragment extends ViewPagerFragment implements View.OnCl
 
     @Override
     protected void onRefreshTriggered() {
+        MyIntentService.getRandomPage();
         loadData(getDefaultPageSize());
     }
 
@@ -52,6 +54,7 @@ public class RandomQuotesFragment extends ViewPagerFragment implements View.OnCl
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (emptyScreen){
+                    MyIntentService.getRandomPage();
                     loadData(getDefaultPageSize());
                 }
             }
