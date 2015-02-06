@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.support.v4.content.Loader;
-import android.util.Log;
 
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.Prefs;
@@ -26,6 +25,7 @@ public class LastQuotesFragment extends ViewPagerFragment{
 
     @Override
     protected void onRefreshTriggered() {
+        MyIntentService.getLastPage();
         loadData(getDefaultPageSize());
     }
 
@@ -33,10 +33,8 @@ public class LastQuotesFragment extends ViewPagerFragment{
     protected void onLoaded(Loader<Cursor> loader, Cursor cursor) {
         if (cursor == null || cursor.getCount() == 0){
             MyIntentService.getLastPage();
-            Log.e("TAG", "loading first page");
         } else {
             int nextPage = (int) (Prefs.getLastPageNumber() - ( cursor.getCount() / getDefaultPageSize() ));
-            Log.e("TAG", "loading next page: " + nextPage);
             MyIntentService.getPageAndSaveQuotes(getActivity(), nextPage);
         }
     }
@@ -52,9 +50,8 @@ public class LastQuotesFragment extends ViewPagerFragment{
             @Override
             public void onReceive(Context context, Intent intent) {
                 int pageNumber = intent.getExtras().getInt(Constants.EXTRA_PAGE_NUMBER);
-                Log.e("TAG","page fetched: " + pageNumber);
+                stopRefreshing();
                 if (pageNumber == Prefs.getLastPageNumber()){
-                    stopRefreshing();
                     onRefreshTriggered();
                 }
             }
