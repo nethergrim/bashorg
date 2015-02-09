@@ -13,6 +13,8 @@ import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.model.Quote;
 import com.nethergrim.bashorg.model.QuoteSelection;
 
+import java.util.List;
+
 /**
  * Created by andrey_drobyazko on 09.12.14 19:21.
  */
@@ -105,6 +107,18 @@ public class DB {
         if (Integer.parseInt(pageNumber) == Constants.PAGE_MAX) return false;
         long size = DatabaseUtils.queryNumEntries(mDB, Quote.Columns.TABLE, Quote.Columns.FIELD_PAGE + "=?", new String[]{pageNumber});
         return size > 49;
+    }
+
+    public void persist(List<Quote> quotes){
+        mDB.beginTransaction();
+        try{
+            for (Quote quote : quotes) {
+                persist(quote);
+            }
+            mDB.setTransactionSuccessful();
+        } finally {
+            mDB.endTransaction();
+        }
     }
 
     public void persist(Quote[] quotes){

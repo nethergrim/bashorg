@@ -81,4 +81,24 @@ public class Prefs {
     public static int getMaxTopPage(){
         return prefs.getInt(MAX_TOP_PAGE, 1);
     }
+
+    public static void setConnectedToWifi(boolean connected){
+        prefs.edit().putBoolean(KEY_CONNECTED_TO_WIFI, connected).apply();
+    }
+
+    public static boolean isConnectedToWifi(){
+        return prefs.getBoolean(KEY_CONNECTED_TO_WIFI, false);
+    }
+
+    public static void setCharging(boolean charging){
+        prefs.edit().putBoolean(KEY_CHARGING, charging).apply();
+    }
+
+    public static boolean isCharging(){
+        return prefs.getBoolean(KEY_CHARGING, false);
+    }
+
+    public static final String KEY_CHARGING = "charging";
+
+    public static final String KEY_CONNECTED_TO_WIFI = "wifi_connected";
 }

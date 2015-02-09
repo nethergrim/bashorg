@@ -1,13 +1,9 @@
 package com.nethergrim.bashorg;
 
-import android.app.AlarmManager;
 import android.app.Application;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 
 import com.nethergrim.bashorg.db.DB;
-import com.nethergrim.bashorg.web.RunnerService;
+import com.squareup.okhttp.OkHttpClient;
 
 /**
  * Created by nethergrim on 26.11.2014.
@@ -15,6 +11,7 @@ import com.nethergrim.bashorg.web.RunnerService;
 public class App extends Application {
 
     private static App mInstance;
+    private OkHttpClient client = new OkHttpClient();
 
     @Override
     public void onCreate() {
@@ -23,6 +20,10 @@ public class App extends Application {
         Prefs.init(this.getApplicationContext());
         DB.init(this.getApplicationContext());
         Constants.density = getResources().getDisplayMetrics().density;
+    }
+
+    public OkHttpClient getClient() {
+        return client;
     }
 
     public static synchronized App getInstance() {
