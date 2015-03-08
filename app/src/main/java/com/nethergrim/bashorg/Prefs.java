@@ -87,7 +87,7 @@ public class Prefs {
     }
 
     public static boolean isConnectedToWifi(){
-        return prefs.getBoolean(KEY_CONNECTED_TO_WIFI, false);
+        return prefs.getBoolean(KEY_CONNECTED_TO_WIFI, true);
     }
 
     public static void setCharging(boolean charging){
