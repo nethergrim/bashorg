@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@color/background_color"
     android:orientation="vertical"
     tools:context="com.nethergrim.bashorg.activity.MainActivity">
 
@@ -14,12 +14,13 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:background="@null"
         android:layout_height="match_parent">
-
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
+            android:background="@null"
             android:layout_height="match_parent" />
 
         <View
