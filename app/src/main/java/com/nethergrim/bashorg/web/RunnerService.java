@@ -11,20 +11,20 @@ import com.nethergrim.bashorg.Prefs;
 
 public class RunnerService extends Service {
 
-    public static void triggerFetching(){
-        if (Prefs.isCharging() && Prefs.isConnectedToWifi()){
-            Log.e("TAG","fetching");
+    public static void triggerFetching() {
+        if (Prefs.isCharging() && Prefs.isConnectedToWifi()) {
+            Log.e("TAG", "fetching");
             start(App.getInstance().getApplicationContext());
         }
+    }
+
+    public static void start(Context context) {
+        context.startService(new Intent(context, RunnerService.class));
     }
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
-    }
-
-    public static void start(Context context) {
-        context.startService(new Intent(context, RunnerService.class));
     }
 
     @Override
@@ -36,7 +36,20 @@ public class RunnerService extends Service {
     private void fetchLastData() {
         MyIntentService.getLastPage();
         MyIntentService.getRandomPage();
+        MyIntentService.getRandomPage();
+        MyIntentService.getRandomPage();
+        MyIntentService.getRandomPage();
+        MyIntentService.getRandomPage();
+        MyIntentService.getRandomPage();
+        MyIntentService.getRandomPage();
+        MyIntentService.getRandomPage();
+        MyIntentService.getRandomPage();
+        MyIntentService.getRandomPage();
+        MyIntentService.getRandomPage();
+        MyIntentService.getRandomPage();
+        MyIntentService.getRandomPage();
         MyIntentService.getPageAndSaveQuotes(this, (int) (Prefs.getLastPageNumber() - 1));
+        stopSelf();
     }
 
 

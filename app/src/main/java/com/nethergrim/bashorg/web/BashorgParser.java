@@ -12,6 +12,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.Random;
 
 /**
  * Created by nethergrim on 26.11.2014.
@@ -42,7 +43,7 @@ public class BashorgParser {
 
     public static int parseRandomPage() {
         try {
-            Document document = Jsoup.connect(Constants.URL_BASHORG_RANDOM_PAGE + "?" + String.valueOf(System.currentTimeMillis())).get();
+            Document document = Jsoup.connect(Constants.URL_BASHORG_RANDOM_PAGE + "?" + new Random().nextLong()).get();
             return parseDocument(document);
         } catch (Exception e) {
             e.printStackTrace();
