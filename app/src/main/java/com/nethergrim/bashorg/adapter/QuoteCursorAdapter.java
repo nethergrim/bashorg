@@ -36,7 +36,13 @@ public class QuoteCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, final Context context, Cursor cursor) {
         final QuoteViewHolder quoteViewHolder = (QuoteViewHolder) view.getTag();
-        final Quote quote = new QuoteInflater().inflateEntityAtCurrentPosition(cursor);
+        Quote quote = new QuoteInflater().inflateEntityAtCurrentPosition(cursor);
+
+
+        final String quoteText = quote.getText();
+        final long quoteId = quote.getId();
+        final boolean quoteIsLiked = !quote.isLiked();
+
         quoteViewHolder.textId.setText("#" + String.valueOf(quote.getId()));
         quoteViewHolder.textBody.setText(quote.getText());
         quoteViewHolder.textDate.setText(quote.getDate());
@@ -50,22 +56,23 @@ public class QuoteCursorAdapter extends CursorAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Constants.ACTION_SHARE_QUOTE);
-                intent.putExtra(Constants.EXTRA_QUOTE, quote);
+                intent.putExtra(Constants.EXTRA_QUOTE, quoteText);
                 context.sendBroadcast(intent);
             }
         });
         quoteViewHolder.btnLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean liked = !quote.isLiked();
-                DB.getInstance().setQuoteLiked(quote.getId(), liked);
-                if (liked) {
+                DB.getInstance().setQuoteLiked(quoteId, quoteIsLiked);
+                if (quoteIsLiked) {
                     quoteViewHolder.btnLike.setImageResource(R.drawable.ic_action_favorite);
                 } else {
                     quoteViewHolder.btnLike.setImageResource(R.drawable.ic_action_favorite_outline);
                 }
             }
         });
+        quote.recycle();
+        quote = null;
     }
 
     public static class QuoteViewHolder {

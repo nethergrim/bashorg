@@ -1,12 +1,14 @@
 package com.nethergrim.bashorg.model;
 
 
+import com.nethergrim.bashorg.db.pools.QuotePoolHolder;
+
 import java.io.Serializable;
 
 /**
  * Created by nethergrim on 26.11.2014.
  */
-public class Quote  implements Serializable{
+public class Quote implements Serializable {
 
     private String text;
     private String date;
@@ -16,6 +18,12 @@ public class Quote  implements Serializable{
     private long rating;
     private boolean liked = false;
 
+    public Quote() {
+    }
+
+    public static Quote newInstance() {
+        return QuotePoolHolder.quoutePool.get();
+    }
 
     public String getText() {
         return text;
@@ -73,15 +81,19 @@ public class Quote  implements Serializable{
         this.liked = liked;
     }
 
-    public interface Columns{
-        public static final String TABLE = "quote_table";
+    public void recycle() {
+        QuotePoolHolder.quoutePool.recycle(this);
+    }
 
-        public static final String FIELD_ID = "_id";
-        public static final String FIELD_BODY = "body";
-        public static final String FIELD_PAGE = "page";
-        public static final String FIELD_RATING = "rating";
-        public static final String FIELD_DATE = "date";
-        public static final String FIELD_INDEX_ON_PAGE = "index_on_page";
-        public static final String FIELD_LIKED = "liked";
+    public interface Columns {
+        String TABLE = "quote_table";
+
+        String FIELD_ID = "_id";
+        String FIELD_BODY = "body";
+        String FIELD_PAGE = "page";
+        String FIELD_RATING = "rating";
+        String FIELD_DATE = "date";
+        String FIELD_INDEX_ON_PAGE = "index_on_page";
+        String FIELD_LIKED = "liked";
     }
 }

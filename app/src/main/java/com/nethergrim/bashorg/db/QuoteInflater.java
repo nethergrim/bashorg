@@ -12,7 +12,7 @@ public class QuoteInflater extends EntityInflater<Quote> implements Quote.Column
 
     @Override
     public Quote inflateEntityAtCurrentPosition(Cursor c) {
-        Quote quote = new Quote();
+        Quote quote = Quote.newInstance();
         quote.setId(c.getLong(c.getColumnIndex(FIELD_ID)));
         quote.setText(c.getString(c.getColumnIndex(FIELD_BODY)));
         quote.setDate(c.getString(c.getColumnIndex(FIELD_DATE)));
