@@ -15,14 +15,12 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.FragmentAdapter;
-import com.nethergrim.bashorg.callback.OnTopBarHeightListener;
 import com.nethergrim.bashorg.fragment.BestQuotesFragment;
 import com.nethergrim.bashorg.fragment.LastQuotesFragment;
 import com.nethergrim.bashorg.fragment.LikedQuotesFragment;
 import com.nethergrim.bashorg.fragment.RandomQuotesFragment;
-import com.nethergrim.bashorg.model.Quote;
 
-public class MainActivity extends FragmentActivity implements OnTopBarHeightListener {
+public class MainActivity extends FragmentActivity {
 
     private ViewPager pager;
     private FragmentAdapter adapter;
@@ -30,12 +28,11 @@ public class MainActivity extends FragmentActivity implements OnTopBarHeightList
     private IntentFilter filter = new IntentFilter(Constants.ACTION_SHARE_QUOTE);
     private BroadcastReceiver receiver;
     private int maxHeight;
-    private boolean collapsed = false;
-    private boolean animating = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         setContentView(R.layout.activity_main);
         maxHeight = (int) (getResources().getDimension(R.dimen.top_bar_opened));
         pager = (ViewPager) findViewById(R.id.pager);
@@ -75,10 +72,10 @@ public class MainActivity extends FragmentActivity implements OnTopBarHeightList
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Quote quote = (Quote) intent.getSerializableExtra(Constants.EXTRA_QUOTE);
+                String quote = intent.getStringExtra(Constants.EXTRA_QUOTE);
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, quote.getText() + getString(R.string.from_app) + " " + getString(R.string.app_name) + ":\n" + Constants.LINK_TO_PLAY_MARKET);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, quote + getString(R.string.from_app) + " " + getString(R.string.app_name) + ":\n" + Constants.LINK_TO_PLAY_MARKET);
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
 
@@ -93,15 +90,4 @@ public class MainActivity extends FragmentActivity implements OnTopBarHeightList
         unregisterReceiver(receiver);
     }
 
-    @Override
-    public void onTopBarHeightChanged(float heightDelta) {
-
-    }
-
-    private void changeTabsHeight(float value){
-        float newHeight = value * maxHeight;
-        tabs.getLayoutParams().height = (int) newHeight;
-        tabs.requestLayout();
-        collapsed = value <= 0.99;
-    }
 }

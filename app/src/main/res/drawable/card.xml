@@ -13,7 +13,7 @@
             android:dither="true"
             android:shape="rectangle" >
             <corners android:radius="2dp" />
-            <solid android:color="@color/white" />
+            <solid android:color="@android:color/white" />
             <padding
                 android:bottom="8dp"
                 android:left="8dp"

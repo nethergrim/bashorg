@@ -1,10 +1,8 @@
 package com.nethergrim.bashorg.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import com.nethergrim.bashorg.callback.OnTopBarHeightListener;
 
 
 /**
@@ -12,17 +10,6 @@ import com.nethergrim.bashorg.callback.OnTopBarHeightListener;
  */
 public abstract class AbstractFragment extends Fragment {
 
-    protected OnTopBarHeightListener onTopBarHeightListener;
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            this.onTopBarHeightListener = (OnTopBarHeightListener) activity;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,9 +17,5 @@ public abstract class AbstractFragment extends Fragment {
         setRetainInstance(true);
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        this.onTopBarHeightListener = null;
-    }
+
 }
