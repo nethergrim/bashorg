@@ -27,7 +27,7 @@ public class QuoteCursorAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        View v = LayoutInflater.from(context).inflate(R.layout.row_quote, parent);
+        View v = LayoutInflater.from(context).inflate(R.layout.row_quote, parent, false);
         QuoteViewHolder quoteViewHolder = new QuoteViewHolder(v);
         v.setTag(quoteViewHolder);
         return v;
@@ -37,7 +37,6 @@ public class QuoteCursorAdapter extends CursorAdapter {
     public void bindView(View view, final Context context, Cursor cursor) {
         final QuoteViewHolder quoteViewHolder = (QuoteViewHolder) view.getTag();
         Quote quote = new QuoteInflater().inflateEntityAtCurrentPosition(cursor);
-
 
         final String quoteText = quote.getText();
         final long quoteId = quote.getId();

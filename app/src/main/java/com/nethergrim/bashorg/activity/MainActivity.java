@@ -7,11 +7,11 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
-import com.astuetz.PagerSlidingTabStrip;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.FragmentAdapter;
@@ -20,11 +20,11 @@ import com.nethergrim.bashorg.fragment.LastQuotesFragment;
 import com.nethergrim.bashorg.fragment.LikedQuotesFragment;
 import com.nethergrim.bashorg.fragment.RandomQuotesFragment;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements TabLayout.OnTabSelectedListener {
 
     private ViewPager pager;
     private FragmentAdapter adapter;
-    private PagerSlidingTabStrip tabs;
+    private TabLayout tabs;
     private IntentFilter filter = new IntentFilter(Constants.ACTION_SHARE_QUOTE);
     private BroadcastReceiver receiver;
 
@@ -37,18 +37,14 @@ public class MainActivity extends FragmentActivity {
         adapter = new FragmentAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
         pager.setOffscreenPageLimit(6);
-        tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabs = (TabLayout) findViewById(R.id.tabs);
         loadFragments();
         initTabs();
     }
 
     private void initTabs() {
-        tabs.setIndicatorHeight((int) (2 * Constants.density));
-        tabs.setIndicatorColor(getResources().getColor(R.color.accent));
         tabs.setBackgroundColor(getResources().getColor(R.color.main_color));
-        tabs.setTextColor(Color.WHITE);
-        tabs.setDividerColor(Color.TRANSPARENT);
-        tabs.setUnderlineColor(Color.TRANSPARENT);
+        tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
         if (Build.VERSION.SDK_INT >= 21) {
             tabs.setTranslationZ(8 * Constants.density);
         } else {
@@ -57,11 +53,17 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void loadFragments() {
+        tabs.setTabTextColors(getResources().getColor(R.color.white_alpha_50), Color.WHITE);
         adapter.addFragment(new LastQuotesFragment(), getString(R.string.last));
         adapter.addFragment(new RandomQuotesFragment(), getString(R.string.random));
         adapter.addFragment(new BestQuotesFragment(), getString(R.string.best));
         adapter.addFragment(new LikedQuotesFragment(), getString(R.string.liked));
-        tabs.setViewPager(pager);
+        tabs.addTab(tabs.newTab().setText(R.string.last).setTag(Integer.valueOf(0)));
+        tabs.addTab(tabs.newTab().setText(R.string.random).setTag(Integer.valueOf(1)));
+        tabs.addTab(tabs.newTab().setText(R.string.best).setTag(Integer.valueOf(2)));
+        tabs.addTab(tabs.newTab().setText(R.string.liked).setTag(Integer.valueOf(3)));
+        tabs.setOnTabSelectedListener(this);
+        pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
     }
 
     @Override
@@ -88,4 +90,19 @@ public class MainActivity extends FragmentActivity {
         unregisterReceiver(receiver);
     }
 
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        Integer id = (Integer) tab.getTag();
+        pager.setCurrentItem(id, true);
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
+    }
 }
