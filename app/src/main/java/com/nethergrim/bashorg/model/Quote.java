@@ -22,7 +22,7 @@ public class Quote implements Serializable {
     }
 
     public static Quote newInstance() {
-        return QuotePoolHolder.quoutePool.get();
+        return QuotePoolHolder.getQuotePool().acquire();
     }
 
     public String getText() {
@@ -82,7 +82,7 @@ public class Quote implements Serializable {
     }
 
     public void recycle() {
-        QuotePoolHolder.quoutePool.recycle(this);
+        QuotePoolHolder.getQuotePool().release(this);
     }
 
     public interface Columns {

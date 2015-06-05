@@ -27,14 +27,12 @@ public class MainActivity extends FragmentActivity {
     private PagerSlidingTabStrip tabs;
     private IntentFilter filter = new IntentFilter(Constants.ACTION_SHARE_QUOTE);
     private BroadcastReceiver receiver;
-    private int maxHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         setContentView(R.layout.activity_main);
-        maxHeight = (int) (getResources().getDimension(R.dimen.top_bar_opened));
         pager = (ViewPager) findViewById(R.id.pager);
         adapter = new FragmentAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);

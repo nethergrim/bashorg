@@ -15,10 +15,26 @@ import java.io.IOException;
 import java.util.Random;
 
 /**
- * Created by nethergrim on 26.11.2014.
+ * @author nethergrim on 26.11.2014.
  */
 public class BashorgParser {
 
+    public static final String INPUT = "input";
+    public static final String CLASS = "class";
+    public static final String PAGE = "page";
+    public static final String VALUE = "value";
+    public static final String MAX = "max";
+    public static final String A = "a";
+    public static final String ID = "id";
+    public static final String DIV = "div";
+    public static final String TEXT = "text";
+    public static final String BR = "<br>";
+    public static final String EMPTY_STRING = "";
+    public static final String SPAN = "span";
+    public static final String DATE = "date";
+    public static final String RATING = "rating";
+    public static final String THREE_DOTS = "...";
+    public static final String QUESTION = "?";
     private static int lastPage = -1;
 
     public static int parsePageFromTop(int byRatingPage) {
@@ -43,14 +59,13 @@ public class BashorgParser {
 
     public static int parseRandomPage() {
         try {
-            Document document = Jsoup.connect(Constants.URL_BASHORG_RANDOM_PAGE + "?" + new Random().nextLong()).get();
+            Document document = Jsoup.connect(Constants.URL_BASHORG_RANDOM_PAGE + QUESTION + new Random().nextLong()).get();
             return parseDocument(document);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return -1;
     }
-
 
     private static int parseDocument(Document document) {
         Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
@@ -64,7 +79,7 @@ public class BashorgParser {
             pn = getPageNumber(document);
             int size = ids.length;
             Quote[] quotes = new Quote[size];
-            for (int i = 0; i < quotes.length; i++) {
+            for (int i = 0, quotes_size = quotes.length; i < quotes_size; i++) {
                 Quote quote = Quote.newInstance();
                 quote.setDate(dates[i]);
                 quote.setId(ids[i]);
@@ -89,11 +104,12 @@ public class BashorgParser {
     }
 
     public static int getPageNumber(Document document) {
-        Elements elements = document.select("input");
-        for (Element element : elements) {
-            if (element.attr("class").equals("page")) {
-                String currentPage = element.attr("value");
-                String maxPage = element.attr("max");
+        Elements elements = document.select(INPUT);
+        for (int i = 0, size = elements.size(); i < size; i++) {
+            Element element = elements.get(i);
+            if (element.attr(CLASS).equals(PAGE)) {
+                String currentPage = element.attr(VALUE);
+                String maxPage = element.attr(MAX);
                 Prefs.setLastPageNumber(Long.parseLong(maxPage));
                 lastPage = Integer.parseInt(maxPage);
                 return Integer.parseInt(currentPage);
@@ -105,9 +121,10 @@ public class BashorgParser {
     public static long[] getIds(Document document) {
         long[] array = new long[Constants.DEFAULT_PAGE_SIZE];
         int counter = 0;
-        Elements numberElements = document.select("a");
-        for (Element numberElement : numberElements) {
-            if (numberElement.attr("class").equals("id")) {
+        Elements numberElements = document.select(A);
+        for (int i = 0, size = numberElements.size(); i < size; i++) {
+            Element numberElement = numberElements.get(i);
+            if (numberElement.attr(CLASS).equals(ID)) {
                 String text = numberElement.html();
                 text = text.substring(1, text.length());
                 array[counter] = Long.parseLong(text);
@@ -120,11 +137,13 @@ public class BashorgParser {
     public static String[] getTexts(Document document) {
         String[] array = new String[Constants.DEFAULT_PAGE_SIZE];
         int counter = 0;
-        Elements divs = document.select("div");
-        for (Element element : divs) {
-            if (element.attr("class").equals("text")) {
+        Elements divs = document.select(DIV);
+
+        for (int i = 0, size = divs.size(); i < size; i++) {
+            Element element = divs.get(i);
+            if (element.attr(CLASS).equals(TEXT)) {
                 String text = element.html();
-                text = text.replace("<br>", "");
+                text = text.replace(BR, EMPTY_STRING);
                 text = StringEscapeUtils.unescapeHtml4(text);
                 array[counter] = text;
                 counter++;
@@ -136,9 +155,11 @@ public class BashorgParser {
     public static String[] getDates(Document document) {
         String[] array = new String[Constants.DEFAULT_PAGE_SIZE];
         int counter = 0;
-        Elements divs = document.select("span");
-        for (Element element : divs) {
-            if (element.attr("class").equals("date")) {
+        Elements divs = document.select(SPAN);
+
+        for (int i = 0, size = divs.size(); i < size; i++) {
+            Element element = divs.get(i);
+            if (element.attr(CLASS).equals(DATE)) {
                 String text = element.html();
                 array[counter] = text;
                 counter++;
@@ -149,11 +170,13 @@ public class BashorgParser {
 
     public static long[] getRatings(Document document) {
         long[] array = new long[Constants.DEFAULT_PAGE_SIZE];
-        Elements spans = document.select("span");
+        Elements spans = document.select(SPAN);
         int counter = 0;
-        for (Element span : spans) {
-            if (span.attr("class").equals("rating")) {
-                if (span.html().equals("...")) {
+
+        for (int i = 0, size = spans.size(); i < size; i++) {
+            Element span = spans.get(i);
+            if (span.attr(CLASS).equals(RATING)) {
+                if (span.html().equals(THREE_DOTS)) {
                     array[counter] = 0l;
                     continue;
                 }
