@@ -17,7 +17,7 @@ import com.nethergrim.bashorg.db.QuoteInflater;
 import com.nethergrim.bashorg.model.Quote;
 
 /**
- * Created by andrey_drobyazko on 09.12.14 20:21.
+ * @author andrey_drobyazko on 09.12.14 20:21.
  */
 public class QuoteCursorAdapter extends CursorAdapter {
 
@@ -27,7 +27,7 @@ public class QuoteCursorAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        View v = LayoutInflater.from(context).inflate(R.layout.row_quote, null);
+        View v = LayoutInflater.from(context).inflate(R.layout.row_quote, parent);
         QuoteViewHolder quoteViewHolder = new QuoteViewHolder(v);
         v.setTag(quoteViewHolder);
         return v;
@@ -72,7 +72,6 @@ public class QuoteCursorAdapter extends CursorAdapter {
             }
         });
         quote.recycle();
-        quote = null;
     }
 
     public static class QuoteViewHolder {
