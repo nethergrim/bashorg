@@ -8,5 +8,6 @@
     <string name="liked">Избранные</string>
     <string name="load_more">Загрузить еще</string>
     <string name="from_app">\n\nЦитата из приложения</string>
+    <string name="settings">Настройки</string>
 
 </resources>

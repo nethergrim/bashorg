@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -24,6 +25,7 @@ public class MainActivity extends FragmentActivity implements TabLayout.OnTabSel
 
     private ViewPager pager;
     private FragmentAdapter adapter;
+    private NavigationView mNavigationView;
     private TabLayout tabs;
     private IntentFilter filter = new IntentFilter(Constants.ACTION_SHARE_QUOTE);
     private BroadcastReceiver receiver;
@@ -32,8 +34,9 @@ public class MainActivity extends FragmentActivity implements TabLayout.OnTabSel
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_with_pager);
         pager = (ViewPager) findViewById(R.id.pager);
+        mNavigationView = (NavigationView) findViewById(R.id.navigationView);
         adapter = new FragmentAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
         pager.setOffscreenPageLimit(6);
@@ -50,6 +53,7 @@ public class MainActivity extends FragmentActivity implements TabLayout.OnTabSel
         } else {
             findViewById(R.id.shadow).setVisibility(View.VISIBLE);
         }
+        mNavigationView.setBackgroundColor(Color.WHITE);
     }
 
     private void loadFragments() {
