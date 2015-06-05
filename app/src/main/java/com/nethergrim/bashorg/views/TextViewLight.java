@@ -30,9 +30,9 @@ public class TextViewLight extends TextView {
     }
 
     public void init() {
-        if (!isInEditMode()){
-            Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/" + Constants.ROBOTO_LIGHT);
-            setTypeface(tf ,1);
+        if (!isInEditMode()) {
+            Typeface tf = Typeface.createFromAsset(getContext().getAssets(), Constants.ROBOTO_LIGHT);
+            setTypeface(tf, 1);
         }
     }
 

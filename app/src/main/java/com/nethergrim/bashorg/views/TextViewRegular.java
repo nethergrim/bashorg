@@ -30,7 +30,7 @@ public class TextViewRegular extends TextView {
 
     public void init() {
         if (!isInEditMode()){
-            Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/" + Constants.ROBOTO_REGULAR);
+            Typeface tf = Typeface.createFromAsset(getContext().getAssets(), Constants.ROBOTO_REGULAR);
             setTypeface(tf ,1);
         }
     }

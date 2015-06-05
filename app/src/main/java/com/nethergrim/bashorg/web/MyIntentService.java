@@ -21,11 +21,11 @@ public class MyIntentService extends IntentService {
         super("MyIntentService");
     }
 
-    public static void getLastPage(){
+    public static void getLastPage() {
         getPageAndSaveQuotes(App.getInstance().getApplicationContext(), Constants.PAGE_MAX);
     }
 
-    public static void getRandomPage(){
+    public static void getRandomPage() {
         Intent intent = new Intent(App.getInstance().getApplicationContext(), MyIntentService.class);
         intent.setAction(Constants.ACTION_FETCH_RANDOM_PAGE);
         App.getInstance().getApplicationContext().startService(intent);
@@ -38,7 +38,7 @@ public class MyIntentService extends IntentService {
         context.startService(intent);
     }
 
-    public static void getTopPageAndSaveQuotes(Context context, int pageNumber){
+    public static void getTopPageAndSaveQuotes(Context context, int pageNumber) {
         Intent intent = new Intent(context, MyIntentService.class);
         intent.setAction(Constants.ACTION_FETCH_TOP_PAGE);
         intent.putExtra(Constants.EXTRA_PAGE_NUMBER, pageNumber);
@@ -52,19 +52,19 @@ public class MyIntentService extends IntentService {
             if (Constants.ACTION_FETCH_PAGE.equals(action)) {
                 final int param1 = intent.getIntExtra(Constants.EXTRA_PAGE_NUMBER, Constants.PAGE_MAX);
                 handleActionFetchPage(param1);
-            } else if (Constants.ACTION_FETCH_TOP_PAGE.equals(action)){
+            } else if (Constants.ACTION_FETCH_TOP_PAGE.equals(action)) {
                 handeActionFetchTopTage(intent.getIntExtra(Constants.EXTRA_PAGE_NUMBER, 1));
-            } else if (Constants.ACTION_FETCH_RANDOM_PAGE.equals(action)){
+            } else if (Constants.ACTION_FETCH_RANDOM_PAGE.equals(action)) {
                 handleActionFetchRandomPage();
             }
         }
     }
 
-    private void handleActionFetchRandomPage(){
+    private void handleActionFetchRandomPage() {
         BashorgParser.parseRandomPage();
     }
 
-    private void handeActionFetchTopTage(int pageNumber){
+    private void handeActionFetchTopTage(int pageNumber) {
         int pn = BashorgParser.parsePageFromTop(pageNumber);
         Prefs.setMaxTopPage(pn);
         Intent intent = new Intent(Constants.ACTION_FETCH_TOP_PAGE);
@@ -75,7 +75,7 @@ public class MyIntentService extends IntentService {
     private void handleActionFetchPage(int pageNumber) {
         DB db = DB.getInstance();
         if (pageNumber == 0) return;
-        if (!db.isPageSaved(String.valueOf(pageNumber))){
+        if (!db.isPageSaved(String.valueOf(pageNumber))) {
             int result = BashorgParser.parsePage(String.valueOf(pageNumber));
             if (result > 0) {
                 Prefs.setSmallestLoadedPage(result);

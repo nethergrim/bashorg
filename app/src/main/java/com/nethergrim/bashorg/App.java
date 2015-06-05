@@ -3,7 +3,6 @@ package com.nethergrim.bashorg;
 import android.app.Application;
 
 import com.nethergrim.bashorg.db.DB;
-import com.squareup.okhttp.OkHttpClient;
 
 /**
  * Created by nethergrim on 26.11.2014.
@@ -11,7 +10,10 @@ import com.squareup.okhttp.OkHttpClient;
 public class App extends Application {
 
     private static App mInstance;
-    private OkHttpClient client = new OkHttpClient();
+
+    public static synchronized App getInstance() {
+        return mInstance;
+    }
 
     @Override
     public void onCreate() {
@@ -20,14 +22,6 @@ public class App extends Application {
         Prefs.init(this.getApplicationContext());
         DB.init(this.getApplicationContext());
         Constants.density = getResources().getDisplayMetrics().density;
-    }
-
-    public OkHttpClient getClient() {
-        return client;
-    }
-
-    public static synchronized App getInstance() {
-        return mInstance;
     }
 
 
