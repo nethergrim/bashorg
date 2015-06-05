@@ -2,6 +2,7 @@
 <resources>
 
     <color name="main_color">#1976D2</color>
+    <color name="main_color_opacity_20">#391976d2</color>
     <color name="accent">#FFC107</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#727272</color>
@@ -9,5 +10,6 @@
     <color name="background_color">#d2d2d2</color>
 
     <color name="white.alpha_50">#80FFFFFF</color>
+
 
 </resources>

@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -54,6 +55,10 @@ public class MainActivity extends FragmentActivity implements TabLayout.OnTabSel
             findViewById(R.id.shadow).setVisibility(View.VISIBLE);
         }
         mNavigationView.setBackgroundColor(Color.WHITE);
+        mNavigationView.setItemBackground(getResources().getDrawable(R.drawable.menu_item_selector));
+        mNavigationView.setItemTextColor(ColorStateList.valueOf(getResources().getColor(R.color.secondary_text)));
+        mNavigationView.setItemIconTintList(ColorStateList.valueOf(getResources().getColor(R.color.secondary_text)));
+
     }
 
     private void loadFragments() {
