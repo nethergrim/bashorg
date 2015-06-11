@@ -84,7 +84,7 @@ public class MainActivity extends FragmentActivity implements TabLayout.OnTabSel
                 String quote = intent.getStringExtra(Constants.EXTRA_QUOTE);
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, quote + getString(R.string.from_app) + " " + getString(R.string.app_name) + ":\n" + Constants.LINK_TO_PLAY_MARKET);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, quote);
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
 
