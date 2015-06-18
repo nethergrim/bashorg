@@ -22,11 +22,11 @@ public class XReceiver extends BroadcastReceiver {
         if (intent.getAction().equals(Intent.ACTION_POWER_DISCONNECTED)) {
             chargingConnected(false);
         }
+        checkPossibilityToFetchData();
     }
 
     private void chargingConnected(boolean charging) {
         Prefs.setCharging(charging);
-        checkPossibilityToFetchData();
     }
 
     private void checkPossibilityToFetchData() {
