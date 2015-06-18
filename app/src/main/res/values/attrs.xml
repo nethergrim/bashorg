@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <attr name="myColorBackground" format="reference" />
+    <attr name="myColorActionBar" format="reference" />
+    <attr name="myColorAccent" format="reference" />
+    <attr name="myColorPrimaryColor" format="reference" />
+    <attr name="myColorSecondaryColor" format="reference" />
+
+
+</resources>
