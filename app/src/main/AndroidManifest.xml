@@ -30,19 +30,11 @@
             android:enabled="true"
             android:exported="true" />
 
-        <receiver android:name=".receiver.PowerConnectionReceiver" >
+        <receiver android:name=".receiver.XReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name=".receiver.WifiReceiver"
-            android:enabled="true"
-            android:exported="true" >
-
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
     </application>

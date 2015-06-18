@@ -71,7 +71,7 @@ ADDED from AndroidManifest.xml:28:9
 		ADDED from AndroidManifest.xml:30:13
 	android:name
 		ADDED from AndroidManifest.xml:29:13
-receiver#com.nethergrim.bashorg.receiver.PowerConnectionReceiver
+receiver#com.nethergrim.bashorg.receiver.XReceiver
 ADDED from AndroidManifest.xml:33:9
 	android:name
 		ADDED from AndroidManifest.xml:33:19

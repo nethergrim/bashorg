@@ -4,7 +4,6 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.nethergrim.bashorg.App;
 import com.nethergrim.bashorg.Prefs;
@@ -12,10 +11,7 @@ import com.nethergrim.bashorg.Prefs;
 public class RunnerService extends Service {
 
     public static void triggerFetching() {
-        if (Prefs.isCharging() && Prefs.isConnectedToWifi()) {
-            Log.e("TAG", "fetching");
-            start(App.getInstance().getApplicationContext());
-        }
+        start(App.getInstance().getApplicationContext());
     }
 
     public static void start(Context context) {
@@ -35,20 +31,10 @@ public class RunnerService extends Service {
 
     private void fetchLastData() {
         MyIntentService.getLastPage();
-        MyIntentService.getRandomPage();
-        MyIntentService.getRandomPage();
-        MyIntentService.getRandomPage();
-        MyIntentService.getRandomPage();
-        MyIntentService.getRandomPage();
-        MyIntentService.getRandomPage();
-        MyIntentService.getRandomPage();
-        MyIntentService.getRandomPage();
-        MyIntentService.getRandomPage();
-        MyIntentService.getRandomPage();
-        MyIntentService.getRandomPage();
-        MyIntentService.getRandomPage();
-        MyIntentService.getRandomPage();
         MyIntentService.getPageAndSaveQuotes(this, (int) (Prefs.getLastPageNumber() - 1));
+        for (int i = 0; i < 30; i++) {
+            MyIntentService.getRandomPage();
+        }
         stopSelf();
     }
 
