@@ -3,6 +3,7 @@ package com.nethergrim.bashorg.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
+import com.nethergrim.bashorg.ThemeUtils;
+import com.nethergrim.bashorg.Utils;
 import com.nethergrim.bashorg.db.DB;
 import com.nethergrim.bashorg.db.QuoteInflater;
 import com.nethergrim.bashorg.model.Quote;
@@ -21,8 +24,15 @@ import com.nethergrim.bashorg.model.Quote;
  */
 public class QuoteCursorAdapter extends CursorAdapter {
 
+    private Drawable mDrawbleShareButton;
+    private Drawable mDrawbleLikeButtonOff;
+    private Drawable mDrawbleLikeButtonOn;
+
     public QuoteCursorAdapter(Context context) {
         super(context, null, 0);
+        mDrawbleShareButton = Utils.tintIcon(R.drawable.ic_social_share, R.color.dark_theme_buttons_color);
+        mDrawbleLikeButtonOff = Utils.tintIcon(R.drawable.ic_action_favorite_outline, R.color.dark_theme_buttons_color);
+        mDrawbleLikeButtonOn = Utils.tintIcon(R.drawable.ic_action_favorite, R.color.dark_accent);
     }
 
     @Override
@@ -35,23 +45,19 @@ public class QuoteCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, final Context context, Cursor cursor) {
-        final QuoteViewHolder quoteViewHolder = (QuoteViewHolder) view.getTag();
-        Quote quote = new QuoteInflater().inflateEntityAtCurrentPosition(cursor);
+        final QuoteViewHolder vh = (QuoteViewHolder) view.getTag();
+        Quote q = new QuoteInflater().inflateEntityAtCurrentPosition(cursor);
 
-        final String quoteText = quote.getText();
-        final long quoteId = quote.getId();
-        final boolean quoteIsLiked = !quote.isLiked();
+        final String quoteText = q.getText();
+        final long quoteId = q.getId();
+        final boolean quoteIsLiked = !q.isLiked();
 
-        quoteViewHolder.textId.setText("#" + String.valueOf(quote.getId()));
-        quoteViewHolder.textBody.setText(quote.getText());
-        quoteViewHolder.textDate.setText(quote.getDate());
-        quoteViewHolder.textRating.setText(String.valueOf(quote.getRating()));
-        if (quote.isLiked()) {
-            quoteViewHolder.btnLike.setImageResource(R.drawable.ic_action_favorite);
-        } else {
-            quoteViewHolder.btnLike.setImageResource(R.drawable.ic_action_favorite_outline);
-        }
-        quoteViewHolder.btnShare.setOnClickListener(new View.OnClickListener() {
+        vh.textId.setText("#" + String.valueOf(q.getId()));
+        vh.textBody.setText(q.getText());
+        vh.textDate.setText(q.getDate());
+        vh.textRating.setText(String.valueOf(q.getRating()));
+        setLikeIcon(vh.btnLike, q.isLiked());
+        vh.btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Constants.ACTION_SHARE_QUOTE);
@@ -59,18 +65,35 @@ public class QuoteCursorAdapter extends CursorAdapter {
                 context.sendBroadcast(intent);
             }
         });
-        quoteViewHolder.btnLike.setOnClickListener(new View.OnClickListener() {
+        if (ThemeUtils.isADarkTheme()) {
+            vh.btnShare.setImageDrawable(mDrawbleShareButton);
+        }
+        vh.btnLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DB.getInstance().setQuoteLiked(quoteId, quoteIsLiked);
-                if (quoteIsLiked) {
-                    quoteViewHolder.btnLike.setImageResource(R.drawable.ic_action_favorite);
-                } else {
-                    quoteViewHolder.btnLike.setImageResource(R.drawable.ic_action_favorite_outline);
-                }
+                setLikeIcon(vh.btnLike, quoteIsLiked);
             }
         });
-        quote.recycle();
+        q.recycle();
+    }
+
+    private void setLikeIcon(ImageButton ib, boolean liked) {
+        if (liked) {
+            if (ThemeUtils.isADarkTheme()) {
+                ib.setImageDrawable(mDrawbleLikeButtonOn);
+            } else {
+                ib.setImageResource(R.drawable.ic_action_favorite);
+            }
+
+        } else {
+            if (ThemeUtils.isADarkTheme()) {
+                ib.setImageDrawable(mDrawbleLikeButtonOff);
+            } else {
+                ib.setImageResource(R.drawable.ic_action_favorite_outline);
+            }
+
+        }
     }
 
     public static class QuoteViewHolder {

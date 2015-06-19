@@ -16,6 +16,7 @@ import android.view.View;
 
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
+import com.nethergrim.bashorg.ThemeUtils;
 import com.nethergrim.bashorg.adapter.FragmentAdapter;
 import com.nethergrim.bashorg.fragment.BestQuotesFragment;
 import com.nethergrim.bashorg.fragment.LastQuotesFragment;
@@ -31,13 +32,9 @@ public class MainActivity extends FragmentActivity implements TabLayout.OnTabSel
     private IntentFilter filter = new IntentFilter(Constants.ACTION_SHARE_QUOTE);
     private BroadcastReceiver receiver;
 
-    private boolean isDarkTheme() {
-        return true;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (isDarkTheme()) {
+        if (ThemeUtils.isADarkTheme()) {
             setTheme(R.style.My_Theme_Dark);
         } else {
             setTheme(R.style.My_Theme_Light);
