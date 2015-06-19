@@ -19,7 +19,7 @@
     <color name="dark_primary_text">#BDBDBD</color>
     <color name="dark_secondary_text">#616161</color>
     <color name="dark_background">#424242</color>
-    <color name="dark_window_background">#212121</color>
+    <color name="dark_window_background">#303030</color>
 
 
 </resources>
