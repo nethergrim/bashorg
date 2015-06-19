@@ -1,5 +1,11 @@
 package com.nethergrim.bashorg;
 
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ScaleXSpan;
+
 /**
  * Created by nethergrim on 28.11.2014.
  */
@@ -24,4 +30,25 @@ public class Constants {
     public static final String URL_BASHORG_TOP = "http://bash.im/byrating/";
     public static final int PAGE_MAX = Integer.MAX_VALUE;
     public static float density;
+
+
+    public static Spannable applyKerning(CharSequence src, float kerning) {
+        if (src == null) return null;
+        final int srcLength = src.length();
+        if (srcLength < 2) return src instanceof Spannable
+                ? (Spannable) src
+                : new SpannableString(src);
+
+        final String nonBreakingSpace = "\u00A0";
+        final SpannableStringBuilder builder = src instanceof SpannableStringBuilder
+                ? (SpannableStringBuilder) src
+                : new SpannableStringBuilder(src);
+        for (int i = src.length() - 1; i >= 1; i--) {
+            builder.insert(i, nonBreakingSpace);
+            builder.setSpan(new ScaleXSpan(kerning), i, i + 1,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+
+        return builder;
+    }
 }
