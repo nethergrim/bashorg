@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    card_view:cardBackgroundColor="@android:color/white"
+    card_view:cardBackgroundColor="?attr/myColorBackground"
     card_view:cardCornerRadius="1dp"
     card_view:cardElevation="2dp"
     card_view:cardUseCompatPadding="true"
@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top|left"
         android:text="date"
-        android:textColor="@color/secondary_text"
+        android:textColor="?attr/myColorSecondaryColor"
         android:textSize="14sp" />
 
     <com.nethergrim.bashorg.views.TextViewThin
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top|center_horizontal"
         android:text="rating"
-        android:textColor="@color/secondary_text"
+        android:textColor="?attr/myColorSecondaryColor"
         android:textSize="14sp" />
 
     <com.nethergrim.bashorg.views.TextViewThin
@@ -36,7 +36,7 @@
         android:layout_gravity="top|right"
         android:layout_marginLeft="16dp"
         android:text="id"
-        android:textColor="@color/secondary_text"
+        android:textColor="?attr/myColorSecondaryColor"
         android:textSize="14sp" />
 
     <com.nethergrim.bashorg.views.TextViewLight
@@ -46,7 +46,7 @@
         android:layout_marginBottom="40dp"
         android:layout_marginTop="24dp"
         android:text="content content content content content content content content content content "
-        android:textColor="@color/primary_text"
+        android:textColor="?attr/myColorPrimaryColor"
         android:textSize="16sp" />
 
     <LinearLayout

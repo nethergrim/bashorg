@@ -7,14 +7,14 @@
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/top_bar_opened" />
+        android:layout_height="@dimen/top_bar_opened"
+        android:background="?attr/myColorActionBar" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/top_bar_opened"
-        android:background="@null" />
+        android:layout_marginTop="@dimen/top_bar_opened" />
 
     <View
         android:id="@+id/shadow"

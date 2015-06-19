@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="white.alpha_50">#80FFFFFF</color>
+    <color name="item_clicked_color">#391976d2</color>
+
+    <!--   Light theme   -->
+
     <color name="main_color">#1976D2</color>
-    <color name="main_color_opacity_20">#391976d2</color>
     <color name="accent">#FFC107</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#727272</color>
-    <color name="divider_color">#B6B6B6</color>
-    <color name="background_color">#d2d2d2</color>
+    <color name="background">#FFFFFF</color>
+    <color name="window_background">#BDBDBD</color>
 
-    <color name="white.alpha_50">#80FFFFFF</color>
+    <!--  Dark theme -->
+    <color name="dark_main_color">#212121</color>
+    <color name="dark_accent">#FF7043</color>
+    <color name="dark_primary_text">#BDBDBD</color>
+    <color name="dark_secondary_text">#616161</color>
+    <color name="dark_background">#424242</color>
+    <color name="dark_window_background">#212121</color>
 
 
 </resources>

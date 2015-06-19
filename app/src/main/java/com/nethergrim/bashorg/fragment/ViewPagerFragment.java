@@ -2,12 +2,14 @@ package com.nethergrim.bashorg.fragment;
 
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,12 +32,12 @@ public abstract class ViewPagerFragment extends AbstractFragment implements Swip
 
     protected ListView list;
     protected SwipeRefreshLayout refreshLayout;
+    protected int loadedItemsCount = 0;
     private int loaderId;
     private BroadcastReceiver receiver;
     private IntentFilter filter;
     private CursorAdapter adapter;
     private int pageSize = 0;
-    protected int loadedItemsCount = 0;
     private int maxLoadedItem = 0;
     private QuoteSelection quoteSelection;
 
@@ -71,11 +73,18 @@ public abstract class ViewPagerFragment extends AbstractFragment implements Swip
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = getActivity().getTheme();
+        theme.resolveAttribute(R.attr.myColorActionBar, typedValue, true);
+        int mainColor = typedValue.data;
+
         this.loaderId = new Random().nextInt();
         this.list = (ListView) view.findViewById(R.id.recycler_view);
         this.refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe);
         refreshLayout.setOnRefreshListener(this);
-        refreshLayout.setColorSchemeResources(R.color.main_color, R.color.accent, R.color.main_color, R.color.accent);
+        refreshLayout.setColorSchemeColors(mainColor);
+
         this.adapter = new QuoteCursorAdapter(getActivity());
         list.setAdapter(adapter);
         list.setOnScrollListener(this);
@@ -137,7 +146,7 @@ public abstract class ViewPagerFragment extends AbstractFragment implements Swip
         this.filter = filter;
     }
 
-    protected void stopRefreshing(){
+    protected void stopRefreshing() {
         if (refreshLayout != null) refreshLayout.setRefreshing(false);
     }
 
@@ -148,11 +157,11 @@ public abstract class ViewPagerFragment extends AbstractFragment implements Swip
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        if (autoLoadNextPage()){
+        if (autoLoadNextPage()) {
             int lastVisibleItem = firstVisibleItem + visibleItemCount;
-            if (maxLoadedItem < lastVisibleItem){
+            if (maxLoadedItem < lastVisibleItem) {
                 maxLoadedItem = lastVisibleItem;
-                if (maxLoadedItem + 5 >= loadedItemsCount ){
+                if (maxLoadedItem + 5 >= loadedItemsCount) {
                     loadData(loadedItemsCount + pageSize);
                 }
             }

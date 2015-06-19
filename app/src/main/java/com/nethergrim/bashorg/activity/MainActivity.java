@@ -31,8 +31,19 @@ public class MainActivity extends FragmentActivity implements TabLayout.OnTabSel
     private IntentFilter filter = new IntentFilter(Constants.ACTION_SHARE_QUOTE);
     private BroadcastReceiver receiver;
 
+    private boolean isDarkTheme() {
+        return true;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (isDarkTheme()) {
+            setTheme(R.style.My_Theme_Dark);
+        } else {
+            setTheme(R.style.My_Theme_Light);
+        }
+
+
         super.onCreate(savedInstanceState);
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         setContentView(R.layout.activity_main_with_pager);
@@ -47,7 +58,6 @@ public class MainActivity extends FragmentActivity implements TabLayout.OnTabSel
     }
 
     private void initTabs() {
-        tabs.setBackgroundColor(getResources().getColor(R.color.main_color));
         tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
         if (Build.VERSION.SDK_INT >= 21) {
             tabs.setTranslationZ(8 * Constants.density);
