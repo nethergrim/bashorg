@@ -4,11 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -27,7 +25,6 @@ public class MainActivity extends FragmentActivity implements TabLayout.OnTabSel
 
     private ViewPager pager;
     private FragmentAdapter adapter;
-    private NavigationView mNavigationView;
     private TabLayout tabs;
     private IntentFilter filter = new IntentFilter(Constants.ACTION_SHARE_QUOTE);
     private BroadcastReceiver receiver;
@@ -43,9 +40,8 @@ public class MainActivity extends FragmentActivity implements TabLayout.OnTabSel
 
         super.onCreate(savedInstanceState);
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-        setContentView(R.layout.activity_main_with_pager);
+        setContentView(R.layout.activity_main);
         pager = (ViewPager) findViewById(R.id.pager);
-        mNavigationView = (NavigationView) findViewById(R.id.navigationView);
         adapter = new FragmentAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
         pager.setOffscreenPageLimit(6);
@@ -61,11 +57,6 @@ public class MainActivity extends FragmentActivity implements TabLayout.OnTabSel
         } else {
             findViewById(R.id.shadow).setVisibility(View.VISIBLE);
         }
-        mNavigationView.setBackgroundColor(Color.WHITE);
-        mNavigationView.setItemBackground(getResources().getDrawable(R.drawable.menu_item_selector));
-        mNavigationView.setItemTextColor(ColorStateList.valueOf(getResources().getColor(R.color.secondary_text)));
-        mNavigationView.setItemIconTintList(ColorStateList.valueOf(getResources().getColor(R.color.secondary_text)));
-
     }
 
     private void loadFragments() {
