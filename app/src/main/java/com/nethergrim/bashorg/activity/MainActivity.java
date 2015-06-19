@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+import com.github.clans.fab.FloatingActionButton;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.ThemeUtils;
@@ -21,13 +22,15 @@ import com.nethergrim.bashorg.fragment.LastQuotesFragment;
 import com.nethergrim.bashorg.fragment.LikedQuotesFragment;
 import com.nethergrim.bashorg.fragment.RandomQuotesFragment;
 
-public class MainActivity extends FragmentActivity implements TabLayout.OnTabSelectedListener {
+
+public class MainActivity extends FragmentActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener {
 
     private ViewPager pager;
     private FragmentAdapter adapter;
     private TabLayout tabs;
     private IntentFilter filter = new IntentFilter(Constants.ACTION_SHARE_QUOTE);
     private BroadcastReceiver receiver;
+    private FloatingActionButton mFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,8 @@ public class MainActivity extends FragmentActivity implements TabLayout.OnTabSel
         pager.setAdapter(adapter);
         pager.setOffscreenPageLimit(6);
         tabs = (TabLayout) findViewById(R.id.tabs);
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        mFab.setOnClickListener(this);
         loadFragments();
         initTabs();
     }
@@ -111,5 +116,10 @@ public class MainActivity extends FragmentActivity implements TabLayout.OnTabSel
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        // fab
     }
 }

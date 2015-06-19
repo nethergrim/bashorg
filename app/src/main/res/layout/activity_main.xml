@@ -22,6 +22,21 @@
         android:layout_height="8dp"
         android:layout_marginTop="@dimen/top_bar_opened"
         android:background="@drawable/shadow_gradient"
+
         android:visibility="invisible" />
+
+    <com.github.clans.fab.FloatingActionButton xmlns:fab="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:layout_marginBottom="12dp"
+        android:layout_marginRight="12dp"
+        android:src="@drawable/ic_action_settings"
+        fab:fab_colorNormal="?attr/myColorAccent"
+        fab:fab_colorPressed="?attr/myColorAccent"
+        fab:fab_colorRipple="@color/white.alpha_50"
+        fab:fab_showShadow="true"
+        fab:fab_size="mini" />
 
 </FrameLayout>
