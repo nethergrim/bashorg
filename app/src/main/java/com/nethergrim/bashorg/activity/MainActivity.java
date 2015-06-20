@@ -120,6 +120,6 @@ public class MainActivity extends FragmentActivity implements TabLayout.OnTabSel
 
     @Override
     public void onClick(View view) {
-        // fab
+        SettingsActivity.start(this);
     }
 }

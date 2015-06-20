@@ -9,5 +9,7 @@
     <string name="load_more">Загрузить еще</string>
     <string name="from_app">\n\nЦитата из приложения</string>
     <string name="settings">Настройки</string>
+    <string name="font_size">Размер Шрифта</string>
+    <string name="you_can_select_font_size_for_quotes_manually">Ты можешь выбрать размер шрифта в цитатах.</string>
 
 </resources>

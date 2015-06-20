@@ -6,6 +6,6 @@ package com.nethergrim.bashorg;
 public class ThemeUtils {
 
     public static boolean isADarkTheme() {
-        return true; // TODO implement shared preferences here
+        return false; // TODO implement shared preferences here
     }
 }

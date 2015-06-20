@@ -3,8 +3,8 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
     }
-    compileSdkVersion 21
-    buildToolsVersion "21.1.1"
+    compileSdkVersion 22
+    buildToolsVersion "21.1.2"
     defaultConfig {
         applicationId "com.nethergrim.bashorg"
         minSdkVersion 15
@@ -32,4 +32,5 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile 'com.android.support:support-annotations:22.2.0'
     compile 'com.github.clans:fab:1.5.0'
+    compile 'com.jakewharton:butterknife:5.1.1'
 }
