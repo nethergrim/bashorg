@@ -11,6 +11,58 @@
         android:background="?attr/myColorActionBar"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+
+            <com.nethergrim.bashorg.views.TextViewThin
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/font_size"
+                android:textColor="?attr/myColorPrimaryColor"
+                android:textSize="18sp" />
+
+            <com.nethergrim.bashorg.views.TextViewLight
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/you_can_select_font_size_for_quotes_manually"
+                android:textColor="?attr/myColorSecondaryColor" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="36dp">
+
+                <SeekBar
+                    android:id="@+id/seekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="48dp" />
+
+                <com.nethergrim.bashorg.views.TextViewThin
+                    android:id="@+id/tv_progress_value"
+                    android:layout_width="48dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:gravity="center"
+                    android:textColor="?attr/myColorPrimaryColor"
+                    android:textSize="20sp" />
+
+            </FrameLayout>
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
 
 </RelativeLayout>
 

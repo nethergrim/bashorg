@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.ThemeUtils;
@@ -16,10 +18,16 @@ import butterknife.InjectView;
 /**
  * @author andrej on 20.06.15.
  */
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
 
+    public static final int MAX_VALUE = 24;
+    public static final int MIN_VALUE = 10;
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;
+    @InjectView(R.id.seekBar)
+    SeekBar mSeekbar;
+    @InjectView(R.id.tv_progress_value)
+    TextView mTvProgressValue;
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, SettingsActivity.class));
@@ -36,6 +44,17 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         ButterKnife.inject(this);
         initActionBar();
+        initSeekBar();
+    }
+
+    private void initSeekBar() {
+        int fontSizeSP = ThemeUtils.getFontSize();
+        int fontSizePX = (int) ThemeUtils.spTopx(fontSizeSP);
+        mTvProgressValue.setText(String.valueOf(fontSizeSP));
+        mSeekbar.setProgress(fontSizeSP);
+        mSeekbar.setOnSeekBarChangeListener(this);
+        mSeekbar.setMax(MAX_VALUE);
+
     }
 
     private void initActionBar() {
@@ -50,5 +69,32 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        if (progress < MIN_VALUE) {
+            seekBar.setProgress(MIN_VALUE);
+            progress = MIN_VALUE;
+        }
+        if (fromUser) {
+            mTvProgressValue.setText(String.valueOf(progress));
+            ThemeUtils.setFontSize(progress);
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
 }
