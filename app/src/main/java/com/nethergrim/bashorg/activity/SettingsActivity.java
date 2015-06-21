@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.ThemeUtils;
+import com.nethergrim.bashorg.adapter.QuoteCursorAdapter;
+import com.nethergrim.bashorg.adapter.viewholder.QuoteViewHolder;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -28,6 +31,8 @@ public class SettingsActivity extends AppCompatActivity implements SeekBar.OnSee
     SeekBar mSeekbar;
     @InjectView(R.id.tv_progress_value)
     TextView mTvProgressValue;
+    @InjectView(R.id.container_for_example_quote)
+    FrameLayout mQuoteContainer;
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, SettingsActivity.class));
@@ -49,11 +54,13 @@ public class SettingsActivity extends AppCompatActivity implements SeekBar.OnSee
 
     private void initSeekBar() {
         int fontSizeSP = ThemeUtils.getFontSize();
-        int fontSizePX = (int) ThemeUtils.spTopx(fontSizeSP);
         mTvProgressValue.setText(String.valueOf(fontSizeSP));
         mSeekbar.setProgress(fontSizeSP);
         mSeekbar.setOnSeekBarChangeListener(this);
         mSeekbar.setMax(MAX_VALUE);
+        QuoteCursorAdapter adapter = new QuoteCursorAdapter(this);
+        View view = adapter.getView(0, null, mQuoteContainer);
+        QuoteViewHolder vh = new QuoteViewHolder(view);
 
     }
 
