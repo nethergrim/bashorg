@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -34,6 +35,11 @@ public class SettingsActivity extends AppCompatActivity implements SeekBar.OnSee
     TextView mTvProgressValue;
     @InjectView(R.id.container_for_example_quote)
     FrameLayout mQuoteContainer;
+    @InjectView(R.id.layout_theme)
+    LinearLayout mThemeLayout;
+    @InjectView(R.id.text_theme_value)
+    TextView mTVThemeValue;
+
     private QuoteViewHolder mQuoteVH;
 
     public static void start(Context context) {
@@ -50,8 +56,24 @@ public class SettingsActivity extends AppCompatActivity implements SeekBar.OnSee
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         ButterKnife.inject(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         initActionBar();
         initSeekBar();
+        initThemeLayout();
+    }
+
+    private void initThemeLayout() {
+        mTVThemeValue.setText(ThemeUtils.isADarkTheme() ? R.string.dark_theme : R.string.light_theme);
+        mThemeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO show themes dialog
+            }
+        });
     }
 
     private void initSeekBar() {
@@ -67,6 +89,7 @@ public class SettingsActivity extends AppCompatActivity implements SeekBar.OnSee
         mQuoteVH = new QuoteViewHolder(v);
         Quote quote = ThemeUtils.getDefaultQuote();
         mQuoteVH.bindQuouteData(quote, this);
+        mQuoteContainer.removeAllViews();
         mQuoteContainer.addView(v);
         mQuoteVH.changeTextSize(fontSizeSP);
 

@@ -11,5 +11,8 @@
     <string name="settings">Настройки</string>
     <string name="font_size">Размер Шрифта</string>
     <string name="you_can_select_font_size_for_quotes_manually">Ты можешь выбрать размер шрифта в цитатах.</string>
+    <string name="theme">Тема</string>
+    <string name="light_theme">Светлая Тема</string>
+    <string name="dark_theme">Темная Тема</string>
 
 </resources>
