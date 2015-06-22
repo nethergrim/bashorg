@@ -4,6 +4,7 @@
     <color name="white.alpha_50">#80FFFFFF</color>
     <color name="item_clicked_color">#391976d2</color>
     <color name="divider_color">#B6B6B6</color>
+    <color name="theme_selector_activity_background">#2196F3</color>
 
     <!--   Light theme   -->
 

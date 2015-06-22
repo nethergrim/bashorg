@@ -71,7 +71,7 @@ public class SettingsActivity extends AppCompatActivity implements SeekBar.OnSee
         mThemeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO show themes dialog
+                ThemeSelectorActivity.start(SettingsActivity.this);
             }
         });
     }

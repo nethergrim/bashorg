@@ -27,6 +27,10 @@
             android:name=".activity.SettingsActivity"
             android:configChanges="orientation|screenSize" />
 
+        <activity
+            android:name=".activity.ThemeSelectorActivity"
+            android:configChanges="orientation|screenSize" />
+
         <service
             android:name=".web.MyIntentService"
             android:exported="false" />
