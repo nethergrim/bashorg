@@ -23,16 +23,6 @@ public class ThemeUtils {
         Prefs.setFontSize(size);
     }
 
-    public static float pxToSp(float px) {
-        float scaledDensity = App.getInstance().getResources().getDisplayMetrics().scaledDensity;
-        return px / scaledDensity;
-    }
-
-    public static float spTopx(float sp) {
-        float scaledDensity = App.getInstance().getResources().getDisplayMetrics().scaledDensity;
-        return sp * scaledDensity;
-    }
-
     public static Quote getDefaultQuote() {
         Quote mDefaultQuote;
         mDefaultQuote = Quote.newInstance();

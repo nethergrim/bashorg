@@ -11,7 +11,7 @@
     card_view:cardUseCompatPadding="true"
     card_view:contentPadding="8dp">
 
-    <com.nethergrim.bashorg.views.TextViewThin
+    <com.nethergrim.bashorg.views.TextViewLight
         android:id="@+id/text_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         android:textColor="?attr/myColorSecondaryColor"
         android:textSize="14sp" />
 
-    <com.nethergrim.bashorg.views.TextViewThin
+    <com.nethergrim.bashorg.views.TextViewLight
         android:id="@+id/text_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
         android:textColor="?attr/myColorSecondaryColor"
         android:textSize="14sp" />
 
-    <com.nethergrim.bashorg.views.TextViewThin
+    <com.nethergrim.bashorg.views.TextViewLight
         android:id="@+id/text_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
         android:textColor="?attr/myColorSecondaryColor"
         android:textSize="14sp" />
 
-    <com.nethergrim.bashorg.views.TextViewLight
+    <com.nethergrim.bashorg.views.TextViewRegular
         android:id="@+id/text_body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

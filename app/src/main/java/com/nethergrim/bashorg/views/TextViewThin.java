@@ -30,9 +30,9 @@ public class TextViewThin extends TextView {
     }
 
     public void init() {
-        if (!isInEditMode()){
+        if (!isInEditMode()) {
             Typeface tf = Typeface.createFromAsset(getContext().getAssets(), Constants.ROBOTO_THIN);
-            setTypeface(tf ,1);
+            setTypeface(tf);
         }
     }
 

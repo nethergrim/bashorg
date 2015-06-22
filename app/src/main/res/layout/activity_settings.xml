@@ -11,6 +11,12 @@
         android:background="?attr/myColorActionBar"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_below="@+id/toolbar"
+        android:background="@drawable/shadow_gradient" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,18 +29,19 @@
             android:padding="16dp">
 
 
-            <com.nethergrim.bashorg.views.TextViewThin
+            <com.nethergrim.bashorg.views.TextViewLight
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/font_size"
                 android:textColor="?attr/myColorPrimaryColor"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
-            <com.nethergrim.bashorg.views.TextViewLight
+            <com.nethergrim.bashorg.views.TextViewRegular
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/you_can_select_font_size_for_quotes_manually"
-                android:textColor="?attr/myColorSecondaryColor" />
+                android:textColor="?attr/myColorSecondaryColor"
+                android:textSize="14sp" />
 
             <FrameLayout
                 android:layout_width="match_parent"

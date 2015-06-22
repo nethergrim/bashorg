@@ -29,9 +29,9 @@ public class TextViewRegular extends TextView {
     }
 
     public void init() {
-        if (!isInEditMode()){
+        if (!isInEditMode()) {
             Typeface tf = Typeface.createFromAsset(getContext().getAssets(), Constants.ROBOTO_REGULAR);
-            setTypeface(tf ,1);
+            setTypeface(tf);
         }
     }
 

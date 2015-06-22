@@ -39,9 +39,16 @@ public class QuoteViewHolder {
         btnShare = (ImageButton) v.findViewById(R.id.btn_share);
         btnLike = (ImageButton) v.findViewById(R.id.btn_like);
 
-        mDrawbleShareButton = Utils.tintIcon(R.drawable.ic_social_share, R.color.dark_theme_buttons_color);
-        mDrawbleLikeButtonOff = Utils.tintIcon(R.drawable.ic_action_favorite_outline, R.color.dark_theme_buttons_color);
-        mDrawbleLikeButtonOn = Utils.tintIcon(R.drawable.ic_action_favorite, R.color.dark_accent);
+        if (ThemeUtils.isADarkTheme()) {
+            mDrawbleShareButton = Utils.tintIcon(R.drawable.ic_social_share, R.color.dark_theme_buttons_color);
+            mDrawbleLikeButtonOff = Utils.tintIcon(R.drawable.ic_action_favorite_outline, R.color.dark_theme_buttons_color);
+            mDrawbleLikeButtonOn = Utils.tintIcon(R.drawable.ic_action_favorite, R.color.dark_accent);
+        } else {
+            mDrawbleShareButton = Utils.tintIcon(R.drawable.ic_social_share, R.color.main_color);
+            mDrawbleLikeButtonOff = Utils.tintIcon(R.drawable.ic_action_favorite_outline, R.color.accent);
+            mDrawbleLikeButtonOn = Utils.tintIcon(R.drawable.ic_action_favorite, R.color.accent);
+        }
+
     }
 
     public void bindQuouteData(Quote q, final Context context) {
