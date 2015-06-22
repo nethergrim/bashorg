@@ -3,6 +3,7 @@ package com.nethergrim.bashorg.adapter.viewholder;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -93,7 +94,7 @@ public class QuoteViewHolder {
 
     public void changeTextSize(int textSizeSP) {
         if (textBody != null) {
-            textBody.setTextSize(ThemeUtils.spTopx(textSizeSP));
+            textBody.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSP);
         }
     }
 }

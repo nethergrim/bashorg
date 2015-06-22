@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
@@ -12,8 +13,8 @@ import android.widget.TextView;
 
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.ThemeUtils;
-import com.nethergrim.bashorg.adapter.QuoteCursorAdapter;
 import com.nethergrim.bashorg.adapter.viewholder.QuoteViewHolder;
+import com.nethergrim.bashorg.model.Quote;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -33,6 +34,7 @@ public class SettingsActivity extends AppCompatActivity implements SeekBar.OnSee
     TextView mTvProgressValue;
     @InjectView(R.id.container_for_example_quote)
     FrameLayout mQuoteContainer;
+    private QuoteViewHolder mQuoteVH;
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, SettingsActivity.class));
@@ -58,9 +60,15 @@ public class SettingsActivity extends AppCompatActivity implements SeekBar.OnSee
         mSeekbar.setProgress(fontSizeSP);
         mSeekbar.setOnSeekBarChangeListener(this);
         mSeekbar.setMax(MAX_VALUE);
-        QuoteCursorAdapter adapter = new QuoteCursorAdapter(this);
-        View view = adapter.getView(0, null, mQuoteContainer);
-        QuoteViewHolder vh = new QuoteViewHolder(view);
+        View v = LayoutInflater.from(this).inflate(R.layout.row_quote, mQuoteContainer, false);
+        QuoteViewHolder quoteViewHolder = new QuoteViewHolder(v);
+        v.setTag(quoteViewHolder);
+
+        mQuoteVH = new QuoteViewHolder(v);
+        Quote quote = ThemeUtils.getDefaultQuote();
+        mQuoteVH.bindQuouteData(quote, this);
+        mQuoteContainer.addView(v);
+        mQuoteVH.changeTextSize(fontSizeSP);
 
     }
 
@@ -92,6 +100,7 @@ public class SettingsActivity extends AppCompatActivity implements SeekBar.OnSee
         if (fromUser) {
             mTvProgressValue.setText(String.valueOf(progress));
             ThemeUtils.setFontSize(progress);
+            mQuoteVH.changeTextSize(progress);
         }
     }
 
