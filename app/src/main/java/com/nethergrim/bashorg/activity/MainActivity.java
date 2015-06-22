@@ -30,16 +30,15 @@ public class MainActivity extends FragmentActivity implements TabLayout.OnTabSel
     private TabLayout tabs;
     private IntentFilter filter = new IntentFilter(Constants.ACTION_SHARE_QUOTE);
     private BroadcastReceiver receiver;
-    private FloatingActionButton mFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeUtils.setDarkTheme(false);
         if (ThemeUtils.isADarkTheme()) {
             setTheme(R.style.My_Theme_Dark);
         } else {
             setTheme(R.style.My_Theme_Light);
         }
-
 
         super.onCreate(savedInstanceState);
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
@@ -49,7 +48,7 @@ public class MainActivity extends FragmentActivity implements TabLayout.OnTabSel
         pager.setAdapter(adapter);
         pager.setOffscreenPageLimit(6);
         tabs = (TabLayout) findViewById(R.id.tabs);
-        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton mFab = (FloatingActionButton) findViewById(R.id.fab);
         mFab.setOnClickListener(this);
         loadFragments();
         initTabs();
