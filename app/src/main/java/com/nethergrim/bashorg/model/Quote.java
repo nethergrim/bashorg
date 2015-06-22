@@ -82,7 +82,11 @@ public class Quote implements Serializable {
     }
 
     public void recycle() {
-        QuotePoolHolder.getQuotePool().release(this);
+        try {
+            QuotePoolHolder.getQuotePool().release(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public interface Columns {

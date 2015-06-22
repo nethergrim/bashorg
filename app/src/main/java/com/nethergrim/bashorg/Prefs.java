@@ -10,6 +10,9 @@ import android.preference.PreferenceManager;
 public class Prefs {
 
     public static final String KEY_CHARGING = "charging";
+    public static final String KEY_FONT_SIZE = "font_size";
+    public static final int DEFAULT_FONT_SIZE = 16;
+    public static final String KEY_DARK_THEME_ENABLED = "dark_theme_enabled";
     private static final String SMALLEST_PAGE = "connection_couner";
     private static final String MAX_TOP_PAGE = "MAX_TOP_PAGE";
     private static SharedPreferences prefs;
@@ -51,5 +54,21 @@ public class Prefs {
 
     public static void setCharging(boolean charging) {
         prefs.edit().putBoolean(KEY_CHARGING, charging).apply();
+    }
+
+    public static int getFontSize() {
+        return prefs.getInt(KEY_FONT_SIZE, DEFAULT_FONT_SIZE);
+    }
+
+    public static void setFontSize(int newFontSize) {
+        prefs.edit().putInt(KEY_FONT_SIZE, newFontSize).apply();
+    }
+
+    public static boolean isDarkThemeEnabled() {
+        return prefs.getBoolean(KEY_DARK_THEME_ENABLED, false);
+    }
+
+    public static void setDarkThemeEnabled(boolean enabled) {
+        prefs.edit().putBoolean(KEY_DARK_THEME_ENABLED, enabled).apply();
     }
 }

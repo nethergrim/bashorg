@@ -7,22 +7,20 @@ import com.nethergrim.bashorg.model.Quote;
  */
 public class ThemeUtils {
 
-    public static Quote mDefaultQuote;
-
     public static boolean isADarkTheme() {
-        return false; // TODO implement shared preferences here
+        return Prefs.isDarkThemeEnabled();
     }
 
     public static void setDarkTheme(boolean dark) {
-        // TODO
+        Prefs.setDarkThemeEnabled(dark);
     }
 
     public static int getFontSize() {
-        return 16;
+        return Prefs.getFontSize();
     }
 
-    public static void setFontSize(float size) {
-        // TODO
+    public static void setFontSize(int size) {
+        Prefs.setFontSize(size);
     }
 
     public static float pxToSp(float px) {
@@ -36,17 +34,17 @@ public class ThemeUtils {
     }
 
     public static Quote getDefaultQuote() {
-        if (mDefaultQuote == null) {
-            mDefaultQuote = Quote.newInstance();
-            mDefaultQuote.setId(0);
-            mDefaultQuote.setLiked(false);
-            mDefaultQuote.setRating(100500);
-            mDefaultQuote.setDate("12.12.2012");
-            mDefaultQuote.setText("Она: ответь мне, только честно, да или нет, хорошо?\n" +
-                    "Он: спрашивай\n" +
-                    "Она: почему мужчины смеются над блондинками?\n" +
-                    "Он: да");
-        }
+        Quote mDefaultQuote;
+        mDefaultQuote = Quote.newInstance();
+        mDefaultQuote.setId(0);
+        mDefaultQuote.setLiked(false);
+        mDefaultQuote.setRating(100500);
+        mDefaultQuote.setDate("12.12.2012");
+        mDefaultQuote.setText("Она: ответь мне, только честно, да или нет, хорошо?\n" +
+                "Он: спрашивай\n" +
+                "Она: почему мужчины смеются над блондинками?\n" +
+                "Он: да");
+
         return mDefaultQuote;
     }
 }
