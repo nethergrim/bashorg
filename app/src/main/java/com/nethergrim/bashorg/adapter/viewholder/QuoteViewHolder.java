@@ -72,6 +72,7 @@ public class QuoteViewHolder {
             }
         });
         q.recycle();
+        changeTextSize(ThemeUtils.getFontSize());
     }
 
     private void setLikeIcon(ImageButton ib, boolean liked) {
