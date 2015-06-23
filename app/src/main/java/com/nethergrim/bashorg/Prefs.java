@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.nethergrim.bashorg.utils.ThemeType;
+
 /**
  * Created by andrey_drobyazko on 08.12.14 20:00.
  */
@@ -12,7 +14,7 @@ public class Prefs {
     public static final String KEY_CHARGING = "charging";
     public static final String KEY_FONT_SIZE = "font_size";
     public static final int DEFAULT_FONT_SIZE = 16;
-    public static final String KEY_DARK_THEME_ENABLED = "dark_theme_enabled";
+    public static final String KEY_CURRENT_THEME = "dark_theme_enabled";
     private static final String SMALLEST_PAGE = "connection_couner";
     private static final String MAX_TOP_PAGE = "MAX_TOP_PAGE";
     private static SharedPreferences prefs;
@@ -64,11 +66,11 @@ public class Prefs {
         prefs.edit().putInt(KEY_FONT_SIZE, newFontSize).apply();
     }
 
-    public static boolean isDarkThemeEnabled() {
-        return prefs.getBoolean(KEY_DARK_THEME_ENABLED, false);
+    public static ThemeType getCurrentTheme() {
+        return ThemeType.getTypeForCode(prefs.getInt(KEY_CURRENT_THEME, ThemeType.LIGHT.getCode()));
     }
 
-    public static void setDarkThemeEnabled(boolean enabled) {
-        prefs.edit().putBoolean(KEY_DARK_THEME_ENABLED, enabled).apply();
+    public static void setCurrentTheme(ThemeType t) {
+        prefs.edit().putInt(KEY_CURRENT_THEME, t.getCode()).apply();
     }
 }

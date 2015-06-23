@@ -1,5 +1,8 @@
-package com.nethergrim.bashorg;
+package com.nethergrim.bashorg.utils;
 
+import android.support.annotation.NonNull;
+
+import com.nethergrim.bashorg.Prefs;
 import com.nethergrim.bashorg.model.Quote;
 
 /**
@@ -7,12 +10,13 @@ import com.nethergrim.bashorg.model.Quote;
  */
 public class ThemeUtils {
 
-    public static boolean isADarkTheme() {
-        return Prefs.isDarkThemeEnabled();
+    @NonNull
+    public static ThemeType getCurrentTheme() {
+        return Prefs.getCurrentTheme();
     }
 
-    public static void setDarkTheme(boolean dark) {
-        Prefs.setDarkThemeEnabled(dark);
+    public static void setCurrentTheme(ThemeType t) {
+        Prefs.setCurrentTheme(t);
     }
 
     public static int getFontSize() {
@@ -36,5 +40,9 @@ public class ThemeUtils {
                 "Он: да");
 
         return mDefaultQuote;
+    }
+
+    public static boolean isThemeEnabledNow(@NonNull ThemeType t) {
+        return getCurrentTheme().equals(t);
     }
 }

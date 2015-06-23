@@ -10,10 +10,11 @@ import android.widget.TextView;
 
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
-import com.nethergrim.bashorg.ThemeUtils;
-import com.nethergrim.bashorg.Utils;
 import com.nethergrim.bashorg.db.DB;
 import com.nethergrim.bashorg.model.Quote;
+import com.nethergrim.bashorg.utils.ThemeType;
+import com.nethergrim.bashorg.utils.ThemeUtils;
+import com.nethergrim.bashorg.utils.Utils;
 
 /**
  * @author andrej on 21.06.15.
@@ -39,7 +40,7 @@ public class QuoteViewHolder {
         btnShare = (ImageButton) v.findViewById(R.id.btn_share);
         btnLike = (ImageButton) v.findViewById(R.id.btn_like);
 
-        if (ThemeUtils.isADarkTheme()) {
+        if (ThemeUtils.getCurrentTheme().equals(ThemeType.DARK)) {
             mDrawbleShareButton = Utils.tintIcon(R.drawable.ic_social_share, R.color.dark_theme_buttons_color);
             mDrawbleLikeButtonOff = Utils.tintIcon(R.drawable.ic_action_favorite_outline, R.color.dark_theme_buttons_color);
             mDrawbleLikeButtonOn = Utils.tintIcon(R.drawable.ic_action_favorite, R.color.dark_accent);
@@ -68,7 +69,7 @@ public class QuoteViewHolder {
                 context.sendBroadcast(intent);
             }
         });
-        if (ThemeUtils.isADarkTheme()) {
+        if (ThemeUtils.getCurrentTheme().equals(ThemeType.DARK)) {
             btnShare.setImageDrawable(mDrawbleShareButton);
         }
         btnLike.setOnClickListener(new View.OnClickListener() {
@@ -84,14 +85,14 @@ public class QuoteViewHolder {
 
     private void setLikeIcon(ImageButton ib, boolean liked) {
         if (liked) {
-            if (ThemeUtils.isADarkTheme()) {
+            if (ThemeUtils.getCurrentTheme().equals(ThemeType.DARK)) {
                 ib.setImageDrawable(mDrawbleLikeButtonOn);
             } else {
                 ib.setImageResource(R.drawable.ic_action_favorite);
             }
 
         } else {
-            if (ThemeUtils.isADarkTheme()) {
+            if (ThemeUtils.getCurrentTheme().equals(ThemeType.DARK)) {
                 ib.setImageDrawable(mDrawbleLikeButtonOff);
             } else {
                 ib.setImageResource(R.drawable.ic_action_favorite_outline);

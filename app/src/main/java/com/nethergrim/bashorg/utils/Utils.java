@@ -1,10 +1,12 @@
-package com.nethergrim.bashorg;
+package com.nethergrim.bashorg.utils;
 
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
+
+import com.nethergrim.bashorg.App;
 
 /**
  * @author andrej on 19.06.15.

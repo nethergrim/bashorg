@@ -13,9 +13,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.nethergrim.bashorg.R;
-import com.nethergrim.bashorg.ThemeUtils;
 import com.nethergrim.bashorg.adapter.viewholder.QuoteViewHolder;
 import com.nethergrim.bashorg.model.Quote;
+import com.nethergrim.bashorg.utils.ThemeUtils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -48,11 +48,7 @@ public class SettingsActivity extends AppCompatActivity implements SeekBar.OnSee
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (ThemeUtils.isADarkTheme()) {
-            setTheme(R.style.My_Theme_Dark);
-        } else {
-            setTheme(R.style.My_Theme_Light);
-        }
+        setTheme(ThemeUtils.getCurrentTheme().getStyleResourceId());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         ButterKnife.inject(this);
@@ -67,7 +63,7 @@ public class SettingsActivity extends AppCompatActivity implements SeekBar.OnSee
     }
 
     private void initThemeLayout() {
-        mTVThemeValue.setText(ThemeUtils.isADarkTheme() ? R.string.dark_theme : R.string.light_theme);
+        mTVThemeValue.setText(ThemeUtils.getCurrentTheme().getStringThemeNameResourceId());
         mThemeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

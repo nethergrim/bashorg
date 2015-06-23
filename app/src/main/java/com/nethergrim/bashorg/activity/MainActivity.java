@@ -15,12 +15,12 @@ import android.view.View;
 import com.github.clans.fab.FloatingActionButton;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
-import com.nethergrim.bashorg.ThemeUtils;
 import com.nethergrim.bashorg.adapter.FragmentAdapter;
 import com.nethergrim.bashorg.fragment.BestQuotesFragment;
 import com.nethergrim.bashorg.fragment.LastQuotesFragment;
 import com.nethergrim.bashorg.fragment.LikedQuotesFragment;
 import com.nethergrim.bashorg.fragment.RandomQuotesFragment;
+import com.nethergrim.bashorg.utils.ThemeUtils;
 
 
 public class MainActivity extends FragmentActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener {
@@ -33,13 +33,7 @@ public class MainActivity extends FragmentActivity implements TabLayout.OnTabSel
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ThemeUtils.setDarkTheme(false);
-        if (ThemeUtils.isADarkTheme()) {
-            setTheme(R.style.My_Theme_Dark);
-        } else {
-            setTheme(R.style.My_Theme_Light);
-        }
-
+        setTheme(ThemeUtils.getCurrentTheme().getStyleResourceId());
         super.onCreate(savedInstanceState);
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         setContentView(R.layout.activity_main);

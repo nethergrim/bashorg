@@ -7,10 +7,13 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.Button;
 
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.ThemePagerAdapter;
+import com.nethergrim.bashorg.utils.ThemeType;
+import com.nethergrim.bashorg.utils.ThemeUtils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -39,6 +42,7 @@ public class ThemeSelectorActivity extends FragmentActivity implements View.OnCl
         mButton.setOnClickListener(this);
         mPager.setAdapter(new ThemePagerAdapter());
         mPager.addOnPageChangeListener(this);
+        onPageSelected(0);
     }
 
     @Override
@@ -53,7 +57,13 @@ public class ThemeSelectorActivity extends FragmentActivity implements View.OnCl
 
     @Override
     public void onPageSelected(int position) {
-        Log.e("TAG", "page selected: " + position);
+        ThemeType currentType = ThemePagerAdapter.getTypeForPage(position);
+        boolean isEnabledNow = ThemeUtils.isThemeEnabledNow(currentType);
+        if (isEnabledNow) {
+            mButton.animate().alpha(0f).scaleY(0f).scaleX(0f).setDuration(200).setInterpolator(new AnticipateOvershootInterpolator()).start();
+        } else {
+            mButton.animate().alpha(1f).scaleY(1f).scaleX(1f).setDuration(200).setInterpolator(new AnticipateOvershootInterpolator()).start();
+        }
     }
 
     @Override
