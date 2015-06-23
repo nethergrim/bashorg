@@ -18,7 +18,9 @@ public class ThemePagerAdapter extends PagerAdapter {
 
     @Override
     public View instantiateItem(ViewGroup container, int position) {
-        return new PagerThemeView(container.getContext(), PagerThemeView.ThemeType.values()[position]);
+        View v = new PagerThemeView(container.getContext(), PagerThemeView.ThemeType.values()[position]);
+        container.addView(v, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        return v;
     }
 
     @Override
