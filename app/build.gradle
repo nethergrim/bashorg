@@ -34,4 +34,5 @@ dependencies {
     compile 'com.github.clans:fab:1.5.0'
     compile 'com.jakewharton:butterknife:5.1.1'
     compile 'com.android.support:support-v4:22.2.0'
+    compile 'com.google.android.gms:play-services:7.5.0'
 }
