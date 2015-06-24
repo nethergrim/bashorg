@@ -41,4 +41,8 @@ public class InAppBillingServiceHolder {
         Context context = App.getInstance().getApplicationContext();
         context.unbindService(mServiceConn);
     }
+
+    public static IInAppBillingService getService() {
+        return mService;
+    }
 }

@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.nethergrim.bashorg.db.DB;
+import com.nethergrim.bashorg.purchases.InAppBillingServiceHolder;
 
 /**
  * Created by nethergrim on 26.11.2014.
@@ -29,6 +30,7 @@ public class App extends Application {
         Prefs.init(this.getApplicationContext());
         DB.init(this.getApplicationContext());
         Constants.density = getResources().getDisplayMetrics().density;
+        InAppBillingServiceHolder.bindToService();
     }
 
     public boolean isOnline_() {
