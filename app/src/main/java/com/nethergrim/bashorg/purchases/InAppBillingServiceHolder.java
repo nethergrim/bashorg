@@ -45,4 +45,8 @@ public class InAppBillingServiceHolder {
     public static IInAppBillingService getService() {
         return mService;
     }
+
+    public static boolean isConnected() {
+        return mService != null;
+    }
 }
