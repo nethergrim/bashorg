@@ -14,5 +14,6 @@
     <string name="theme">Тема</string>
     <string name="light_theme">Светлая Тема</string>
     <string name="dark_theme">Темная Тема</string>
+    <string name="apply">Применить Тему</string>
 
 </resources>
