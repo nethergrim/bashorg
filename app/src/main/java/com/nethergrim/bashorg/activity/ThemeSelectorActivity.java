@@ -2,6 +2,7 @@ package com.nethergrim.bashorg.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -12,6 +13,7 @@ import android.widget.Button;
 
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.ThemePagerAdapter;
+import com.nethergrim.bashorg.purchases.PurchasesUtils;
 import com.nethergrim.bashorg.utils.ThemeType;
 import com.nethergrim.bashorg.utils.ThemeUtils;
 
@@ -23,12 +25,11 @@ import butterknife.InjectView;
  */
 public class ThemeSelectorActivity extends FragmentActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
 
+    public static final int REQUEST_BUY_THEME = 1212;
     @InjectView(R.id.pager)
     ViewPager mPager;
-
     @InjectView(R.id.button)
     Button mButton;
-
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, ThemeSelectorActivity.class));
@@ -47,7 +48,11 @@ public class ThemeSelectorActivity extends FragmentActivity implements View.OnCl
 
     @Override
     public void onClick(View v) {
-
+        try {
+            startIntentSenderForResult(PurchasesUtils.getBuyIntentSender(PurchasesUtils.ID_DARK_THEME), REQUEST_BUY_THEME, new Intent(), 0, 0, 0);
+        } catch (IntentSender.SendIntentException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

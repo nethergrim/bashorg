@@ -1,9 +1,10 @@
 package com.nethergrim.bashorg.purchases;
 
+import android.app.PendingIntent;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.annotation.WorkerThread;
-import android.util.Log;
 
 import com.android.vending.billing.IInAppBillingService;
 import com.nethergrim.bashorg.App;
@@ -12,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author andrej on 24.06.15.
@@ -21,7 +23,7 @@ public class PurchasesUtils {
     public static final String ID_DARK_THEME = "dark_theme";
 
     @WorkerThread
-    public static JSONObject getSkuDetails(String id) throws RemoteException, JSONException {
+    public static List<JSONObject> getSkuDetails() throws RemoteException, JSONException {
         if (InAppBillingServiceHolder.isConnected()) {
             IInAppBillingService service = InAppBillingServiceHolder.getService();
             ArrayList<String> skuList = new ArrayList<String>();
@@ -35,17 +37,65 @@ public class PurchasesUtils {
                 ArrayList<String> responseList
                         = skuDetails.getStringArrayList("DETAILS_LIST");
 
+                List<JSONObject> result = new ArrayList<>();
                 for (String thisResponse : responseList) {
                     JSONObject object = new JSONObject(thisResponse);
                     String sku = object.getString("productId");
                     String price = object.getString("price");
-                    Log.e("TAG", "details list: " + object.toString());
-                    if (sku.equals(id)) {
-                        return object;
-                    }
+                    result.add(object);
                 }
+                return result;
             }
         }
         return null;
+    }
+
+    public static IntentSender getBuyIntentSender(String skuId) {
+        if (InAppBillingServiceHolder.isConnected()) {
+            IInAppBillingService service = InAppBillingServiceHolder.getService();
+            Bundle buyIntentBundle = null;
+            try {
+                buyIntentBundle = service.getBuyIntent(3, App.getInstance().getPackageName(), skuId, "inapp", "bGoa+V7g/yqDXvKRqq+JTFn4uQZbPiQJo4pf9RzJ");
+                PendingIntent pendingIntent = buyIntentBundle.getParcelable("BUY_INTENT");
+                return pendingIntent.getIntentSender();
+
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public static void persistBoughtSkus() {
+        if (InAppBillingServiceHolder.isConnected()) {
+            IInAppBillingService service = InAppBillingServiceHolder.getService();
+            try {
+                Bundle ownedItems = service.getPurchases(3, App.getInstance().getPackageName(), "inapp", null);
+                int response = ownedItems.getInt("RESPONSE_CODE");
+                if (response == 0) {
+                    ArrayList<String> ownedSkus = ownedItems.getStringArrayList("INAPP_PURCHASE_ITEM_LIST");
+//                    ArrayList<String>  purchaseDataList =
+//                            ownedItems.getStringArrayList("INAPP_PURCHASE_DATA_LIST");
+//                    ArrayList<String>  signatureList =
+//                            ownedItems.getStringArrayList("INAPP_DATA_SIGNATURE_LIST");
+//                    String continuationToken =
+                    ownedItems.getString("INAPP_CONTINUATION_TOKEN");
+                    InAppBillingServiceHolder.mBoughtSkus = ownedSkus;
+//                    for (int i = 0; i < purchaseDataList.size(); ++i) {
+//                        String purchaseData = purchaseDataList.get(i);
+//                        String signature = signatureList.get(i);
+//                        String sku = ownedSkus.get(i);
+//
+//                        // do something with this purchase information
+//                        // e.g. display the updated list of products owned by user
+//                    }
+
+                    // if continuationToken != null, call getPurchases again
+                    // and pass in the token to retrieve more items
+                }
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
