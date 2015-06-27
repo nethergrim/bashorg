@@ -9,13 +9,15 @@ import android.os.IBinder;
 import com.android.vending.billing.IInAppBillingService;
 import com.nethergrim.bashorg.App;
 
+import java.util.List;
+
 /**
  * @author andrej on 24.06.15.
  */
 public class InAppBillingServiceHolder {
 
+    public static List<String> mBoughtSkus;
     private static IInAppBillingService mService;
-
     private static ServiceConnection mServiceConn = new ServiceConnection() {
         @Override
         public void onServiceDisconnected(ComponentName name) {
@@ -26,6 +28,7 @@ public class InAppBillingServiceHolder {
         public void onServiceConnected(ComponentName name,
                                        IBinder service) {
             mService = IInAppBillingService.Stub.asInterface(service);
+            PurchasesUtils.persistBoughtSkus();
         }
     };
 

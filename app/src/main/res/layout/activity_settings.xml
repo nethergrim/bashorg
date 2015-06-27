@@ -26,26 +26,71 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp">
+
+            <LinearLayout
+                android:id="@+id/layout_theme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="vertical"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp">
+
+                <com.nethergrim.bashorg.views.TextViewLight
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/theme"
+                    android:textColor="?attr/myColorPrimaryColor"
+                    android:textSize="16sp" />
+
+                <com.nethergrim.bashorg.views.TextViewRegular
+                    android:id="@+id/text_theme_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/light_theme"
+                    android:textColor="?attr/myColorSecondaryColor"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/divider_color" />
 
 
             <com.nethergrim.bashorg.views.TextViewLight
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
                 android:text="@string/font_size"
                 android:textColor="?attr/myColorPrimaryColor"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <com.nethergrim.bashorg.views.TextViewRegular
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
                 android:text="@string/you_can_select_font_size_for_quotes_manually"
                 android:textColor="?attr/myColorSecondaryColor"
                 android:textSize="14sp" />
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="36dp">
+                android:layout_height="36dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
 
                 <SeekBar
                     android:id="@+id/seekBar"
@@ -67,41 +112,9 @@
             <FrameLayout
                 android:id="@+id/container_for_example_quote"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="8dp"
-                android:background="@color/divider_color" />
-
-            <LinearLayout
-                android:id="@+id/layout_theme"
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="vertical"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp">
-
-                <com.nethergrim.bashorg.views.TextViewLight
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/theme"
-                    android:textColor="?attr/myColorPrimaryColor"
-                    android:textSize="18sp" />
-
-                <com.nethergrim.bashorg.views.TextViewRegular
-                    android:id="@+id/text_theme_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/light_theme"
-                    android:textColor="?attr/myColorSecondaryColor"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp" />
 
 
         </LinearLayout>
