@@ -86,36 +86,6 @@
                 android:textColor="?attr/myColorSecondaryColor"
                 android:textSize="14sp" />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="36dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
-
-                <SeekBar
-                    android:id="@+id/seekBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="48dp" />
-
-                <com.nethergrim.bashorg.views.TextViewThin
-                    android:id="@+id/tv_progress_value"
-                    android:layout_width="48dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="right"
-                    android:gravity="center"
-                    android:textColor="?attr/myColorPrimaryColor"
-                    android:textSize="20sp" />
-
-            </FrameLayout>
-
-            <FrameLayout
-                android:id="@+id/container_for_example_quote"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp" />
-
 
         </LinearLayout>
 
