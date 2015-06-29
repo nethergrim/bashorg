@@ -4,4 +4,5 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="top_bar_opened">48dp</dimen>
     <dimen name="top_bar_closed">0dp</dimen>
+    <dimen name="action_bar_height">48dp</dimen>
 </resources>

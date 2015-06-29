@@ -45,6 +45,9 @@ public class ThemeUtils {
     }
 
     public static boolean isThemeBought(@NonNull ThemeType t) {
+        if (PurchasesUtils.debugPurchasesMode()) {
+            return true;
+        }
         switch (t) {
             case DARK:
                 return InAppBillingServiceHolder.mBoughtSkus != null && InAppBillingServiceHolder.mBoughtSkus.contains(PurchasesUtils.ID_DARK_THEME);

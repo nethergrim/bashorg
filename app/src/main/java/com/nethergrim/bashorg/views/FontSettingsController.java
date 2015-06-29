@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.viewholder.QuoteViewHolder;
@@ -27,8 +26,6 @@ public class FontSettingsController extends RelativeLayout implements SeekBar.On
 
     @InjectView(R.id.seekBar)
     SeekBar mSeekbar;
-    @InjectView(R.id.tv_progress_value)
-    TextView mTvProgressValue;
     @InjectView(R.id.container_for_example_quote)
     FrameLayout mQuoteContainer;
 
@@ -58,7 +55,6 @@ public class FontSettingsController extends RelativeLayout implements SeekBar.On
     private void init(Context context) {
         ButterKnife.inject(this, inflate(context, R.layout.controller_font_settings, null));
         int fontSizeSP = ThemeUtils.getFontSize();
-        mTvProgressValue.setText(String.valueOf(fontSizeSP));
         mSeekbar.setProgress(fontSizeSP);
         mSeekbar.setOnSeekBarChangeListener(this);
         mSeekbar.setMax(MAX_VALUE);
@@ -82,7 +78,6 @@ public class FontSettingsController extends RelativeLayout implements SeekBar.On
             progress = MIN_VALUE;
         }
         if (fromUser) {
-            mTvProgressValue.setText(String.valueOf(progress));
             ThemeUtils.setFontSize(progress);
             mQuoteVH.changeTextSize(progress);
         }

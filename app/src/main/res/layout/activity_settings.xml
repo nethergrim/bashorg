@@ -4,94 +4,41 @@
     android:layout_height="match_parent"
     android:background="?attr/myColorBackground">
 
-    <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/toolbar"
+    <View
+        android:id="@+id/action_bar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="?attr/myColorActionBar"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+        android:layout_height="@dimen/action_bar_height"
+        android:background="?attr/myColorActionBar" />
+
+    <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/action_bar_height"
+        android:background="?android:attr/selectableItemBackground"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:src="@drawable/ic_navigation_arrow_back" />
+
+    <com.nethergrim.bashorg.views.TextViewRegular
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/action_bar_height"
+        android:layout_toRightOf="@+id/btn_back"
+        android:gravity="center_vertical"
+        android:text="@string/settings"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="4dp"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/action_bar"
         android:background="@drawable/shadow_gradient" />
 
-    <ScrollView
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="16dp"
-            android:paddingTop="16dp">
-
-            <LinearLayout
-                android:id="@+id/layout_theme"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="vertical"
-                android:paddingBottom="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="8dp">
-
-                <com.nethergrim.bashorg.views.TextViewLight
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/theme"
-                    android:textColor="?attr/myColorPrimaryColor"
-                    android:textSize="16sp" />
-
-                <com.nethergrim.bashorg.views.TextViewRegular
-                    android:id="@+id/text_theme_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/light_theme"
-                    android:textColor="?attr/myColorSecondaryColor"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@color/divider_color" />
-
-
-            <com.nethergrim.bashorg.views.TextViewLight
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:text="@string/font_size"
-                android:textColor="?attr/myColorPrimaryColor"
-                android:textSize="16sp" />
-
-            <com.nethergrim.bashorg.views.TextViewRegular
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:text="@string/you_can_select_font_size_for_quotes_manually"
-                android:textColor="?attr/myColorSecondaryColor"
-                android:textSize="14sp" />
-
-
-        </LinearLayout>
-
-
-    </ScrollView>
-
+        android:layout_below="@+id/action_bar" />
 
 </RelativeLayout>
 

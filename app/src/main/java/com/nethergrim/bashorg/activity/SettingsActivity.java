@@ -4,12 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ImageButton;
 
 import com.nethergrim.bashorg.R;
+import com.nethergrim.bashorg.fragment.SettingsFragment;
 import com.nethergrim.bashorg.utils.ThemeUtils;
 
 import butterknife.ButterKnife;
@@ -21,14 +20,8 @@ import butterknife.InjectView;
 public class SettingsActivity extends AppCompatActivity {
 
 
-    @InjectView(R.id.toolbar)
-    Toolbar mToolbar;
-
-    @InjectView(R.id.layout_theme)
-    LinearLayout mThemeLayout;
-    @InjectView(R.id.text_theme_value)
-    TextView mTVThemeValue;
-
+    @InjectView(R.id.btn_back)
+    ImageButton mButtonBack;
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, SettingsActivity.class));
@@ -40,37 +33,18 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         ButterKnife.inject(this);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         initActionBar();
-        initThemeLayout();
+        getFragmentManager().beginTransaction().replace(R.id.container, new SettingsFragment()).commit();
     }
 
     private void initActionBar() {
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle(R.string.settings);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        mButtonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
     }
-
-    private void initThemeLayout() {
-        mTVThemeValue.setText(ThemeUtils.getCurrentTheme().getStringThemeNameResourceId());
-        mThemeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ThemeSelectorActivity.start(SettingsActivity.this);
-            }
-        });
-    }
-
 
     @Override
     public void onBackPressed() {

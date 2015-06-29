@@ -8,6 +8,7 @@ import android.support.annotation.WorkerThread;
 
 import com.android.vending.billing.IInAppBillingService;
 import com.nethergrim.bashorg.App;
+import com.nethergrim.bashorg.BuildConfig;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -81,5 +82,9 @@ public class PurchasesUtils {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static boolean debugPurchasesMode() {
+        return BuildConfig.DEBUG;
     }
 }
