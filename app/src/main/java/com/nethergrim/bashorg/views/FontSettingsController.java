@@ -21,7 +21,7 @@ import butterknife.InjectView;
  */
 public class FontSettingsController extends RelativeLayout implements SeekBar.OnSeekBarChangeListener {
 
-    public static final int MAX_VALUE = 24;
+    public static final int MAX_VALUE = 22;
     public static final int MIN_VALUE = 10;
 
     @InjectView(R.id.seekBar)
@@ -57,7 +57,7 @@ public class FontSettingsController extends RelativeLayout implements SeekBar.On
 
         ButterKnife.inject(this, root);
         int fontSizeSP = ThemeUtils.getFontSize();
-        mSeekbar.setProgress(fontSizeSP);
+        mSeekbar.setProgress(fontSizeSP - MIN_VALUE);
         mSeekbar.setOnSeekBarChangeListener(this);
         mSeekbar.setMax(MAX_VALUE);
         View v = LayoutInflater.from(context).inflate(R.layout.row_quote, mQuoteContainer, false);
@@ -76,10 +76,7 @@ public class FontSettingsController extends RelativeLayout implements SeekBar.On
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        if (progress < MIN_VALUE) {
-            seekBar.setProgress(MIN_VALUE);
-            progress = MIN_VALUE;
-        }
+        progress += MIN_VALUE;
         if (fromUser) {
             ThemeUtils.setFontSize(progress);
             mQuoteVH.changeTextSize(progress);
