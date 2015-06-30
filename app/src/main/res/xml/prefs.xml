@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.jenzz.materialpreference.Preference
+        android:key="prefs_font_size"
+        android:summary="@string/you_can_select_font_size_for_quotes_manually"
+        android:title="@string/font_size" />
+    <com.jenzz.materialpreference.Preference
+        android:key="prefs_theme"
+        android:title="@string/theme" />
+</PreferenceScreen>

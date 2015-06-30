@@ -8,7 +8,6 @@ import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.Button;
@@ -96,7 +95,6 @@ public class ThemeSelectorActivity extends FragmentActivity implements View.OnCl
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        Log.e("TAG", "page scrolled: position: " + position + " offset: " + positionOffset + " offsetPixels: " + positionOffsetPixels);
     }
 
     @Override
@@ -124,6 +122,5 @@ public class ThemeSelectorActivity extends FragmentActivity implements View.OnCl
 
     @Override
     public void onPageScrollStateChanged(int state) {
-        Log.e("TAG", "state changed: " + state);
     }
 }
