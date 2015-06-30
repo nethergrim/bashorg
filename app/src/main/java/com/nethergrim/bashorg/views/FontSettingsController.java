@@ -21,7 +21,7 @@ import butterknife.InjectView;
  */
 public class FontSettingsController extends RelativeLayout implements SeekBar.OnSeekBarChangeListener {
 
-    public static final int MAX_VALUE = 22;
+    public static final int MAX_VALUE = 24;
     public static final int MIN_VALUE = 10;
 
     @InjectView(R.id.seekBar)
@@ -59,7 +59,7 @@ public class FontSettingsController extends RelativeLayout implements SeekBar.On
         int fontSizeSP = ThemeUtils.getFontSize();
         mSeekbar.setProgress(fontSizeSP - MIN_VALUE);
         mSeekbar.setOnSeekBarChangeListener(this);
-        mSeekbar.setMax(MAX_VALUE);
+        mSeekbar.setMax(MAX_VALUE - MIN_VALUE);
         View v = LayoutInflater.from(context).inflate(R.layout.row_quote, mQuoteContainer, false);
         QuoteViewHolder quoteViewHolder = new QuoteViewHolder(v);
         v.setTag(quoteViewHolder);
