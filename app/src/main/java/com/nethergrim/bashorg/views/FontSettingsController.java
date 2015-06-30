@@ -53,7 +53,9 @@ public class FontSettingsController extends RelativeLayout implements SeekBar.On
     }
 
     private void init(Context context) {
-        ButterKnife.inject(this, inflate(context, R.layout.controller_font_settings, null));
+        View root = inflate(context, R.layout.controller_font_settings, null);
+
+        ButterKnife.inject(this, root);
         int fontSizeSP = ThemeUtils.getFontSize();
         mSeekbar.setProgress(fontSizeSP);
         mSeekbar.setOnSeekBarChangeListener(this);
@@ -68,6 +70,7 @@ public class FontSettingsController extends RelativeLayout implements SeekBar.On
         mQuoteContainer.removeAllViews();
         mQuoteContainer.addView(v);
         mQuoteVH.changeTextSize(fontSizeSP);
+        addView(root);
     }
 
 

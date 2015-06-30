@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.activity.ThemeSelectorActivity;
+import com.nethergrim.bashorg.fragment.dialogs.FontSizeSelectorDialog;
 import com.nethergrim.bashorg.utils.ThemeUtils;
 
 /**
@@ -24,8 +25,17 @@ public class SettingsFragment extends PreferenceFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Preference prefsFontSize = findPreference("prefs_font_size");
-        Preference prefsTheme = findPreference("prefs_theme");
+        prefsFontSize.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                FontSizeSelectorDialog dialog = new FontSizeSelectorDialog();
+                dialog.show(getFragmentManager(), dialog.getClass().getName());
+                return true;
+            }
+        });
 
+
+        Preference prefsTheme = findPreference("prefs_theme");
         prefsTheme.setSummary(ThemeUtils.getCurrentTheme().getStringThemeNameResourceId());
         prefsTheme.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
