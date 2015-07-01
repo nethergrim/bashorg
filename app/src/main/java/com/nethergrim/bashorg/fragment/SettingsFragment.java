@@ -4,11 +4,11 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.view.View;
-
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.activity.ThemeSelectorActivity;
 import com.nethergrim.bashorg.fragment.dialogs.FontSizeSelectorDialog;
 import com.nethergrim.bashorg.utils.ThemeUtils;
+import com.nethergrim.bashorg.web.RunnerService;
 
 /**
  * @author andrej on 29.06.15.
@@ -44,6 +44,17 @@ public class SettingsFragment extends PreferenceFragment {
                 return true;
             }
         });
+
+
+        Preference prefsDownloadAll = findPreference("prefs_download_all_quotes");
+        prefsDownloadAll.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                RunnerService.fetchAllBashorgData();
+                return true;
+            }
+        });
+
     }
 
 }

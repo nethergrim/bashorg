@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.util.Log;
-
+import com.nethergrim.bashorg.App;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.model.Quote;
 import com.nethergrim.bashorg.model.QuoteSelection;
@@ -22,12 +22,6 @@ public class DB {
 
     public static final String DB_NAME = "db";
     private static final int DB_VERSION = 2;
-    private Context mCtx;
-    private DBHelper mDBHelper;
-    private SQLiteDatabase mDB;
-    private static DB db;
-
-
     private static final String CREATE_TABLE_QUOTES = "create table "
             + Quote.Columns.TABLE + "( "
             + Quote.Columns.FIELD_ID + " integer primary key , "
@@ -38,7 +32,15 @@ public class DB {
             + Quote.Columns.FIELD_INDEX_ON_PAGE + " integer, "
             + Quote.Columns.FIELD_LIKED + " integer, " +
             "UNIQUE (" + Quote.Columns.FIELD_ID + ") ON CONFLICT REPLACE" + " );";
+    private static DB db;
+    private Context mCtx;
+    private DBHelper mDBHelper;
+    private SQLiteDatabase mDB;
 
+
+    private DB(Context ctx) {
+        mCtx = ctx;
+    }
 
     public static void init(Context context){
         if (db == null){
@@ -49,13 +51,10 @@ public class DB {
 
     public static DB getInstance(){
         if (db == null) {
+            init(App.getInstance().getApplicationContext());
             Log.e("TAG", ":::" + "DB IS NOT INITIALISED");
         }
         return db;
-    }
-
-    private DB(Context ctx) {
-        mCtx = ctx;
     }
 
     private void open() {

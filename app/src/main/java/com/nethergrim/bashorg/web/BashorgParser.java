@@ -4,7 +4,6 @@ import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.Prefs;
 import com.nethergrim.bashorg.db.DB;
 import com.nethergrim.bashorg.model.Quote;
-
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -35,6 +34,7 @@ public class BashorgParser {
     public static final String RATING = "rating";
     public static final String THREE_DOTS = "...";
     public static final String QUESTION = "?";
+    private static final Random _random = new Random();
     private static int lastPage = -1;
 
     public static int parsePageFromTop(int byRatingPage) {
@@ -59,7 +59,7 @@ public class BashorgParser {
 
     public static int parseRandomPage() {
         try {
-            Document document = Jsoup.connect(Constants.URL_BASHORG_RANDOM_PAGE + QUESTION + new Random().nextLong()).get();
+            Document document = Jsoup.connect(Constants.URL_BASHORG_RANDOM_PAGE + QUESTION + _random.nextLong()).get();
             return parseDocument(document);
         } catch (Exception e) {
             e.printStackTrace();
