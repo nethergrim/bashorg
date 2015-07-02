@@ -37,6 +37,22 @@ public class BashorgParser {
     private static final Random _random = new Random();
     private static int lastPage = -1;
 
+    public static int getPage(int pageNumber) {
+        if (pageNumber == 0) {
+            return 0;
+        }
+        DB db = DB.getInstance();
+        if (!db.isPageSaved(String.valueOf(pageNumber))) {
+            int page = BashorgParser.parsePage(String.valueOf(pageNumber));
+            if (page > 0) {
+                Prefs.setSmallestLoadedPage(page);
+
+            }
+            return page;
+        }
+        return pageNumber;
+    }
+
     public static int parsePageFromTop(int byRatingPage) {
         try {
             Document document = Jsoup.connect(Constants.URL_BASHORG_TOP + String.valueOf(byRatingPage)).get();

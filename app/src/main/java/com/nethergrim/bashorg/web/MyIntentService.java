@@ -6,7 +6,6 @@ import android.content.Intent;
 import com.nethergrim.bashorg.App;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.Prefs;
-import com.nethergrim.bashorg.db.DB;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -70,19 +69,10 @@ public class MyIntentService extends IntentService {
     }
 
     private void handleActionFetchPage(int pageNumber) {
-        if (pageNumber == 0) {
-            return;
-        }
-        DB db = DB.getInstance();
-        if (!db.isPageSaved(String.valueOf(pageNumber))) {
-            int page = BashorgParser.parsePage(String.valueOf(pageNumber));
-            if (page > 0) {
-                Prefs.setSmallestLoadedPage(page);
-                Intent intent = new Intent(Constants.ACTION_FETCH_PAGE);
-                intent.putExtra(Constants.EXTRA_PAGE_NUMBER, page);
-                sendBroadcast(intent);
-            }
-        }
+        int nmbr = BashorgParser.getPage(pageNumber);
+        Intent intent = new Intent(Constants.ACTION_FETCH_PAGE);
+        intent.putExtra(Constants.EXTRA_PAGE_NUMBER, nmbr);
+        sendBroadcast(intent);
     }
 
 }
