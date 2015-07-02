@@ -16,5 +16,6 @@
     <string name="apply">Применить Тему</string>
     <string name="download_all_quotes">Скачать все цитаты</string>
     <string name="app_will_download_all_quotes_in_background">Приложение скачает и сохранит все цитаты в фоне.</string>
+    <string name="quotes_fetching">Загрузка цитат</string>
 
 </resources>

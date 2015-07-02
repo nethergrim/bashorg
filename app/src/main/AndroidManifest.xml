@@ -48,6 +48,10 @@
                 <action android:name="android.net.wifi.STATE_CHANGE" />
             </intent-filter>
         </receiver>
+
+        <service
+                android:name="com.octo.android.robospice.UncachedSpiceService"
+                android:exported="false"/>
     </application>
 
 </manifest>
