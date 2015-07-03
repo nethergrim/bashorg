@@ -14,6 +14,8 @@ import java.util.zip.ZipInputStream;
  */
 public class FileUtils {
 
+    public static final String BASHORG_JSON_FILE_NAME = "bashorg.json";
+    public static final String ZIP_FILE_POSTFIX = ".zip";
 
     public static void writeStringAsFile(final String fileContents, String fileName) {
         Context context = App.getInstance().getApplicationContext();
@@ -41,6 +43,56 @@ public class FileUtils {
         }
 
         return stringBuilder.toString();
+    }
+
+    public static boolean unpackAssetFileAndUnzip(String fileAssetsName) {
+        InputStream is = getAssetFileInputStream(fileAssetsName);
+        ZipInputStream zis;
+        Context context = App.getInstance().getApplicationContext();
+        String corePagePath = context.getFilesDir().getAbsolutePath() + "/";
+        try {
+            String filename;
+            zis = new ZipInputStream(new BufferedInputStream(is));
+            ZipEntry ze;
+            byte[] buffer = new byte[1024];
+            int count;
+
+            while ((ze = zis.getNextEntry()) != null) {
+                filename = ze.getName();
+                if (ze.isDirectory()) {
+                    File fmd = new File(corePagePath + filename);
+                    fmd.mkdirs();
+                    continue;
+                }
+
+                FileOutputStream fout = new FileOutputStream(corePagePath + filename);
+                while ((count = zis.read(buffer)) != -1) {
+                    fout.write(buffer, 0, count);
+                }
+
+                fout.close();
+                zis.closeEntry();
+            }
+
+            zis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    public static InputStream getAssetFileInputStream(String assetFileName) {
+        Context context = App.getInstance().getApplicationContext();
+        InputStream fIn;
+        try {
+            fIn = context.getResources().getAssets().open(assetFileName, Context.MODE_WORLD_READABLE);
+            return fIn;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private boolean unpackZip(String path, String zipname) {
@@ -78,6 +130,37 @@ public class FileUtils {
         }
 
         return true;
+    }
+
+    public String readFromfile(String fileName, Context context) {
+        StringBuilder returnString = new StringBuilder();
+        InputStream fIn = null;
+        InputStreamReader isr = null;
+        BufferedReader input = null;
+        try {
+            fIn = context.getResources().getAssets()
+                    .open(fileName, Context.MODE_WORLD_READABLE);
+            isr = new InputStreamReader(fIn);
+            input = new BufferedReader(isr);
+            String line = "";
+            while ((line = input.readLine()) != null) {
+                returnString.append(line);
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        } finally {
+            try {
+                if (isr != null)
+                    isr.close();
+                if (fIn != null)
+                    fIn.close();
+                if (input != null)
+                    input.close();
+            } catch (Exception e2) {
+                e2.getMessage();
+            }
+        }
+        return returnString.toString();
     }
 
 }

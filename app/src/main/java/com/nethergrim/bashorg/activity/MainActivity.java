@@ -10,8 +10,8 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
-
 import com.github.clans.fab.FloatingActionButton;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
@@ -20,6 +20,7 @@ import com.nethergrim.bashorg.fragment.BestQuotesFragment;
 import com.nethergrim.bashorg.fragment.LastQuotesFragment;
 import com.nethergrim.bashorg.fragment.LikedQuotesFragment;
 import com.nethergrim.bashorg.fragment.RandomQuotesFragment;
+import com.nethergrim.bashorg.utils.FileUtils;
 import com.nethergrim.bashorg.utils.ThemeUtils;
 
 
@@ -46,6 +47,18 @@ public class MainActivity extends FragmentActivity implements TabLayout.OnTabSel
         mFab.setOnClickListener(this);
         loadFragments();
         initTabs();
+        decompressZipFileAndPersistToDb();
+    }
+
+    private void decompressZipFileAndPersistToDb() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                long start = System.currentTimeMillis();
+                boolean success = FileUtils.unpackAssetFileAndUnzip(FileUtils.BASHORG_JSON_FILE_NAME + FileUtils.ZIP_FILE_POSTFIX);
+                Log.e("TAG", "unpacked zip in: " + String.valueOf(System.currentTimeMillis() - start) + " success: " + success);
+            }
+        }).start();
     }
 
     private void initTabs() {
