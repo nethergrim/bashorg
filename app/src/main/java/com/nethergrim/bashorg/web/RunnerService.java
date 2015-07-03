@@ -7,6 +7,7 @@ import android.os.IBinder;
 import android.util.Log;
 import com.nethergrim.bashorg.App;
 import com.nethergrim.bashorg.Prefs;
+import com.nethergrim.bashorg.db.DB;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -59,9 +60,15 @@ public class RunnerService extends Service {
     }
 
     private void fetchAllData() {
+        if (DB.getInstance().getCountOfLoadedQuotes() > 51400) {
+            compressAllDbToJson();
+        } else {
+            fetchAllContent();
+        }
+    }
+
+    private void fetchAllContent() {
         long lastPage = Prefs.getLastPageNumber();
-
-
         ExecutorService es = Executors.newFixedThreadPool(20);
         for (int i = 0; i < lastPage; i++) {
             final int finalI = i;
@@ -72,8 +79,15 @@ public class RunnerService extends Service {
                 }
             });
         }
+    }
 
-
+    private void compressAllDbToJson() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String json = DB.getInstance().compressDbToJson();
+            }
+        }).start();
     }
 
 
