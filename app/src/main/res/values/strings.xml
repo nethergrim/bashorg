@@ -7,7 +7,6 @@
     <string name="best">Лучшие</string>
     <string name="liked">Избранные</string>
     <string name="load_more">Загрузить еще</string>
-    <string name="from_app">\n\nЦитата из приложения</string>
     <string name="settings">Настройки</string>
     <string name="font_size">Размер Шрифта</string>
     <string name="you_can_select_font_size_for_quotes_manually">Ты можешь выбрать размер шрифта в цитатах.</string>
@@ -15,5 +14,8 @@
     <string name="light_theme">Светлая Тема</string>
     <string name="dark_theme">Темная Тема</string>
     <string name="apply">Применить Тему</string>
+    <string name="download_all_quotes">Скачать все цитаты</string>
+    <string name="app_will_download_all_quotes_in_background">Приложение скачает и сохранит все цитаты в фоне.</string>
+    <string name="quotes_fetching">Загрузка цитат</string>
 
 </resources>

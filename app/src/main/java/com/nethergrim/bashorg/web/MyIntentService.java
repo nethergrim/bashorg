@@ -3,17 +3,13 @@ package com.nethergrim.bashorg.web;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
-
 import com.nethergrim.bashorg.App;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.Prefs;
-import com.nethergrim.bashorg.db.DB;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
- * <p/>
- * helper methods.
  */
 public class MyIntentService extends IntentService {
 
@@ -73,17 +69,10 @@ public class MyIntentService extends IntentService {
     }
 
     private void handleActionFetchPage(int pageNumber) {
-        DB db = DB.getInstance();
-        if (pageNumber == 0) return;
-        if (!db.isPageSaved(String.valueOf(pageNumber))) {
-            int result = BashorgParser.parsePage(String.valueOf(pageNumber));
-            if (result > 0) {
-                Prefs.setSmallestLoadedPage(result);
-                Intent intent = new Intent(Constants.ACTION_FETCH_PAGE);
-                intent.putExtra(Constants.EXTRA_PAGE_NUMBER, result);
-                sendBroadcast(intent);
-            }
-        }
+        int nmbr = BashorgParser.getPage(pageNumber);
+        Intent intent = new Intent(Constants.ACTION_FETCH_PAGE);
+        intent.putExtra(Constants.EXTRA_PAGE_NUMBER, nmbr);
+        sendBroadcast(intent);
     }
 
 }

@@ -11,16 +11,18 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-
 import com.github.clans.fab.FloatingActionButton;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.FragmentAdapter;
+import com.nethergrim.bashorg.db.DB;
 import com.nethergrim.bashorg.fragment.BestQuotesFragment;
 import com.nethergrim.bashorg.fragment.LastQuotesFragment;
 import com.nethergrim.bashorg.fragment.LikedQuotesFragment;
 import com.nethergrim.bashorg.fragment.RandomQuotesFragment;
+import com.nethergrim.bashorg.utils.FileUtils;
 import com.nethergrim.bashorg.utils.ThemeUtils;
+import org.json.JSONArray;
 
 
 public class MainActivity extends FragmentActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener {
@@ -46,6 +48,23 @@ public class MainActivity extends FragmentActivity implements TabLayout.OnTabSel
         mFab.setOnClickListener(this);
         loadFragments();
         initTabs();
+        if (DB.getInstance().getCountOfLoadedQuotes() < 52000) {
+            decompressZipFileAndPersistToDb();
+        }
+    }
+
+    private void decompressZipFileAndPersistToDb() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+                FileUtils.unpackAssetFileAndUnzip(FileUtils.BASHORG_JSON_FILE_NAME + FileUtils.ZIP_FILE_POSTFIX);
+                JSONArray bashorgBase = FileUtils.getJsonArrayFromDisk(getFilesDir() + "/" + FileUtils.BASHORG_JSON_FILE_NAME);
+                if (bashorgBase != null) {
+                    DB.getInstance().persist(bashorgBase);
+                }
+            }
+        }).start();
     }
 
     private void initTabs() {

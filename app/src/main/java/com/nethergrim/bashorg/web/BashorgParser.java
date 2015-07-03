@@ -1,10 +1,10 @@
 package com.nethergrim.bashorg.web;
 
+import android.util.Log;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.Prefs;
 import com.nethergrim.bashorg.db.DB;
 import com.nethergrim.bashorg.model.Quote;
-
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -35,7 +35,24 @@ public class BashorgParser {
     public static final String RATING = "rating";
     public static final String THREE_DOTS = "...";
     public static final String QUESTION = "?";
+    private static final Random _random = new Random();
     private static int lastPage = -1;
+
+    public static int getPage(int pageNumber) {
+        if (pageNumber == 0) {
+            return 0;
+        }
+        DB db = DB.getInstance();
+        if (!db.isPageSaved(String.valueOf(pageNumber))) {
+            int page = BashorgParser.parsePage(String.valueOf(pageNumber));
+            if (page > 0) {
+                Prefs.setSmallestLoadedPage(page);
+
+            }
+            return page;
+        }
+        return pageNumber;
+    }
 
     public static int parsePageFromTop(int byRatingPage) {
         try {
@@ -53,13 +70,14 @@ public class BashorgParser {
             return parseDocument(document);
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e("TAG", "parsing error: " + e.getMessage());
         }
         return -1;
     }
 
     public static int parseRandomPage() {
         try {
-            Document document = Jsoup.connect(Constants.URL_BASHORG_RANDOM_PAGE + QUESTION + new Random().nextLong()).get();
+            Document document = Jsoup.connect(Constants.URL_BASHORG_RANDOM_PAGE + QUESTION + _random.nextLong()).get();
             return parseDocument(document);
         } catch (Exception e) {
             e.printStackTrace();
@@ -99,6 +117,7 @@ public class BashorgParser {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e("TAG", "parsing exception: " + e.getMessage());
         }
         return pn;
     }

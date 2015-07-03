@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.view.View;
-
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.activity.ThemeSelectorActivity;
 import com.nethergrim.bashorg.fragment.dialogs.FontSizeSelectorDialog;
@@ -45,5 +44,4 @@ public class SettingsFragment extends PreferenceFragment {
             }
         });
     }
-
 }
