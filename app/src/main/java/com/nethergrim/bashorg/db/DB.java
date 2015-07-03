@@ -162,6 +162,7 @@ public class DB {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    jsonArray.put(jsonObject);
                 } while (c.moveToNext());
                 result = jsonArray.toString();
             }

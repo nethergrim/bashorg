@@ -8,6 +8,7 @@ import android.util.Log;
 import com.nethergrim.bashorg.App;
 import com.nethergrim.bashorg.Prefs;
 import com.nethergrim.bashorg.db.DB;
+import com.nethergrim.bashorg.utils.FileUtils;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -86,6 +87,9 @@ public class RunnerService extends Service {
             @Override
             public void run() {
                 String json = DB.getInstance().compressDbToJson();
+                long start = System.currentTimeMillis();
+                FileUtils.writeStringAsFile(json, "ХУЙ.json");
+                Log.e("TAG", "wrote file to disk: " + String.valueOf(System.currentTimeMillis() - start));
             }
         }).start();
     }
