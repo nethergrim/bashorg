@@ -1,5 +1,6 @@
 package com.nethergrim.bashorg.web;
 
+import android.util.Log;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.Prefs;
 import com.nethergrim.bashorg.db.DB;
@@ -69,6 +70,7 @@ public class BashorgParser {
             return parseDocument(document);
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e("TAG", "parsing error: " + e.getMessage());
         }
         return -1;
     }
@@ -115,6 +117,7 @@ public class BashorgParser {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e("TAG", "parsing exception: " + e.getMessage());
         }
         return pn;
     }

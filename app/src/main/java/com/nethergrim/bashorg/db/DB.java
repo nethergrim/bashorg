@@ -132,6 +132,10 @@ public class DB {
         }
     }
 
+    public long getCountOfLoadedQuotes() {
+        return DatabaseUtils.queryNumEntries(mDB, Quote.Columns.TABLE, null, null);
+    }
+
     public Cursor fetch(QuoteSelection quoteSelection, int limit){
         String selection = null;
         String[] args = null;
