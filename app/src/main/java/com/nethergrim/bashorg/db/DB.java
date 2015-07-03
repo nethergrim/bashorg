@@ -7,6 +7,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import com.nethergrim.bashorg.App;
 import com.nethergrim.bashorg.Constants;
@@ -196,6 +197,31 @@ public class DB {
                 break;
         }
         return mDB.query(Quote.Columns.TABLE, null, selection, args, null, null, orderBy, String.valueOf(limit));
+    }
+
+    public void persist(@NonNull JSONArray quotes) {
+        long start = System.currentTimeMillis();
+        ContentValues cv = new ContentValues();
+        mDB.beginTransaction();
+        try {
+            for (int i = 0, size = quotes.length(); i < size; i++) {
+                try {
+                    cv.clear();
+                    JSONObject json = (JSONObject) quotes.get(i);
+                    cv.put(Quote.Columns.FIELD_ID, json.getString("#"));
+                    cv.put(Quote.Columns.FIELD_BODY, json.getString("q"));
+                    cv.put(Quote.Columns.FIELD_DATE, json.getString("d"));
+                    cv.put(Quote.Columns.FIELD_RATING, json.getString("r"));
+                    mDB.insertWithOnConflict(Quote.Columns.TABLE, null, cv, SQLiteDatabase.CONFLICT_REPLACE);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            mDB.setTransactionSuccessful();
+        } finally {
+            mDB.endTransaction();
+        }
+        Log.e("TAG", "persisted " + quotes.length() + " in: " + String.valueOf(System.currentTimeMillis() - start));
     }
 
     private class DBHelper extends SQLiteOpenHelper {

@@ -3,6 +3,8 @@ package com.nethergrim.bashorg.utils;
 import android.content.Context;
 import android.util.Log;
 import com.nethergrim.bashorg.App;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.*;
 import java.util.zip.ZipEntry;
@@ -28,30 +30,26 @@ public class FileUtils {
         }
     }
 
-    public static String readFileAsString(String fileName) {
-        Context context = App.getInstance().getApplicationContext();
+    public static String readFileAsString(String filePath) {
         StringBuilder stringBuilder = new StringBuilder();
         String line;
         BufferedReader in;
-
         try {
-            in = new BufferedReader(new FileReader(new File(context.getFilesDir(), fileName)));
+            in = new BufferedReader(new FileReader(new File(filePath)));
             while ((line = in.readLine()) != null) stringBuilder.append(line);
-
         } catch (IOException e) {
             Log.e("TAG", e.getMessage());
         }
-
         return stringBuilder.toString();
     }
 
-    public static boolean unpackAssetFileAndUnzip(String fileAssetsName) {
+    public static String unpackAssetFileAndUnzip(String fileAssetsName) {
         InputStream is = getAssetFileInputStream(fileAssetsName);
         ZipInputStream zis;
         Context context = App.getInstance().getApplicationContext();
         String corePagePath = context.getFilesDir().getAbsolutePath() + "/";
         try {
-            String filename;
+            String filename = null;
             zis = new ZipInputStream(new BufferedInputStream(is));
             ZipEntry ze;
             byte[] buffer = new byte[1024];
@@ -75,12 +73,11 @@ public class FileUtils {
             }
 
             zis.close();
+            return corePagePath + filename;
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
-
-        return true;
     }
 
     public static InputStream getAssetFileInputStream(String assetFileName) {
@@ -93,6 +90,17 @@ public class FileUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static JSONArray getJsonArrayFromDisk(String pathToFile) {
+        JSONArray result = null;
+        String json = readFileAsString(pathToFile);
+        try {
+            result = new JSONArray(json);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     private boolean unpackZip(String path, String zipname) {

@@ -7,8 +7,4 @@
     <com.jenzz.materialpreference.Preference
             android:key="prefs_theme"
             android:title="@string/theme"/>
-    <com.jenzz.materialpreference.Preference
-            android:key="prefs_download_all_quotes"
-            android:summary="@string/app_will_download_all_quotes_in_background"
-            android:title="@string/download_all_quotes"/>
 </PreferenceScreen>
