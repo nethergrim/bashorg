@@ -12,6 +12,8 @@ public class Abyss extends RealmObject {
     private String date;
     private String id;
     private String datePage;
+    private int indexOnPage;
+    private int globalPageSize;
 
     public String getBody() {
         return body;
@@ -43,5 +45,21 @@ public class Abyss extends RealmObject {
 
     public void setDatePage(String datePage) {
         this.datePage = datePage;
+    }
+
+    public int getIndexOnPage() {
+        return indexOnPage;
+    }
+
+    public void setIndexOnPage(int indexOnPage) {
+        this.indexOnPage = indexOnPage;
+    }
+
+    public int getGlobalPageSize() {
+        return globalPageSize;
+    }
+
+    public void setGlobalPageSize(int globalPageSize) {
+        this.globalPageSize = globalPageSize;
     }
 }

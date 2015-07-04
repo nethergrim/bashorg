@@ -4,12 +4,13 @@ import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-
 import com.nethergrim.bashorg.db.DB;
 import com.nethergrim.bashorg.purchases.InAppBillingServiceHolder;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 /**
- * Created by nethergrim on 26.11.2014.
+ * @author nethergrim on 26.11.2014.
  */
 public class App extends Application {
 
@@ -31,6 +32,16 @@ public class App extends Application {
         DB.init(this.getApplicationContext());
         Constants.density = getResources().getDisplayMetrics().density;
         InAppBillingServiceHolder.bindToService();
+        initRealm();
+    }
+
+    private void initRealm() {
+        RealmConfiguration realmConfig = new RealmConfiguration.Builder(this)
+                .name("realm_db")
+                .schemaVersion(1)
+                .build();
+
+        Realm.setDefaultConfiguration(realmConfig);
     }
 
     public boolean isOnline_() {
