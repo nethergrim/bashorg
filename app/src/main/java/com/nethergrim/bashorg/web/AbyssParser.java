@@ -17,13 +17,23 @@ import java.util.List;
 public class AbyssParser {
 
     public static final String URL_ABYSS_BEST = "http://bash.im/abyssbest/";
+    public static final String FIRST_PAGE = "lol";
 
     public static boolean parsePage(@NonNull String pageDate) {
-        String finalUrl = URL_ABYSS_BEST + pageDate;
+        String finalUrl;
+
+        if (pageDate.equals(FIRST_PAGE)) {
+            finalUrl = URL_ABYSS_BEST;
+        } else {
+            finalUrl = URL_ABYSS_BEST + pageDate;
+        }
+
         try {
             Document d = Jsoup.connect(finalUrl).get();
             List<Abyss> data = parseDocument(d);
-            persistAbyssToDB(data);
+            if (data != null) {
+                persistAbyssToDB(data);
+            }
             return true;
         } catch (IOException e) {
             e.printStackTrace();
