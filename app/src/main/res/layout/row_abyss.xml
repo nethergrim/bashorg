@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                    xmlns:tools="http://schemas.android.com/tools"
+                                    android:id="@+id/card_view"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    card_view:cardBackgroundColor="?attr/myColorBackground"
+                                    card_view:cardCornerRadius="1dp"
+                                    card_view:cardElevation="2dp"
+                                    card_view:cardUseCompatPadding="true"
+                                    card_view:contentPadding="8dp">
+
+    <com.nethergrim.bashorg.views.TextViewLight
+            android:id="@+id/text_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|left"
+            android:textColor="?attr/myColorSecondaryColor"
+            android:textSize="14sp"
+            tools:text="date"/>
+
+    <com.nethergrim.bashorg.views.TextViewLight
+            android:id="@+id/text_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+            android:layout_marginLeft="16dp"
+            android:textColor="?attr/myColorSecondaryColor"
+            android:textSize="14sp"
+            tools:text="id"/>
+
+    <com.nethergrim.bashorg.views.TextViewRegular
+            android:id="@+id/text_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textColor="?attr/myColorPrimaryColor"
+            android:textSize="16sp"
+            tools:text="content content content content content content content content content content "/>
+
+
+</android.support.v7.widget.CardView>
+
+
