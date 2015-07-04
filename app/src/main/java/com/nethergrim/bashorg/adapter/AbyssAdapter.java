@@ -43,6 +43,15 @@ public class AbyssAdapter extends RecyclerView.Adapter<AbyssVh> {
         holder.mTVId.setText(abyss.getId());
     }
 
+    public String getNextPageFromLast() {
+        if (data != null && !data.isEmpty()) {
+            Abyss last = data.get(data.size() - 1);
+            return last.getNextPageDate();
+        } else {
+            return null;
+        }
+    }
+
     @Override
     public int getItemCount() {
         if (data != null) {
