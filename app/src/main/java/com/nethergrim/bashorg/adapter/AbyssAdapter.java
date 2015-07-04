@@ -15,17 +15,24 @@ import io.realm.RealmResults;
  */
 public class AbyssAdapter extends RecyclerView.Adapter<AbyssVh> {
 
-    RealmResults<Abyss> data;
+    private RealmResults<Abyss> data;
+
+    public AbyssAdapter() {
+    }
 
     public AbyssAdapter(RealmResults<Abyss> data) {
         this.data = data;
     }
 
+    public void setData(RealmResults<Abyss> data) {
+        this.data = data;
+        notifyDataSetChanged();
+    }
+
     @Override
     public AbyssVh onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_abyss, parent, false);
-        AbyssVh vh = new AbyssVh(v);
-        return vh;
+        return new AbyssVh(v);
     }
 
     @Override
@@ -38,6 +45,11 @@ public class AbyssAdapter extends RecyclerView.Adapter<AbyssVh> {
 
     @Override
     public int getItemCount() {
-        return data.size();
+        if (data != null) {
+            return data.size();
+        } else {
+            return 0;
+        }
+
     }
 }
