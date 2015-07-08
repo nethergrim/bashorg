@@ -24,6 +24,6 @@ public class AbyssVh extends RecyclerView.ViewHolder {
 
     public AbyssVh(View itemView) {
         super(itemView);
-        ButterKnife.inject(itemView);
+        ButterKnife.inject(this, itemView);
     }
 }

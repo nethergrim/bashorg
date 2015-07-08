@@ -12,6 +12,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.AbyssAdapter;
+import com.nethergrim.bashorg.model.Abyss;
 import com.nethergrim.bashorg.utils.RecyclerviewPageScroller;
 import com.nethergrim.bashorg.web.AbyssParser;
 import com.nethergrim.bashorg.web.MyIntentService;
@@ -34,13 +35,14 @@ public class AbyssFragment extends AbstractFragment implements RecyclerviewPageS
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_abyss, container, false);
+        View v = inflater.inflate(R.layout.fragment_abyss, container, false);
+        ButterKnife.inject(this, v);
+        return v;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.inject(view);
         mAdapter = new AbyssAdapter();
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -49,6 +51,7 @@ public class AbyssFragment extends AbstractFragment implements RecyclerviewPageS
         realm = Realm.getDefaultInstance();
         realm.setAutoRefresh(true);
         realm.addChangeListener(this);
+        mAdapter.setData(realm.where(Abyss.class).findAllSorted("id", false));
     }
 
     @Override

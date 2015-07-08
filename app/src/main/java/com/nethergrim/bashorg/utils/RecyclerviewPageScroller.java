@@ -9,7 +9,7 @@ import android.support.v7.widget.RecyclerView;
  */
 public class RecyclerviewPageScroller extends RecyclerView.OnScrollListener {
 
-    private int mDefaultPageSize;
+    private int mDefaultPageSize = 10;
     private OnRecyclerViewScrolledToPageListener mCallback;
     private OnRecyclerScrolledToEndCallback mScrolledToEndCallback;
     private int mLastDeliveredPage;
@@ -54,7 +54,9 @@ public class RecyclerviewPageScroller extends RecyclerView.OnScrollListener {
             int newPageNumber = lastVisiblePositionWithOffset / mDefaultPageSize;
             if (mLastDeliveredPage != newPageNumber) {
                 mLastDeliveredPage = newPageNumber;
-                mCallback.onRecyclerViewScrolledToPage(newPageNumber);
+                if (mCallback != null) {
+                    mCallback.onRecyclerViewScrolledToPage(newPageNumber);
+                }
             }
 
         }

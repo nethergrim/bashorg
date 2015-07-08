@@ -1,6 +1,7 @@
 package com.nethergrim.bashorg.model;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * @author Andrey Drobyazko (c2q9450@gmail.com).
@@ -10,11 +11,11 @@ public class Abyss extends RealmObject {
 
     private String body;
     private String date;
+
+    @PrimaryKey
     private String id;
     private String datePage;
     private String nextPageDate;
-    private int indexOnPage;
-    private int globalPageSize;
 
     public String getBody() {
         return body;
@@ -46,22 +47,6 @@ public class Abyss extends RealmObject {
 
     public void setDatePage(String datePage) {
         this.datePage = datePage;
-    }
-
-    public int getIndexOnPage() {
-        return indexOnPage;
-    }
-
-    public void setIndexOnPage(int indexOnPage) {
-        this.indexOnPage = indexOnPage;
-    }
-
-    public int getGlobalPageSize() {
-        return globalPageSize;
-    }
-
-    public void setGlobalPageSize(int globalPageSize) {
-        this.globalPageSize = globalPageSize;
     }
 
     public String getNextPageDate() {
