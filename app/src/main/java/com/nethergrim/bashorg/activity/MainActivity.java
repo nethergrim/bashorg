@@ -16,10 +16,7 @@ import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.FragmentAdapter;
 import com.nethergrim.bashorg.db.DB;
-import com.nethergrim.bashorg.fragment.BestQuotesFragment;
-import com.nethergrim.bashorg.fragment.LastQuotesFragment;
-import com.nethergrim.bashorg.fragment.LikedQuotesFragment;
-import com.nethergrim.bashorg.fragment.RandomQuotesFragment;
+import com.nethergrim.bashorg.fragment.*;
 import com.nethergrim.bashorg.utils.FileUtils;
 import com.nethergrim.bashorg.utils.ThemeUtils;
 import org.json.JSONArray;
@@ -82,10 +79,12 @@ public class MainActivity extends FragmentActivity implements TabLayout.OnTabSel
         adapter.addFragment(new RandomQuotesFragment(), getString(R.string.random));
         adapter.addFragment(new BestQuotesFragment(), getString(R.string.best));
         adapter.addFragment(new LikedQuotesFragment(), getString(R.string.liked));
+        adapter.addFragment(new AbyssFragment(), getString(R.string.best_of_abyss));
         tabs.addTab(tabs.newTab().setText(R.string.last).setTag(Integer.valueOf(0)));
         tabs.addTab(tabs.newTab().setText(R.string.random).setTag(Integer.valueOf(1)));
         tabs.addTab(tabs.newTab().setText(R.string.best).setTag(Integer.valueOf(2)));
         tabs.addTab(tabs.newTab().setText(R.string.liked).setTag(Integer.valueOf(3)));
+        tabs.addTab(tabs.newTab().setText(R.string.best_of_abyss).setTag(Integer.valueOf(4)));
         tabs.setOnTabSelectedListener(this);
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
     }

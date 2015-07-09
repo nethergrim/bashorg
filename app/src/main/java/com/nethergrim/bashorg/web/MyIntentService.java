@@ -41,6 +41,13 @@ public class MyIntentService extends IntentService {
         context.startService(intent);
     }
 
+    public static void getAbyssPage(String pageDate, Context context) {
+        Intent intent = new Intent(context, MyIntentService.class);
+        intent.setAction(Constants.ACTION_FETCH_ABYSS);
+        intent.putExtra(Constants.EXTRA_ABYSS_PAGE, pageDate);
+        context.startService(intent);
+    }
+
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
@@ -52,8 +59,14 @@ public class MyIntentService extends IntentService {
                 handeActionFetchTopTage(intent.getIntExtra(Constants.EXTRA_PAGE_NUMBER, 1));
             } else if (Constants.ACTION_FETCH_RANDOM_PAGE.equals(action)) {
                 handleActionFetchRandomPage();
+            } else if (Constants.ACTION_FETCH_ABYSS.equals(action)) {
+                handleFetchAbyssPage(intent.getStringExtra(Constants.EXTRA_ABYSS_PAGE));
             }
         }
+    }
+
+    private void handleFetchAbyssPage(String page) {
+        AbyssParser.parsePage(page);
     }
 
     private void handleActionFetchRandomPage() {
