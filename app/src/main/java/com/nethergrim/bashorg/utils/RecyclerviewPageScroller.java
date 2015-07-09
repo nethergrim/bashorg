@@ -47,7 +47,7 @@ public class RecyclerviewPageScroller extends RecyclerView.OnScrollListener {
 
         int lastVisiblePositionWithOffset = firstVisibleItemPosition + visibleItemCount + mOffset;
         int totalAmount = recyclerView.getAdapter().getItemCount();
-        if (lastVisiblePositionWithOffset == totalAmount && mScrolledToEndCallback != null) {
+        if (lastVisiblePositionWithOffset + mOffset >= totalAmount && mScrolledToEndCallback != null) {
             mScrolledToEndCallback.onRecyclerScrolledToEnd();
         }
         if (lastVisiblePositionWithOffset % mDefaultPageSize == 0) {

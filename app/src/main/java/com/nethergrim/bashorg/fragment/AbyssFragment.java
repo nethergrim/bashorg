@@ -19,6 +19,9 @@ import com.nethergrim.bashorg.web.MyIntentService;
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * @author Andrey Drobyazko (c2q9450@gmail.com).
@@ -31,6 +34,7 @@ public class AbyssFragment extends AbstractFragment implements RecyclerviewPageS
 
     private AbyssAdapter mAdapter;
     private Realm realm;
+    private List<String> mLoadedPagesList = new ArrayList<>(50);
 
     @Nullable
     @Override
@@ -46,7 +50,7 @@ public class AbyssFragment extends AbstractFragment implements RecyclerviewPageS
         mAdapter = new AbyssAdapter();
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.addOnScrollListener(new RecyclerviewPageScroller(3, this));
+        mRecyclerView.addOnScrollListener(new RecyclerviewPageScroller(5, this));
         MyIntentService.getAbyssPage(AbyssParser.FIRST_PAGE, view.getContext());
         realm = Realm.getDefaultInstance();
         realm.setAutoRefresh(true);
@@ -67,7 +71,10 @@ public class AbyssFragment extends AbstractFragment implements RecyclerviewPageS
         String nextPage = mAdapter.getNextPageFromLast();
         Context context = getActivity();
         if (nextPage != null && context != null) {
-            MyIntentService.getAbyssPage(nextPage, context);
+            if (!mLoadedPagesList.contains(nextPage)) {
+                MyIntentService.getAbyssPage(nextPage, context);
+                mLoadedPagesList.add(nextPage);
+            }
         }
     }
 
