@@ -67,6 +67,7 @@ public class AbyssParser {
         final List<String> dates = getDates(d);
         final List<String> ids = getIds(d);
         Realm realm = Realm.getDefaultInstance();
+        Log.e("TAG", "nextpagedate: " + nextDatePage);
         if (bodies != null && dates != null && ids != null && bodies.size() == dates.size() && bodies.size() == ids.size()) {
             for (int i = 0, size = ids.size(); i < size; i++) {
                 final int finalI = i;
@@ -145,12 +146,15 @@ public class AbyssParser {
     }
 
     private static String getNextDatePage(Document d) {
-        Elements divs = d.select(A);
-        for (int i = 0, size = divs.size(); i < size; i++) {
-            Element element = divs.get(i);
-            if (element.attr("href").contains("/abyssbest/2")) {
-                String href = element.attr("href");
-                return href.replace("/abyssbest/", "");
+        Elements spans = d.select(SPAN);
+        for (int i = 0, size = spans.size(); i < size; i++) {
+            Element span = spans.get(i);
+            if (span.attr(CLASS).equals("current")) {
+                Element nextSpan = span.nextElementSibling();
+                Element nextA = nextSpan.getElementsByAttribute("href").get(0);
+                if (nextA.attr("href").contains("/abyssbest/")) {
+                    return nextA.attr("href").replace("/abyssbest/", "");
+                }
             }
         }
         return null;
