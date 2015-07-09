@@ -50,7 +50,7 @@ public class AbyssFragment extends AbstractFragment implements RecyclerviewPageS
         mAdapter = new AbyssAdapter();
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.addOnScrollListener(new RecyclerviewPageScroller(5, this));
+        mRecyclerView.addOnScrollListener(new RecyclerviewPageScroller(10, this));
         MyIntentService.getAbyssPage(AbyssParser.FIRST_PAGE, view.getContext());
         realm = Realm.getDefaultInstance();
         realm.setAutoRefresh(true);
