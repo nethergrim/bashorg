@@ -15,6 +15,7 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.clans.fab.FloatingActionButton;
+import com.nethergrim.bashorg.BuildConfig;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.FragmentAdapter;
@@ -118,7 +119,7 @@ public class MainActivity extends FragmentActivity
             }
         };
         registerReceiver(receiver, filter);
-        if (Prefs.getLaunchCount() == 4) {
+        if (Prefs.getLaunchCount() == 4 && !BuildConfig.DEBUG) {
             // show dialog with dark theme
             if (!ThemeUtils.isThemeBought(ThemeType.DARK)) {
                 MaterialDialog.Builder b = new MaterialDialog.Builder(this).title(
