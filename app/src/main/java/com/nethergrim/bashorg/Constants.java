@@ -29,10 +29,14 @@ public class Constants {
     public static final String EXTRA_QUOTE_SELECTION = "com.nethergrim.bashorg.web.extra.QUOTE_SELECTION";
     public static final int DEFAULT_PAGE_SIZE = 50;
     public static final String LINK_TO_PLAY_MARKET = "https://play.google.com/store/apps/details?id=com.nethergrim.bashorg";
+    public static final String ADS_VK_GROUP_URL = "https://vk.com/borvk";
     public static final String URL_BASHORG_TOP = "http://bash.im/byrating/";
     public static final int PAGE_MAX = Integer.MAX_VALUE;
     public static float density;
 
+    public static boolean shouldDisplayVkAds() {
+        return true; // set to false not to display vk ads
+    }
 
     public static Spannable applyKerning(CharSequence src, float kerning) {
         if (src == null) return null;

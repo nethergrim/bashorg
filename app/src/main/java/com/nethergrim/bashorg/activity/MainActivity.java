@@ -7,22 +7,35 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.clans.fab.FloatingActionButton;
+import com.nethergrim.bashorg.BuildConfig;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.FragmentAdapter;
 import com.nethergrim.bashorg.db.DB;
-import com.nethergrim.bashorg.fragment.*;
+import com.nethergrim.bashorg.fragment.AbyssFragment;
+import com.nethergrim.bashorg.fragment.BestQuotesFragment;
+import com.nethergrim.bashorg.fragment.LastQuotesFragment;
+import com.nethergrim.bashorg.fragment.LikedQuotesFragment;
+import com.nethergrim.bashorg.fragment.RandomQuotesFragment;
+import com.nethergrim.bashorg.utils.AdsHelper;
 import com.nethergrim.bashorg.utils.FileUtils;
+import com.nethergrim.bashorg.utils.Prefs;
+import com.nethergrim.bashorg.utils.ThemeType;
 import com.nethergrim.bashorg.utils.ThemeUtils;
+
 import org.json.JSONArray;
 
 
-public class MainActivity extends FragmentActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener {
+public class MainActivity extends FragmentActivity
+        implements TabLayout.OnTabSelectedListener, View.OnClickListener {
 
     private ViewPager pager;
     private FragmentAdapter adapter;
@@ -31,22 +44,98 @@ public class MainActivity extends FragmentActivity implements TabLayout.OnTabSel
     private BroadcastReceiver receiver;
 
     @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        Integer id = (Integer) tab.getTag();
+        pager.setCurrentItem(id, true);
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(ThemeUtils.getCurrentTheme().getStyleResourceId());
         super.onCreate(savedInstanceState);
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+        Prefs.incrementLaunchCount();
         setContentView(R.layout.activity_main);
         pager = (ViewPager) findViewById(R.id.pager);
         adapter = new FragmentAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
         pager.setOffscreenPageLimit(6);
         tabs = (TabLayout) findViewById(R.id.tabs);
-        FloatingActionButton mFab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton mFab = (FloatingActionButton) findViewById(R.id.fab);
         mFab.setOnClickListener(this);
         loadFragments();
         initTabs();
-        if (DB.getInstance().getCountOfLoadedQuotes() < 52000) {
+        if (DB.getInstance().getCountOfLoadedQuotes() < 52000) { // zip file not decompressed
             decompressZipFileAndPersistToDb();
+        }
+        mFab.animate().translationY(0).setDuration(250).start();
+        if (Prefs.isFirstAppLauch()) {
+            View parentLayout = findViewById(R.id.root);
+            Snackbar.make(parentLayout, R.string.our_vk_group, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(
+                            R.string.go, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    AdsHelper.showVkGroupAds(v.getContext());
+                                    Prefs.setFirstAppLaunch(false);
+                                    mFab.animate().translationY(0).setDuration(250).start();
+                                }
+                            })
+                    .show();
+            mFab.invalidate();
+            mFab.animate().translationY(-48 * Constants.density).setDuration(250).start();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String quote = intent.getStringExtra(Constants.EXTRA_QUOTE);
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, quote);
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+
+            }
+        };
+        registerReceiver(receiver, filter);
+        if (Prefs.getLaunchCount() == 4 && !BuildConfig.DEBUG) {
+            // show dialog with dark theme
+            if (!ThemeUtils.isThemeBought(ThemeType.DARK)) {
+                MaterialDialog.Builder b = new MaterialDialog.Builder(this).title(
+                        R.string.dark_theme_ads_title)
+                        .content(R.string.dark_theme_ads_description)
+                        .positiveText(R.string.go)
+                        .callback(new MaterialDialog.ButtonCallback() {
+                            @Override
+                            public void onPositive(MaterialDialog dialog) {
+                                super.onPositive(dialog);
+                                ThemeSelectorActivity.start(MainActivity.this);
+                            }
+                        })
+                        .positiveColorRes(R.color.theme_selector_activity_background);
+                b.build().show();
+            }
         }
     }
 
@@ -55,8 +144,10 @@ public class MainActivity extends FragmentActivity implements TabLayout.OnTabSel
             @Override
             public void run() {
                 Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                FileUtils.unpackAssetFileAndUnzip(FileUtils.BASHORG_JSON_FILE_NAME + FileUtils.ZIP_FILE_POSTFIX);
-                JSONArray bashorgBase = FileUtils.getJsonArrayFromDisk(getFilesDir() + "/" + FileUtils.BASHORG_JSON_FILE_NAME);
+                FileUtils.unpackAssetFileAndUnzip(
+                        FileUtils.BASHORG_JSON_FILE_NAME + FileUtils.ZIP_FILE_POSTFIX);
+                JSONArray bashorgBase = FileUtils.getJsonArrayFromDisk(
+                        getFilesDir() + "/" + FileUtils.BASHORG_JSON_FILE_NAME);
                 if (bashorgBase != null) {
                     DB.getInstance().persist(bashorgBase);
                 }
@@ -87,46 +178,6 @@ public class MainActivity extends FragmentActivity implements TabLayout.OnTabSel
         tabs.addTab(tabs.newTab().setText(R.string.best_of_abyss).setTag(Integer.valueOf(4)));
         tabs.setOnTabSelectedListener(this);
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String quote = intent.getStringExtra(Constants.EXTRA_QUOTE);
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, quote);
-                sendIntent.setType("text/plain");
-                startActivity(sendIntent);
-
-            }
-        };
-        registerReceiver(receiver, filter);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterReceiver(receiver);
-    }
-
-    @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        Integer id = (Integer) tab.getTag();
-        pager.setCurrentItem(id, true);
-    }
-
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-
     }
 
     @Override

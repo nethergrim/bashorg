@@ -12,7 +12,7 @@
         <item name="colorAccent">?attr/myColorAccent</item>
     </style>
 
-    <style name="My.Theme.Dark" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="My.Theme.Dark" parent="Base.ThemeOverlay.AppCompat.Dark">
         <item name="myColorBackground">@color/dark_background</item>
         <item name="myColorWindowBackground">@color/dark_window_background</item>
         <item name="android:windowBackground">?attr/myColorWindowBackground</item>

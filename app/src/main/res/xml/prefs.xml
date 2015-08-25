@@ -7,4 +7,9 @@
     <com.jenzz.materialpreference.Preference
             android:key="prefs_theme"
             android:title="@string/theme"/>
+    <com.jenzz.materialpreference.Preference
+        android:icon="@drawable/ic_vk"
+        android:key="prefs_vk_group"
+        android:summary="@string/vk_group_url"
+        android:title="@string/our_vk_group" />
 </PreferenceScreen>
