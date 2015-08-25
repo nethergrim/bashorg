@@ -18,5 +18,8 @@
     <string name="app_will_download_all_quotes_in_background">Приложение скачает и сохранит все цитаты в фоне.</string>
     <string name="quotes_fetching">Загрузка цитат</string>
     <string name="best_of_abyss">Лучшее Бездны</string>
+    <string name="our_vk_group">Наша группа в ВК</string>
+    <string name="vk_group_url">https://vk.com/borvk</string>
+
 
 </resources>
