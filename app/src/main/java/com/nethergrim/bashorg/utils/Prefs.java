@@ -12,6 +12,7 @@ public class Prefs {
     public static final String KEY_FIRST_LAUNCH = "fl";
     public static final String KEY_LAUNCH_TIME = "lt";
     public static final long MIN_DELAY_FOR_FIRST_LAUNCH_MS = 1000 * 60; // 60 sec
+    public static final String KEY_LAUNCH_COUNT = "lc";
     private static SimplePref pref;
 
     public static void setFirstAppLaunch(boolean firstAppLaunch) {
@@ -39,8 +40,20 @@ public class Prefs {
         return pref.get(KEY_LAUNCH_TIME, -1l);
     }
 
+    public static void incrementLaunchCount() {
+        init();
+        pref.set(KEY_LAUNCH_COUNT, getLaunchCount() + 1);
+    }
+
+    public static int getLaunchCount() {
+        init();
+        return pref.get(KEY_LAUNCH_COUNT, 0);
+    }
+
     private static void init() {
-        pref = new SimplePref(App.getInstance(), "simple_prefs");
+        if (pref == null) {
+            pref = new SimplePref(App.getInstance(), "simple_prefs");
+        }
     }
 
 }

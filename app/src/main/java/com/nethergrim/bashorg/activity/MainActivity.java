@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.clans.fab.FloatingActionButton;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
@@ -26,6 +27,7 @@ import com.nethergrim.bashorg.fragment.RandomQuotesFragment;
 import com.nethergrim.bashorg.utils.AdsHelper;
 import com.nethergrim.bashorg.utils.FileUtils;
 import com.nethergrim.bashorg.utils.Prefs;
+import com.nethergrim.bashorg.utils.ThemeType;
 import com.nethergrim.bashorg.utils.ThemeUtils;
 
 import org.json.JSONArray;
@@ -61,6 +63,7 @@ public class MainActivity extends FragmentActivity
         setTheme(ThemeUtils.getCurrentTheme().getStyleResourceId());
         super.onCreate(savedInstanceState);
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+        Prefs.incrementLaunchCount();
         setContentView(R.layout.activity_main);
         pager = (ViewPager) findViewById(R.id.pager);
         adapter = new FragmentAdapter(getSupportFragmentManager());
@@ -115,6 +118,24 @@ public class MainActivity extends FragmentActivity
             }
         };
         registerReceiver(receiver, filter);
+        if (Prefs.getLaunchCount() == 4) {
+            // show dialog with dark theme
+            if (!ThemeUtils.isThemeBought(ThemeType.DARK)) {
+                MaterialDialog.Builder b = new MaterialDialog.Builder(this).title(
+                        R.string.dark_theme_ads_title)
+                        .content(R.string.dark_theme_ads_description)
+                        .positiveText(R.string.go)
+                        .callback(new MaterialDialog.ButtonCallback() {
+                            @Override
+                            public void onPositive(MaterialDialog dialog) {
+                                super.onPositive(dialog);
+                                ThemeSelectorActivity.start(MainActivity.this);
+                            }
+                        })
+                        .positiveColorRes(R.color.theme_selector_activity_background);
+                b.build().show();
+            }
+        }
     }
 
     private void decompressZipFileAndPersistToDb() {
