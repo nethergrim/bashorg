@@ -15,14 +15,14 @@ public class Prefs {
     public static final String KEY_LAUNCH_COUNT = "lc";
     private static SimplePref pref;
 
-    public static void setFirstAppLaunch(boolean firstAppLaunch) {
+    public static boolean isSnackBarDisabled() {
         init();
-        pref.set(KEY_FIRST_LAUNCH, firstAppLaunch);
+        return pref.get(KEY_FIRST_LAUNCH, false);
     }
 
-    public static boolean isFirstAppLauch() {
+    public static void setSnackBarDisabled(boolean firstAppLaunch) {
         init();
-        return pref.get(KEY_FIRST_LAUNCH, true);
+        pref.set(KEY_FIRST_LAUNCH, firstAppLaunch);
     }
 
     public static void writeLaunchTime() {
