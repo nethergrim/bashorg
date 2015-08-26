@@ -7,14 +7,16 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.clans.fab.FloatingActionButton;
+import com.kenny.snackbar.SnackBarItem;
+import com.kenny.snackbar.SnackBarListener;
 import com.nethergrim.bashorg.BuildConfig;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
@@ -33,10 +35,23 @@ import com.nethergrim.bashorg.utils.ThemeUtils;
 
 import org.json.JSONArray;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 
 public class MainActivity extends FragmentActivity
-        implements TabLayout.OnTabSelectedListener, View.OnClickListener {
+        implements TabLayout.OnTabSelectedListener, View.OnClickListener, SnackBarListener {
 
+    @InjectView(R.id.tabs)
+    TabLayout mTabs;
+    @InjectView(R.id.root)
+    FrameLayout mRoot;
+    @InjectView(R.id.pager)
+    ViewPager mPager;
+    @InjectView(R.id.shadow)
+    View mShadow;
+    @InjectView(R.id.fab)
+    FloatingActionButton mFab;
     private ViewPager pager;
     private FragmentAdapter adapter;
     private TabLayout tabs;
@@ -60,41 +75,35 @@ public class MainActivity extends FragmentActivity
     }
 
     @Override
+    public void onSnackBarStarted(Object o) {
+        mFab.animate().translationY(-48 * Constants.density).setDuration(250).start();
+    }
+
+    @Override
+    public void onSnackBarFinished(Object o, boolean b) {
+        mFab.animate().translationY(0).setDuration(250).start();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(ThemeUtils.getCurrentTheme().getStyleResourceId());
         super.onCreate(savedInstanceState);
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         Prefs.incrementLaunchCount();
         setContentView(R.layout.activity_main);
+        ButterKnife.inject(this);
         pager = (ViewPager) findViewById(R.id.pager);
         adapter = new FragmentAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
         pager.setOffscreenPageLimit(6);
         tabs = (TabLayout) findViewById(R.id.tabs);
-        final FloatingActionButton mFab = (FloatingActionButton) findViewById(R.id.fab);
         mFab.setOnClickListener(this);
         loadFragments();
         initTabs();
         if (DB.getInstance().getCountOfLoadedQuotes() < 52000) { // zip file not decompressed
             decompressZipFileAndPersistToDb();
         }
-        mFab.animate().translationY(0).setDuration(250).start();
-        if (Prefs.isFirstAppLauch()) {
-            View parentLayout = findViewById(R.id.root);
-            Snackbar.make(parentLayout, R.string.our_vk_group, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(
-                            R.string.go, new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    AdsHelper.showVkGroupAds(v.getContext());
-                                    Prefs.setFirstAppLaunch(false);
-                                    mFab.animate().translationY(0).setDuration(250).start();
-                                }
-                            })
-                    .show();
-            mFab.invalidate();
-            mFab.animate().translationY(-48 * Constants.density).setDuration(250).start();
-        }
+
     }
 
     @Override
@@ -106,6 +115,7 @@ public class MainActivity extends FragmentActivity
     @Override
     protected void onResume() {
         super.onResume();
+        showSnackBar();
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -136,6 +146,28 @@ public class MainActivity extends FragmentActivity
                         .positiveColorRes(R.color.theme_selector_activity_background);
                 b.build().show();
             }
+        }
+    }
+
+    private void showSnackBar() {
+        mFab.animate().translationY(0).setDuration(250).start();
+        if (!Prefs.isSnackBarDisabled()) {
+            new SnackBarItem.Builder(this)
+                    .setMessageResource(R.string.our_vk_group)
+                    .setActionMessageResource(R.string.go)
+                    .setActionClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            AdsHelper.showVkGroupAds(v.getContext());
+                            Prefs.setSnackBarDisabled(true);
+                        }
+                    })
+                    .setActionMessageColorResource(R.color.accent)
+                    .setSnackBarMessageColorResource(android.R.color.white)
+                    .setInterpolatorResource(android.R.interpolator.accelerate_decelerate)
+                    .setDuration(5000)
+                    .setSnackBarListener(this)
+                    .show();
         }
     }
 
