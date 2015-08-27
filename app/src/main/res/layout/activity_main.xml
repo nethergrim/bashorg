@@ -10,11 +10,6 @@
         android:layout_height="@dimen/top_bar_opened"
         android:background="?attr/myColorActionBar" />
 
-    <FrameLayout
-        android:id="@+id/root"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
@@ -35,9 +30,8 @@
         xmlns:fab="http://schemas.android.com/apk/res-auto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/root"
+        android:layout_above="@+id/ads_container"
         android:layout_alignParentRight="true"
-        android:layout_gravity="right|bottom"
         android:layout_marginBottom="12dp"
         android:layout_marginRight="12dp"
         android:src="@drawable/ic_action_settings"
@@ -46,6 +40,12 @@
         fab:fab_colorRipple="@color/white.alpha_50"
         fab:fab_showShadow="true"
         fab:fab_size="mini" />
+
+    <FrameLayout
+        android:id="@+id/ads_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 
 
 </RelativeLayout>

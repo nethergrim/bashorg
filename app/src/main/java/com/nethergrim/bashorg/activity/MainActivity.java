@@ -32,6 +32,7 @@ import com.nethergrim.bashorg.utils.FileUtils;
 import com.nethergrim.bashorg.utils.Prefs;
 import com.nethergrim.bashorg.utils.ThemeType;
 import com.nethergrim.bashorg.utils.ThemeUtils;
+import com.startad.lib.SADView;
 
 import org.json.JSONArray;
 
@@ -44,19 +45,20 @@ public class MainActivity extends FragmentActivity
 
     @InjectView(R.id.tabs)
     TabLayout mTabs;
-    @InjectView(R.id.root)
-    FrameLayout mRoot;
     @InjectView(R.id.pager)
     ViewPager mPager;
     @InjectView(R.id.shadow)
     View mShadow;
     @InjectView(R.id.fab)
     FloatingActionButton mFab;
+    @InjectView(R.id.ads_container)
+    FrameLayout mAdsContainer;
     private ViewPager pager;
     private FragmentAdapter adapter;
     private TabLayout tabs;
     private IntentFilter filter = new IntentFilter(Constants.ACTION_SHARE_QUOTE);
     private BroadcastReceiver receiver;
+    private SADView mSADView;
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
@@ -77,11 +79,16 @@ public class MainActivity extends FragmentActivity
     @Override
     public void onSnackBarStarted(Object o) {
         mFab.animate().translationY(-48 * Constants.density).setDuration(250).start();
+        if (mSADView != null) {
+            mAdsContainer.removeAllViews();
+            mSADView = null;
+        }
     }
 
     @Override
     public void onSnackBarFinished(Object o, boolean b) {
         mFab.animate().translationY(0).setDuration(250).start();
+        showStartAdAds();
     }
 
     @Override
@@ -103,6 +110,18 @@ public class MainActivity extends FragmentActivity
         if (DB.getInstance().getCountOfLoadedQuotes() < 52000) { // zip file not decompressed
             decompressZipFileAndPersistToDb();
         }
+        AdsHelper.shouldIShowStartADS(new AdsHelper.AdsHelperCallback() {
+            @Override
+            public void shouldShowStartADS(String show) {
+                if ("0".equals(show)) {
+                    // hide
+                    if (mSADView != null) {
+                        mAdsContainer.removeAllViews();
+                        mSADView = null;
+                    }
+                }
+            }
+        });
 
     }
 
@@ -168,6 +187,20 @@ public class MainActivity extends FragmentActivity
                     .setDuration(5000)
                     .setSnackBarListener(this)
                     .show();
+        } else {
+            showStartAdAds();
+        }
+    }
+
+    private void showStartAdAds() {
+        AdsHelper.shouldIShowStartADS(null);
+        if (/*!ThemeUtils.isThemeBought(ThemeType.DARK) &&*/ Prefs.shouldShowStartAds()) { // do
+        // not show ads, if theme is bought
+            if (mSADView == null) {
+                mSADView = new SADView(this, Constants.START_AD_APP_ID);
+                mAdsContainer.addView(mSADView);
+            }
+            mSADView.loadAd(SADView.LANGUAGE_RU);
         }
     }
 

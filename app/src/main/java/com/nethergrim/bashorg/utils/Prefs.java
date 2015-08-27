@@ -13,6 +13,7 @@ public class Prefs {
     public static final String KEY_LAUNCH_TIME = "lt";
     public static final long MIN_DELAY_FOR_FIRST_LAUNCH_MS = 1000 * 60; // 60 sec
     public static final String KEY_LAUNCH_COUNT = "lc";
+    public static final String KEY_START_ADS = "ksa";
     private static SimplePref pref;
 
     public static boolean isSnackBarDisabled() {
@@ -48,6 +49,20 @@ public class Prefs {
     public static int getLaunchCount() {
         init();
         return pref.get(KEY_LAUNCH_COUNT, 0);
+    }
+
+    public static boolean shouldShowStartAds() {
+        return AdsHelper.shouldShowStartADS(getAdsGist());
+    }
+
+    public static String getAdsGist() {
+        init();
+        return pref.get(KEY_START_ADS, null);
+    }
+
+    public static void setShowStartADS(String show) {
+        init();
+        pref.set(KEY_START_ADS, show);
     }
 
     private static void init() {
