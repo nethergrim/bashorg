@@ -8,11 +8,9 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
-import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.fragment.SettingsFragment;
 import com.nethergrim.bashorg.utils.ThemeUtils;
-import com.startad.lib.SADView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -29,21 +27,18 @@ public class SettingsActivity extends AppCompatActivity {
     View mActionBar;
     @InjectView(R.id.container)
     FrameLayout mContainer;
-    @InjectView(R.id.sad)
-    FrameLayout mSadContainer;
-    private SADView mSADView;
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, SettingsActivity.class));
     }
 
-    @Override
-    public void onRestoreInstanceState(Bundle outState) {
-        super.onRestoreInstanceState(outState);
-
-        if (null != this.mSADView)
-            this.mSADView.restoreInstanceState(outState);
-    }
+//    @Override
+//    public void onRestoreInstanceState(Bundle outState) {
+//        super.onRestoreInstanceState(outState);
+//
+//        if (null != this.mSADView)
+//            this.mSADView.restoreInstanceState(outState);
+//    }
 
     @Override
     public void onBackPressed() {
@@ -52,13 +47,13 @@ public class SettingsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        if (null != this.mSadContainer)
-            this.mSADView.saveInstanceState(outState);
-    }
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//
+//        if (null != this.mSadContainer)
+//            this.mSADView.saveInstanceState(outState);
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,25 +62,24 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         ButterKnife.inject(this);
         initActionBar();
-        initAds();
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, new SettingsFragment())
                 .commit();
     }
 
-    @Override
-    protected void onDestroy() {
-        if (mSadContainer != null) {
-            mSADView.destroy();
-        }
-        super.onDestroy();
-    }
-
-    private void initAds() {
-        this.mSADView = new SADView(this, Constants.START_AD_APP_ID);
-        mSadContainer.addView(mSADView);
-        mSADView.loadAd(SADView.LANGUAGE_RU);
-    }
+//    @Override
+//    protected void onDestroy() {
+//        if (mSadContainer != null) {
+//            mSADView.destroy();
+//        }
+//        super.onDestroy();
+//    }
+//
+//    private void initAds() {
+//        this.mSADView = new SADView(this, Constants.START_AD_APP_ID);
+//        mSadContainer.addView(mSADView);
+//        mSADView.loadAd(SADView.LANGUAGE_RU);
+//    }
 
     private void initActionBar() {
         mButtonBack.setOnClickListener(new View.OnClickListener() {
