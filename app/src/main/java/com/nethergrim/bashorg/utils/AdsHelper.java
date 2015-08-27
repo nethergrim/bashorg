@@ -5,11 +5,15 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 
 import com.nethergrim.bashorg.Constants;
+import com.nethergrim.bashorg.web.GistParser;
 
 import java.util.List;
+import java.util.concurrent.Executors;
 
 /**
  * @author andrej on 25.08.15.
@@ -17,6 +21,11 @@ import java.util.List;
 public class AdsHelper {
 
     public static final String VK_MAIN_APP = "com.vkontakte.android";
+
+    public interface AdsHelperCallback {
+
+        void shouldShowStartADS(String show);
+    }
 
     public static void showVkGroupAds(Context context) {
         if (!Constants.shouldDisplayVkAds()) {
@@ -36,6 +45,39 @@ public class AdsHelper {
 
             context.startActivity(i);
         }
+    }
+
+    public static void shouldIShowStartADS(final AdsHelperCallback callback) {
+        final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
+        Executors.newSingleThreadExecutor().submit(new Runnable() {
+            @Override
+            public void run() {
+                String rawUrl = GistParser.getMyRawUrl(GistParser.SHOW_ADS_GIST_URL);
+                final String gistBody = GistParser.getGistBody(rawUrl);
+                if (gistBody != null) {
+                    Prefs.setShowStartADS(gistBody);
+                }
+                if (callback != null) {
+                    mainThreadHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.shouldShowStartADS(gistBody);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public static boolean shouldShowStartADS(String rawGist) {
+        if (rawGist == null) {
+            return true;
+        } else
+            return "1".equals(rawGist);
+    }
+
+    public static String getDefaultStateForStartADS() {
+        return "1";
     }
 
     private static String getVkAppPackagename(List<ResolveInfo> infos) {

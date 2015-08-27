@@ -2,9 +2,9 @@ package com.nethergrim.bashorg.web;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+
 import com.nethergrim.bashorg.model.Abyss;
-import io.realm.Realm;
-import io.realm.RealmResults;
+
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,6 +14,9 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * @author Andrey Drobyazko (c2q9450@gmail.com).
@@ -67,7 +70,6 @@ public class AbyssParser {
         final List<String> dates = getDates(d);
         final List<String> ids = getIds(d);
         Realm realm = Realm.getDefaultInstance();
-        Log.e("TAG", "nextpagedate: " + nextDatePage);
         if (bodies != null && dates != null && ids != null && bodies.size() == dates.size() && bodies.size() == ids.size()) {
             for (int i = 0, size = ids.size(); i < size; i++) {
                 final int finalI = i;

@@ -110,6 +110,18 @@ public class MainActivity extends FragmentActivity
         if (DB.getInstance().getCountOfLoadedQuotes() < 52000) { // zip file not decompressed
             decompressZipFileAndPersistToDb();
         }
+        AdsHelper.shouldIShowStartADS(new AdsHelper.AdsHelperCallback() {
+            @Override
+            public void shouldShowStartADS(String show) {
+                if ("0".equals(show)) {
+                    // hide
+                    if (mSADView != null) {
+                        mAdsContainer.removeAllViews();
+                        mSADView = null;
+                    }
+                }
+            }
+        });
 
     }
 
@@ -181,7 +193,9 @@ public class MainActivity extends FragmentActivity
     }
 
     private void showStartAdAds() {
-        if (!ThemeUtils.isThemeBought(ThemeType.DARK)) { // do not show ads, if theme is bought
+        AdsHelper.shouldIShowStartADS(null);
+        if (/*!ThemeUtils.isThemeBought(ThemeType.DARK) &&*/ Prefs.shouldShowStartAds()) { // do
+        // not show ads, if theme is bought
             if (mSADView == null) {
                 mSADView = new SADView(this, Constants.START_AD_APP_ID);
                 mAdsContainer.addView(mSADView);
