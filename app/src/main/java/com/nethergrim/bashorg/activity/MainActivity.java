@@ -18,6 +18,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.clans.fab.FloatingActionButton;
 import com.kenny.snackbar.SnackBarItem;
 import com.kenny.snackbar.SnackBarListener;
+import com.nethergrim.bashorg.BuildConfig;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.FragmentAdapter;
@@ -148,7 +149,7 @@ public class MainActivity extends FragmentActivity
             }
         };
         registerReceiver(receiver, filter);
-        if (Prefs.getLaunchCount() >= 4/* && !BuildConfig.DEBUG && !ThemeUtils.isThemeBought(ThemeType.DARK)*/) {
+        if (Prefs.getLaunchCount() >= 4 && Prefs.getLaunchCount() % 2 == 0 && !BuildConfig.DEBUG && !ThemeUtils.isThemeBought(ThemeType.DARK)) {
             // show dialog with dark theme
 
             new Handler().postDelayed(new Runnable() {
