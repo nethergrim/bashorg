@@ -17,8 +17,11 @@ import com.nethergrim.bashorg.model.Quote;
  */
 public class QuoteCursorAdapter extends CursorAdapter {
 
+    private QuoteInflater mInflater;
+
     public QuoteCursorAdapter(Context context) {
         super(context, null, 0);
+        mInflater = new QuoteInflater();
     }
 
     @Override
@@ -32,7 +35,7 @@ public class QuoteCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, final Context context, Cursor cursor) {
         final QuoteViewHolder vh = (QuoteViewHolder) view.getTag();
-        Quote q = new QuoteInflater().inflateEntityAtCurrentPosition(cursor);
+        Quote q = mInflater.inflateEntityAtCurrentPosition(cursor);
         vh.bindQuouteData(q, context);
     }
 

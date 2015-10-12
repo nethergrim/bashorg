@@ -40,7 +40,7 @@ public class RandomQuotesFragment extends ViewPagerFragment implements View.OnCl
 
     @Override
     protected int getDefaultPageSize() {
-        return Constants.DEFAULT_PAGE_SIZE;
+        return 500;
     }
 
     @Override
@@ -63,6 +63,11 @@ public class RandomQuotesFragment extends ViewPagerFragment implements View.OnCl
 
     @Override
     protected boolean autoLoadNextPage() {
+        return false;
+    }
+
+    @Override
+    protected boolean autoUpdate() {
         return false;
     }
 

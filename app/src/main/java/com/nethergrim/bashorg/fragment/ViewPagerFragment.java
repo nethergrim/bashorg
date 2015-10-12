@@ -57,6 +57,8 @@ public abstract class ViewPagerFragment extends AbstractFragment implements Swip
 
     protected abstract boolean autoLoadNextPage();
 
+    protected abstract boolean autoUpdate();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,7 +124,7 @@ public abstract class ViewPagerFragment extends AbstractFragment implements Swip
     }
 
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new QuotesLoader(getActivity(), args);
+        return new QuotesLoader(getActivity(), args, autoUpdate());
     }
 
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {

@@ -42,4 +42,9 @@ public class LikedQuotesFragment extends ViewPagerFragment {
         return true;
     }
 
+    @Override
+    protected boolean autoUpdate() {
+        return true;
+    }
+
 }

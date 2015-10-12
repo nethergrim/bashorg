@@ -63,4 +63,9 @@ public class LastQuotesFragment extends ViewPagerFragment{
     protected boolean autoLoadNextPage() {
         return true;
     }
+
+    @Override
+    protected boolean autoUpdate() {
+        return true;
+    }
 }

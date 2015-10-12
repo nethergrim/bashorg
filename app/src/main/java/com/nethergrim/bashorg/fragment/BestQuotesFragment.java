@@ -61,5 +61,10 @@ public class BestQuotesFragment extends ViewPagerFragment {
         return true;
     }
 
+    @Override
+    protected boolean autoUpdate() {
+        return true;
+    }
+
 
 }
