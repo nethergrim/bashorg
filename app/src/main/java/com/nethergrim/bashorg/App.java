@@ -4,8 +4,11 @@ import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+
 import com.nethergrim.bashorg.db.DB;
 import com.nethergrim.bashorg.purchases.InAppBillingServiceHolder;
+import com.yandex.metrica.YandexMetrica;
+
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -33,6 +36,9 @@ public class App extends Application {
         Constants.density = getResources().getDisplayMetrics().density;
         InAppBillingServiceHolder.bindToService();
         initRealm();
+
+        YandexMetrica.activate(this, "2d3a1fc4-bdba-4c50-90d1-5a40cb665a52");
+        YandexMetrica.setTrackLocationEnabled(false);
     }
 
     private void initRealm() {

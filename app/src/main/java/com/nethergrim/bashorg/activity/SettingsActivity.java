@@ -3,7 +3,6 @@ package com.nethergrim.bashorg.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -18,7 +17,7 @@ import butterknife.InjectView;
 /**
  * @author andrej on 20.06.15.
  */
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends BaseActivity {
 
 
     @InjectView(R.id.btn_back)

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.animation.AnticipateOvershootInterpolator;
@@ -18,6 +17,7 @@ import com.nethergrim.bashorg.purchases.InAppBillingServiceHolder;
 import com.nethergrim.bashorg.purchases.PurchasesUtils;
 import com.nethergrim.bashorg.utils.ThemeType;
 import com.nethergrim.bashorg.utils.ThemeUtils;
+import com.yandex.metrica.YandexMetrica;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,7 +30,7 @@ import butterknife.InjectView;
 /**
  * @author andrej on 22.06.15.
  */
-public class ThemeSelectorActivity extends FragmentActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
+public class ThemeSelectorActivity extends BaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
 
     public static final int REQUEST_BUY_THEME = 1212;
     @InjectView(R.id.pager)
@@ -62,6 +62,7 @@ public class ThemeSelectorActivity extends FragmentActivity implements View.OnCl
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         } else {
+            YandexMetrica.reportEvent("Trying to buy " + mSelectedTheme.name() + " theme.");
             try {
                 startIntentSenderForResult(PurchasesUtils.getBuyIntentSender(PurchasesUtils.ID_DARK_THEME), REQUEST_BUY_THEME, new Intent(), 0, 0, 0);
             } catch (IntentSender.SendIntentException e) {
@@ -73,9 +74,9 @@ public class ThemeSelectorActivity extends FragmentActivity implements View.OnCl
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_BUY_THEME) {
-            int responseCode = data.getIntExtra("RESPONSE_CODE", 0);
+//            int responseCode = data.getIntExtra("RESPONSE_CODE", 0);
             String purchaseData = data.getStringExtra("INAPP_PURCHASE_DATA");
-            String dataSignature = data.getStringExtra("INAPP_DATA_SIGNATURE");
+//            String dataSignature = data.getStringExtra("INAPP_DATA_SIGNATURE");
 
             if (resultCode == RESULT_OK) {
                 try {
@@ -86,6 +87,7 @@ public class ThemeSelectorActivity extends FragmentActivity implements View.OnCl
                     }
                     InAppBillingServiceHolder.mBoughtSkus.add(sku);
                     onClick(null);
+                    YandexMetrica.reportEvent("Successful purchase.");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

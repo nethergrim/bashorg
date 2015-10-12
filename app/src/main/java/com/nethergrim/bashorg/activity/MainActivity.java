@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -41,7 +40,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class MainActivity extends FragmentActivity
+public class MainActivity extends BaseActivity
         implements TabLayout.OnTabSelectedListener, View.OnClickListener, SnackBarListener {
 
     @InjectView(R.id.tabs)
