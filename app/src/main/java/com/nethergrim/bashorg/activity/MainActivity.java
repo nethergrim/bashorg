@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -17,7 +18,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.clans.fab.FloatingActionButton;
 import com.kenny.snackbar.SnackBarItem;
 import com.kenny.snackbar.SnackBarListener;
-import com.nethergrim.bashorg.BuildConfig;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.FragmentAdapter;
@@ -148,23 +148,30 @@ public class MainActivity extends FragmentActivity
             }
         };
         registerReceiver(receiver, filter);
-        if (Prefs.getLaunchCount() == 4 && !BuildConfig.DEBUG) {
+        if (Prefs.getLaunchCount() >= 4/* && !BuildConfig.DEBUG && !ThemeUtils.isThemeBought(ThemeType.DARK)*/) {
             // show dialog with dark theme
-            if (!ThemeUtils.isThemeBought(ThemeType.DARK)) {
-                MaterialDialog.Builder b = new MaterialDialog.Builder(this).title(
-                        R.string.dark_theme_ads_title)
-                        .content(R.string.dark_theme_ads_description)
-                        .positiveText(R.string.go)
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                super.onPositive(dialog);
-                                ThemeSelectorActivity.start(MainActivity.this);
-                            }
-                        })
-                        .positiveColorRes(R.color.theme_selector_activity_background);
-                b.build().show();
-            }
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    MaterialDialog.Builder b = new MaterialDialog
+                            .Builder(MainActivity.this)
+                            .title(R.string.dark_theme_ads_title)
+                            .content(R.string.dark_theme_ads_description)
+                            .positiveText(R.string.go)
+                            .callback(new MaterialDialog.ButtonCallback() {
+                                @Override
+                                public void onPositive(MaterialDialog dialog) {
+                                    super.onPositive(dialog);
+                                    ThemeSelectorActivity.start(MainActivity.this);
+                                }
+                            })
+                            .positiveColorRes(R.color.theme_selector_activity_background);
+                    b.build().show();
+                }
+            }, 1500);
+
+
         }
     }
 
@@ -194,8 +201,7 @@ public class MainActivity extends FragmentActivity
 
     private void showStartAdAds() {
         AdsHelper.shouldIShowStartADS(null);
-        if (/*!ThemeUtils.isThemeBought(ThemeType.DARK) &&*/ Prefs.shouldShowStartAds()) { // do
-        // not show ads, if theme is bought
+        if (!ThemeUtils.isThemeBought(ThemeType.DARK) && Prefs.shouldShowStartAds()) {
             if (mSADView == null) {
                 mSADView = new SADView(this, Constants.START_AD_APP_ID);
                 mAdsContainer.addView(mSADView);
