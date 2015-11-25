@@ -126,12 +126,6 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterReceiver(receiver);
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         showSnackBar();
@@ -148,31 +142,45 @@ public class MainActivity extends BaseActivity
             }
         };
         registerReceiver(receiver, filter);
-        if (Prefs.getLaunchCount() >= 4 && Prefs.getLaunchCount() % 2 == 0 && !BuildConfig.DEBUG && !ThemeUtils.isThemeBought(ThemeType.DARK)) {
+        if (Prefs.getLaunchCount() == 2 && !BuildConfig.DEBUG && !ThemeUtils.isThemeBought(
+                ThemeType.DARK)) {
             // show dialog with dark theme
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    MaterialDialog.Builder b = new MaterialDialog
-                            .Builder(MainActivity.this)
-                            .title(R.string.dark_theme_ads_title)
-                            .content(R.string.dark_theme_ads_description)
-                            .positiveText(R.string.go)
-                            .callback(new MaterialDialog.ButtonCallback() {
-                                @Override
-                                public void onPositive(MaterialDialog dialog) {
-                                    super.onPositive(dialog);
-                                    ThemeSelectorActivity.start(MainActivity.this);
-                                }
-                            })
-                            .positiveColorRes(R.color.theme_selector_activity_background);
-                    b.build().show();
-                }
-            }, 1500);
-
+            try {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        MaterialDialog.Builder b = new MaterialDialog
+                                .Builder(MainActivity.this)
+                                .title(R.string.dark_theme_ads_title)
+                                .content(R.string.dark_theme_ads_description)
+                                .positiveText(R.string.go)
+                                .callback(new MaterialDialog.ButtonCallback() {
+                                    @Override
+                                    public void onPositive(MaterialDialog dialog) {
+                                        super.onPositive(dialog);
+                                        ThemeSelectorActivity.start(MainActivity.this);
+                                    }
+                                })
+                                .positiveColorRes(R.color.theme_selector_activity_background);
+                        try {
+                            b.build().show();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, 1500);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
     }
 
     private void showSnackBar() {

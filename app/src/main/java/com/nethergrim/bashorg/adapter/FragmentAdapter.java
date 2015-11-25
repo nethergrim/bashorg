@@ -4,7 +4,6 @@ package com.nethergrim.bashorg.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +32,6 @@ public class FragmentAdapter extends FragmentPagerAdapter {
         return titles;
     }
 
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return getTitles().get(position);
-    }
-
     public void addFragment(Fragment fragment, String title) {
         getFragmentList().add(fragment);
         getTitles().add(title);
@@ -56,5 +50,10 @@ public class FragmentAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return getFragmentList().size();
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return getTitles().get(position);
     }
 }

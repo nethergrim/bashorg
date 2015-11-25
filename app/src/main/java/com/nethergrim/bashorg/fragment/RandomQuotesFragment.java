@@ -22,6 +22,12 @@ public class RandomQuotesFragment extends ViewPagerFragment implements View.OnCl
     boolean emptyScreen = false;
 
     @Override
+    public void onClick(View v) {
+        list.setSelection(0);
+        onRefreshTriggered();
+    }
+
+    @Override
     protected QuoteSelection getQuoteSelection() {
         return QuoteSelection.RANDOM;
     }
@@ -40,20 +46,21 @@ public class RandomQuotesFragment extends ViewPagerFragment implements View.OnCl
 
     @Override
     protected int getDefaultPageSize() {
-        return 500;
+        return 50;
     }
 
     @Override
     protected void resumed() {
-        if (list.getFooterViewsCount() == 0){
-            View footer = LayoutInflater.from(getActivity()).inflate(R.layout.footer_load_more, null);
+        if (list.getFooterViewsCount() == 0) {
+            View footer = LayoutInflater.from(getActivity())
+                    .inflate(R.layout.footer_load_more, null);
             list.addFooterView(footer);
             footer.findViewById(R.id.btn_load_more).setOnClickListener(this);
         }
         setBroadcastReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (emptyScreen){
+                if (emptyScreen) {
                     MyIntentService.getRandomPage();
                     loadData(getDefaultPageSize());
                 }
@@ -69,11 +76,5 @@ public class RandomQuotesFragment extends ViewPagerFragment implements View.OnCl
     @Override
     protected boolean autoUpdate() {
         return false;
-    }
-
-    @Override
-    public void onClick(View v) {
-        list.setSelection(0);
-        onRefreshTriggered();
     }
 }
