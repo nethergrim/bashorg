@@ -7,7 +7,7 @@ import com.yandex.metrica.YandexMetrica;
 /**
  * @author Andrew Drobyazko (andrey.drobyazko@applikeysolutions.com) on 12.10.15.
  */
-public class BaseActivity extends FragmentActivity {
+public abstract class BaseActivity extends FragmentActivity {
 
 
     @Override

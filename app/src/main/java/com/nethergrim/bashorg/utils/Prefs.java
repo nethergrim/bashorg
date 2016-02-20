@@ -17,8 +17,9 @@ public class Prefs {
     private static SimplePref pref;
 
     public static boolean isSnackBarDisabled() {
-        init();
-        return pref.get(KEY_FIRST_LAUNCH, false);
+        return true;
+//        init();
+//        return pref.get(KEY_FIRST_LAUNCH, false);
     }
 
     public static void setSnackBarDisabled(boolean firstAppLaunch) {
@@ -52,7 +53,8 @@ public class Prefs {
     }
 
     public static boolean shouldShowStartAds() {
-        return AdsHelper.shouldShowStartADS(getAdsGist());
+        return false;
+//        return AdsHelper.shouldShowStartADS(getAdsGist());
     }
 
     public static String getAdsGist() {

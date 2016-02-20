@@ -36,7 +36,7 @@ public class Constants {
     public static float density;
 
     public static boolean shouldDisplayVkAds() {
-        return true; // set to false not to display vk ads
+        return false; // set to false not to display vk ads
     }
 
     public static Spannable applyKerning(CharSequence src, float kerning) {

@@ -4,8 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.nethergrim.bashorg.Prefs;
 import com.nethergrim.bashorg.model.Quote;
-import com.nethergrim.bashorg.purchases.InAppBillingServiceHolder;
-import com.nethergrim.bashorg.purchases.PurchasesUtils;
 
 /**
  * @author andrej on 19.06.15.
@@ -45,15 +43,16 @@ public class ThemeUtils {
     }
 
     public static boolean isThemeBought(@NonNull ThemeType t) {
-        if (PurchasesUtils.debugPurchasesMode()) {
-            return true;
-        }
-        switch (t) {
-            case DARK:
-                return InAppBillingServiceHolder.mBoughtSkus != null && InAppBillingServiceHolder.mBoughtSkus.contains(PurchasesUtils.ID_DARK_THEME);
-            default:
-                return true;
-        }
+        return true; // all themes are free from now
+//        if (PurchasesUtils.debugPurchasesMode()) {
+//            return true;
+//        }
+//        switch (t) {
+//            case DARK:
+//                return InAppBillingServiceHolder.mBoughtSkus != null && InAppBillingServiceHolder.mBoughtSkus.contains(PurchasesUtils.ID_DARK_THEME);
+//            default:
+//                return true;
+//        }
     }
 
     public static boolean isThemeEnabledNow(@NonNull ThemeType t) {
