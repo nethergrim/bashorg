@@ -9,8 +9,8 @@ android {
         applicationId "com.nethergrim.bashorg"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 23
-        versionName '1.1.14'
+        versionCode 24
+        versionName '1.1.15'
     }
     buildTypes {
         release {
