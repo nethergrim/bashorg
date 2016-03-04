@@ -9,10 +9,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
+
 import com.nethergrim.bashorg.App;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.model.Quote;
 import com.nethergrim.bashorg.model.QuoteSelection;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,11 +63,6 @@ public class DB {
         return db;
     }
 
-    private void open() {
-        mDBHelper = new DBHelper(mCtx, DB_NAME, null, DB_VERSION);
-        mDB = mDBHelper.getWritableDatabase();
-    }
-
     public void close() {
         try {
             if (mDBHelper != null)
@@ -96,19 +93,19 @@ public class DB {
         notifyAboutChange();
     }
 
-    private void notifyAboutChange() {
-        mCtx.getContentResolver().notifyChange(Uri.parse(Constants.URI_QUOTE), null);
-    }
-
     public boolean isQuoteSaved(Quote quote) {
-        if (quote == null) return false;
-        long size = DatabaseUtils.queryNumEntries(mDB, Quote.Columns.TABLE, Quote.Columns.FIELD_ID + "=?", new String[]{String.valueOf(quote.getId())});
+        if (quote == null)
+            return false;
+        long size = DatabaseUtils.queryNumEntries(mDB, Quote.Columns.TABLE,
+                Quote.Columns.FIELD_ID + "=?", new String[] {String.valueOf(quote.getId())});
         return size > 0;
     }
 
     public boolean isPageSaved(String pageNumber) {
-        if (Integer.parseInt(pageNumber) == Constants.PAGE_MAX) return false;
-        long size = DatabaseUtils.queryNumEntries(mDB, Quote.Columns.TABLE, Quote.Columns.FIELD_PAGE + "=?", new String[]{pageNumber});
+        if (Integer.parseInt(pageNumber) == Constants.PAGE_MAX)
+            return false;
+        long size = DatabaseUtils.queryNumEntries(mDB, Quote.Columns.TABLE,
+                Quote.Columns.FIELD_PAGE + "=?", new String[] {pageNumber});
         return size > 49;
     }
 
@@ -172,7 +169,8 @@ public class DB {
                 c.close();
             }
         }
-        Log.e(DB_NAME, "compressed DB to json in: " + String.valueOf(System.currentTimeMillis() - start));
+        Log.e(DB_NAME,
+                "compressed DB to json in: " + String.valueOf(System.currentTimeMillis() - start));
         return result;
     }
 
@@ -192,36 +190,49 @@ public class DB {
                 break;
             case LIKED:
                 selection = Quote.Columns.FIELD_LIKED + " = ?";
-                args = new String[]{String.valueOf(1)};
+                args = new String[] {String.valueOf(1)};
                 orderBy = Quote.Columns.FIELD_ID + " DESC";
                 break;
         }
-        return mDB.query(Quote.Columns.TABLE, null, selection, args, null, null, orderBy, String.valueOf(limit));
+        return mDB.query(Quote.Columns.TABLE, null, selection, args, null, null, orderBy,
+                String.valueOf(limit));
     }
 
     public void persist(@NonNull JSONArray quotes) {
-        long start = System.currentTimeMillis();
-        ContentValues cv = new ContentValues();
-        mDB.beginTransaction();
-        try {
-            for (int i = 0, size = quotes.length(); i < size; i++) {
-                try {
-                    cv.clear();
-                    JSONObject json = (JSONObject) quotes.get(i);
-                    cv.put(Quote.Columns.FIELD_ID, json.getString("#"));
-                    cv.put(Quote.Columns.FIELD_BODY, json.getString("q"));
-                    cv.put(Quote.Columns.FIELD_DATE, json.getString("d"));
-                    cv.put(Quote.Columns.FIELD_RATING, json.getString("r"));
-                    mDB.insertWithOnConflict(Quote.Columns.TABLE, null, cv, SQLiteDatabase.CONFLICT_REPLACE);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            mDB.setTransactionSuccessful();
-        } finally {
-            mDB.endTransaction();
-        }
-        Log.e("TAG", "persisted " + quotes.length() + " in: " + String.valueOf(System.currentTimeMillis() - start));
+        return;
+//        long start = System.currentTimeMillis();
+//        ContentValues cv = new ContentValues();
+//        mDB.beginTransaction();
+//        try {
+//            for (int i = 0, size = quotes.length(); i < size; i++) {
+//                try {
+//                    cv.clear();
+//                    JSONObject json = (JSONObject) quotes.get(i);
+//                    cv.put(Quote.Columns.FIELD_ID, json.getString("#"));
+//                    cv.put(Quote.Columns.FIELD_BODY, json.getString("q"));
+//                    cv.put(Quote.Columns.FIELD_DATE, json.getString("d"));
+//                    cv.put(Quote.Columns.FIELD_RATING, json.getString("r"));
+//                    mDB.insertWithOnConflict(Quote.Columns.TABLE, null, cv, SQLiteDatabase
+// .CONFLICT_REPLACE);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            mDB.setTransactionSuccessful();
+//        } finally {
+//            mDB.endTransaction();
+//        }
+//        Log.e("TAG", "persisted " + quotes.length() + " in: " + String.valueOf(System
+// .currentTimeMillis() - start));
+    }
+
+    private void open() {
+        mDBHelper = new DBHelper(mCtx, DB_NAME, null, DB_VERSION);
+        mDB = mDBHelper.getWritableDatabase();
+    }
+
+    private void notifyAboutChange() {
+        mCtx.getContentResolver().notifyChange(Uri.parse(Constants.URI_QUOTE), null);
     }
 
     private class DBHelper extends SQLiteOpenHelper {

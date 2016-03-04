@@ -40,7 +40,8 @@ public class QuoteViewHolder {
         btnShare = (ImageButton) v.findViewById(R.id.btn_share);
         btnLike = (ImageButton) v.findViewById(R.id.btn_like);
 
-        if (ThemeUtils.getCurrentTheme().equals(ThemeType.DARK)) {
+        if (ThemeUtils.getCurrentTheme().equals(ThemeType.DARK) || ThemeUtils.getCurrentTheme()
+                .equals(ThemeType.BLACK)) {
             mDrawbleShareButton = Utils.tintIcon(R.drawable.ic_social_share, R.color.dark_theme_buttons_color);
             mDrawbleLikeButtonOff = Utils.tintIcon(R.drawable.ic_action_favorite_outline, R.color.dark_theme_buttons_color);
             mDrawbleLikeButtonOn = Utils.tintIcon(R.drawable.ic_action_favorite, R.color.dark_accent);
@@ -83,6 +84,12 @@ public class QuoteViewHolder {
         changeTextSize(ThemeUtils.getFontSize());
     }
 
+    public void changeTextSize(int textSizeSP) {
+        if (textBody != null) {
+            textBody.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSP);
+        }
+    }
+
     private void setLikeIcon(ImageButton ib, boolean liked) {
         if (liked) {
             if (ThemeUtils.getCurrentTheme().equals(ThemeType.DARK)) {
@@ -98,12 +105,6 @@ public class QuoteViewHolder {
                 ib.setImageResource(R.drawable.ic_action_favorite_outline);
             }
 
-        }
-    }
-
-    public void changeTextSize(int textSizeSP) {
-        if (textBody != null) {
-            textBody.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSP);
         }
     }
 }

@@ -24,4 +24,16 @@
         <item name="colorAccent">?attr/myColorAccent</item>
     </style>
 
+    <style name="My.Theme.Black" parent="Base.ThemeOverlay.AppCompat.Dark">
+        <item name="myColorBackground">@android:color/black</item>
+        <item name="myColorWindowBackground">@android:color/black</item>
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="myColorActionBar">@android:color/black</item>
+        <item name="myColorAccent">@color/dark_accent</item>
+        <item name="myColorPrimaryColor">@color/dark_primary_text</item>
+        <item name="myColorSecondaryColor">@color/dark_secondary_text</item>
+        <item name="colorPrimaryDark">@android:color/black</item>
+        <item name="colorAccent">@android:color/black</item>
+    </style>
+
 </resources>

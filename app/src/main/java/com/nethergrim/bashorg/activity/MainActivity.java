@@ -18,20 +18,16 @@ import com.kenny.snackbar.SnackBarListener;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.FragmentAdapter;
-import com.nethergrim.bashorg.db.DB;
 import com.nethergrim.bashorg.fragment.AbyssFragment;
 import com.nethergrim.bashorg.fragment.BestQuotesFragment;
 import com.nethergrim.bashorg.fragment.LastQuotesFragment;
 import com.nethergrim.bashorg.fragment.LikedQuotesFragment;
 import com.nethergrim.bashorg.fragment.RandomQuotesFragment;
 import com.nethergrim.bashorg.utils.AdsHelper;
-import com.nethergrim.bashorg.utils.FileUtils;
 import com.nethergrim.bashorg.utils.Prefs;
 import com.nethergrim.bashorg.utils.ThemeType;
 import com.nethergrim.bashorg.utils.ThemeUtils;
 import com.startad.lib.SADView;
-
-import org.json.JSONArray;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -104,9 +100,9 @@ public class MainActivity extends BaseActivity
         mFab.setOnClickListener(this);
         loadFragments();
         initTabs();
-        if (DB.getInstance().getCountOfLoadedQuotes() < 52000) { // zip file not decompressed
-            decompressZipFileAndPersistToDb();
-        }
+//        if (DB.getInstance().getCountOfLoadedQuotes() < 52000) { // zip file not decompressed
+//            decompressZipFileAndPersistToDb();
+//        }
         AdsHelper.shouldIShowStartADS(new AdsHelper.AdsHelperCallback() {
             @Override
             public void shouldShowStartADS(String show) {
@@ -120,6 +116,12 @@ public class MainActivity extends BaseActivity
             }
         });
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
     }
 
     @Override
@@ -140,12 +142,6 @@ public class MainActivity extends BaseActivity
         };
         registerReceiver(receiver, filter);
 
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterReceiver(receiver);
     }
 
     private void showSnackBar() {
@@ -183,21 +179,21 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    private void decompressZipFileAndPersistToDb() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                FileUtils.unpackAssetFileAndUnzip(
-                        FileUtils.BASHORG_JSON_FILE_NAME + FileUtils.ZIP_FILE_POSTFIX);
-                JSONArray bashorgBase = FileUtils.getJsonArrayFromDisk(
-                        getFilesDir() + "/" + FileUtils.BASHORG_JSON_FILE_NAME);
-                if (bashorgBase != null) {
-                    DB.getInstance().persist(bashorgBase);
-                }
-            }
-        }).start();
-    }
+//    private void decompressZipFileAndPersistToDb() {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+//                FileUtils.unpackAssetFileAndUnzip(
+//                        FileUtils.BASHORG_JSON_FILE_NAME + FileUtils.ZIP_FILE_POSTFIX);
+//                JSONArray bashorgBase = FileUtils.getJsonArrayFromDisk(
+//                        getFilesDir() + "/" + FileUtils.BASHORG_JSON_FILE_NAME);
+//                if (bashorgBase != null) {
+//                    DB.getInstance().persist(bashorgBase);
+//                }
+//            }
+//        }).start();
+//    }
 
     private void initTabs() {
         tabs.setTabMode(TabLayout.MODE_SCROLLABLE);

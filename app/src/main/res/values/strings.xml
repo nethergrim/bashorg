@@ -23,6 +23,7 @@
     <string name="go">Перейти</string>
     <string name="dark_theme_ads_title">Шикарная темная тема!</string>
     <string name="dark_theme_ads_description">Не слепит ночью, экономит заряд батареи!\nПопробуй, и тебе понравится!</string>
+    <string name="black_theme">Черная тема</string>
 
 
 </resources>

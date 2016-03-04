@@ -6,7 +6,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.nethergrim.bashorg.db.DB;
-import com.nethergrim.bashorg.purchases.InAppBillingServiceHolder;
 import com.yandex.metrica.YandexMetrica;
 
 import io.realm.Realm;
@@ -34,11 +33,19 @@ public class App extends Application {
         Prefs.init(this.getApplicationContext());
         DB.init(this.getApplicationContext());
         Constants.density = getResources().getDisplayMetrics().density;
-        InAppBillingServiceHolder.bindToService();
         initRealm();
 
         YandexMetrica.activate(this, "2d3a1fc4-bdba-4c50-90d1-5a40cb665a52");
         YandexMetrica.setTrackLocationEnabled(false);
+    }
+
+    public boolean isOnline_() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(
+                Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        //should check null because in air plan mode it will be null
+        return (netInfo != null && netInfo.isConnected());
+
     }
 
     private void initRealm() {
@@ -48,14 +55,6 @@ public class App extends Application {
                 .build();
 
         Realm.setDefaultConfiguration(realmConfig);
-    }
-
-    public boolean isOnline_() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        //should check null because in air plan mode it will be null
-        return (netInfo != null && netInfo.isConnected());
-
     }
 
 
