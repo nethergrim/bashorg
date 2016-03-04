@@ -12,7 +12,7 @@ import com.nethergrim.bashorg.R;
 public enum ThemeType {
     DARK(R.drawable.dark_theme_small, 0, R.style.My_Theme_Dark, R.string.dark_theme),
     LIGHT(R.drawable.light_theme_small, 1, R.style.My_Theme_Light, R.string.light_theme),
-    BLACK(R.drawable.light_theme_small, 2, R.style.My_Theme_Black, R.string.black_theme);
+    BLACK(R.drawable.black_theme_small, 2, R.style.My_Theme_Black, R.string.black_theme);
 
     private int mImageResourceId;
     private int mCode;

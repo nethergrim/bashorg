@@ -5,11 +5,9 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.view.View;
 
-import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.activity.ThemeSelectorActivity;
 import com.nethergrim.bashorg.fragment.dialogs.FontSizeSelectorDialog;
-import com.nethergrim.bashorg.utils.AdsHelper;
 import com.nethergrim.bashorg.utils.ThemeUtils;
 
 /**
@@ -47,20 +45,6 @@ public class SettingsFragment extends PreferenceFragment {
             }
         });
 
-        Preference prefsVk = findPreference("prefs_vk_group");
-        if (Constants.shouldDisplayVkAds()) {
-            prefsVk.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    AdsHelper.showVkGroupAds(view.getContext());
-                    return true;
-                }
-            });
-        } else {
-            prefsVk.setTitle("");
-            prefsVk.setSummary("");
-            prefsVk.setEnabled(false);
-        }
 
     }
 }
