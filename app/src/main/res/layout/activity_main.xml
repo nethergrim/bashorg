@@ -30,7 +30,7 @@
         xmlns:fab="http://schemas.android.com/apk/res-auto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/ads_container"
+        android:layout_above="@+id/mopub_sample_ad"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="12dp"
         android:layout_marginRight="12dp"
@@ -41,11 +41,13 @@
         fab:fab_showShadow="true"
         fab:fab_size="mini" />
 
-    <FrameLayout
-        android:id="@+id/ads_container"
+
+    <com.mopub.mobileads.MoPubView
+        android:id="@+id/mopub_sample_ad"
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
+        android:layout_height="50dp"/>
+
 
 
 </RelativeLayout>
