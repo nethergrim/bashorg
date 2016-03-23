@@ -5,9 +5,11 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.crashlytics.android.Crashlytics;
 import com.nethergrim.bashorg.db.DB;
 import com.yandex.metrica.YandexMetrica;
 
+import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -29,6 +31,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         mInstance = this;
         Prefs.init(this.getApplicationContext());
         DB.init(this.getApplicationContext());

@@ -10,11 +10,11 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.FrameLayout;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.kenny.snackbar.SnackBarItem;
 import com.kenny.snackbar.SnackBarListener;
+import com.mopub.mobileads.MoPubView;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.FragmentAdapter;
@@ -25,7 +25,6 @@ import com.nethergrim.bashorg.fragment.LikedQuotesFragment;
 import com.nethergrim.bashorg.fragment.RandomQuotesFragment;
 import com.nethergrim.bashorg.utils.AdsHelper;
 import com.nethergrim.bashorg.utils.Prefs;
-import com.nethergrim.bashorg.utils.ThemeType;
 import com.nethergrim.bashorg.utils.ThemeUtils;
 import com.startad.lib.SADView;
 
@@ -44,8 +43,9 @@ public class MainActivity extends BaseActivity
     View mShadow;
     @InjectView(R.id.fab)
     FloatingActionButton mFab;
-    @InjectView(R.id.ads_container)
-    FrameLayout mAdsContainer;
+    @InjectView(R.id.mopub_sample_ad)
+    MoPubView mMopubSampleAd;
+
     private ViewPager pager;
     private FragmentAdapter adapter;
     private TabLayout tabs;
@@ -73,7 +73,7 @@ public class MainActivity extends BaseActivity
     public void onSnackBarStarted(Object o) {
         mFab.animate().translationY(-48 * Constants.density).setDuration(250).start();
         if (mSADView != null) {
-            mAdsContainer.removeAllViews();
+
             mSADView = null;
         }
     }
@@ -81,7 +81,6 @@ public class MainActivity extends BaseActivity
     @Override
     public void onSnackBarFinished(Object o, boolean b) {
         mFab.animate().translationY(0).setDuration(250).start();
-        showStartAdAds();
     }
 
     @Override
@@ -100,22 +99,15 @@ public class MainActivity extends BaseActivity
         mFab.setOnClickListener(this);
         loadFragments();
         initTabs();
-//        if (DB.getInstance().getCountOfLoadedQuotes() < 52000) { // zip file not decompressed
-//            decompressZipFileAndPersistToDb();
-//        }
-        AdsHelper.shouldIShowStartADS(new AdsHelper.AdsHelperCallback() {
-            @Override
-            public void shouldShowStartADS(String show) {
-                if ("0".equals(show)) {
-                    // hide
-                    if (mSADView != null) {
-                        mAdsContainer.removeAllViews();
-                        mSADView = null;
-                    }
-                }
-            }
-        });
+        mMopubSampleAd.setAdUnitId("ad82cd50469342dc870c7e94e3336302");
+        mMopubSampleAd.loadAd();
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mMopubSampleAd.destroy();
     }
 
     @Override
@@ -163,37 +155,8 @@ public class MainActivity extends BaseActivity
                     .setDuration(5000)
                     .setSnackBarListener(this)
                     .show();
-        } else {
-            showStartAdAds();
         }
     }
-
-    private void showStartAdAds() {
-        AdsHelper.shouldIShowStartADS(null);
-        if (!ThemeUtils.isThemeBought(ThemeType.DARK) && Prefs.shouldShowStartAds()) {
-            if (mSADView == null) {
-                mSADView = new SADView(this, Constants.START_AD_APP_ID);
-                mAdsContainer.addView(mSADView);
-            }
-            mSADView.loadAd(SADView.LANGUAGE_RU);
-        }
-    }
-
-//    private void decompressZipFileAndPersistToDb() {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-//                FileUtils.unpackAssetFileAndUnzip(
-//                        FileUtils.BASHORG_JSON_FILE_NAME + FileUtils.ZIP_FILE_POSTFIX);
-//                JSONArray bashorgBase = FileUtils.getJsonArrayFromDisk(
-//                        getFilesDir() + "/" + FileUtils.BASHORG_JSON_FILE_NAME);
-//                if (bashorgBase != null) {
-//                    DB.getInstance().persist(bashorgBase);
-//                }
-//            }
-//        }).start();
-//    }
 
     private void initTabs() {
         tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
