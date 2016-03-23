@@ -14,7 +14,6 @@ import android.view.View;
 import com.github.clans.fab.FloatingActionButton;
 import com.kenny.snackbar.SnackBarItem;
 import com.kenny.snackbar.SnackBarListener;
-import com.mopub.mobileads.MoPubView;
 import com.nethergrim.bashorg.Constants;
 import com.nethergrim.bashorg.R;
 import com.nethergrim.bashorg.adapter.FragmentAdapter;
@@ -43,8 +42,7 @@ public class MainActivity extends BaseActivity
     View mShadow;
     @InjectView(R.id.fab)
     FloatingActionButton mFab;
-    @InjectView(R.id.mopub_sample_ad)
-    MoPubView mMopubSampleAd;
+
 
     private ViewPager pager;
     private FragmentAdapter adapter;
@@ -99,15 +97,11 @@ public class MainActivity extends BaseActivity
         mFab.setOnClickListener(this);
         loadFragments();
         initTabs();
-        mMopubSampleAd.setAdUnitId("ad82cd50469342dc870c7e94e3336302");
-        mMopubSampleAd.loadAd();
-
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mMopubSampleAd.destroy();
     }
 
     @Override
